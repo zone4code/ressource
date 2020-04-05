@@ -1,0 +1,17 @@
+<book title="Mécanique" authors="Landau, Lifshitz">
+  <chapter title="équations du mouvement">
+     <section title="coordonnées généralisées">
+        Une des notion fondamentales de la Mécanique est celle de point matériel. ....
+     </section>
+     <section title="Le principe de moindre action">
+        La formule la plus générale de la loi du mouvement des systèmes mécaniques est
+        fournie par le principe dit de moindre action (ou principe de Hamilton). ....
+     </section>
+     ....
+   </chapter>
+   <chapter title = "lois de conservation">
+     ...
+   </chapter>
+   ...
+ </book>
+ 

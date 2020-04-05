@@ -1,0 +1,530 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Appendix A: Database Design</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Appendix A</h1>
+				<h2>Database Design</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1>
+					<a href="http://www.webstepbook.com/">
+						Web Programming Step by Step
+					</a>
+				</h1>
+				
+				<h3>
+					Appendix A <br />
+					Database Design
+				</h3>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1>
+					Database design principles
+					<span class="readingsection">(Appendix A)</span>
+				</h1>
+
+				<ul>
+					<li><span class="term">database design</span> : the act of deciding the schema for a database</li>
+					<li><span class="term">database schema</span>: a description of what tables a database should have, what columns each table should contain, which columns' values must be unique, etc.</li>
+					<li>some database design principles:
+						<ul>
+							<li>keep it simple, stupid (KISS)</li>
+							<li>provide an identifier, or <strong>key</strong>, by which any row can be uniquely fetched</li>
+							<li>eliminate redundancy, especially redundancy of lengthy data (strings)
+								<ul>
+									<li>when redundancy is needed, integers are smaller than strings and better to repeat</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>First database design</h1>
+
+				<table class="sqltable">
+					<caption>student_grades</caption>
+
+					<tr><th>name</th><th>email</th><th>course</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>bart@fox.com</td><td>Computer Science 142</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>bart@fox.com</td><td>Computer Science 143</td><td>C</td></tr>
+					<tr><td>Milhouse</td><td>milhouse@fox.com</td><td>Computer Science 142</td><td>B+</td></tr>
+					<tr><td>Lisa</td><td>lisa@fox.com</td><td>Computer Science 143</td><td>A+</td></tr>
+					<tr><td>Lisa</td><td>lisa@fox.com</td><td>Computer Science 190M</td><td>A+</td></tr>
+					<tr><td>Ralph</td><td>ralph@fox.com</td><td>Informatics 100</td><td>D+</td></tr>
+				</table>
+
+				<ul>
+					<li>what's good and bad about this design?
+						<ul>
+							<li class="incremental">contains redundancy (name, email, course repeated frequently)</li>
+							<li class="incremental">there is no &quot;key&quot; column unique to each row</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Second database design</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>splitting data into multiple tables avoids redundancy</li>
+					<li><a href="http://en.wikipedia.org/wiki/Database_normalization"><span class="term">normalizing</span></a>: splitting tables to improve structure and remove redundancy / anomalies</li>
+					<li>normalized tables are often linked by unique integer IDs</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Related tables and keys</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td class="highlight">888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td></tr>
+								<tr><td class="highlight">10002</td><td>Computer Science 143</td></tr>
+								<tr><td class="highlight">10003</td><td>Computer Science 190M</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td class="highlight">888</td><td class="highlight">10002</td><td>A+</td></tr>
+								<tr><td class="highlight">888</td><td class="highlight">10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li>records of one table may be associated with record(s) in another table
+						<ul>
+							<li>record in <code>Student</code> table with <code>student_id</code> of 888 is Lisa Simpson's student info</li>
+							<li>records in <code>Grade</code> table with <code>student_id</code> of 888 are Lisa Simpson's course grades</li>
+						</ul>
+					</li>
+					<li><strong>primary key</strong>: a table column guaranteed to be unique for each record</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Design question</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li>suppose we want to keep track of the teachers who teach each course
+						<ul>
+							<li>e.g. Ms. Krabappel always teaches CSE 142 and INFO 100</li>
+							<li>e.g. Ms. Hoover always teaches CSE 143</li>
+							<li>e.g. Mr. Stepp always teaches CSE 190M</li>
+						</ul>
+					</li>
+					<li>what tables and/or columns should we add to the database?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Design answer</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>teachers</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>1234</td><td>Krabappel</td></tr>
+								<tr><td>5678</td><td>Hoover</td></tr>
+								<tr><td>9012</td><td>Stepp</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th><th class="highlight">teacher_id</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td><td class="highlight">1234</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td><td class="highlight">5678</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td><td class="highlight">9012</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td><td class="highlight">1234</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li>add a <code>teachers</code> table containing information about instructors</li>
+					<li>link this to courses by teacher IDs</li>
+					<li>why not just skip the <code>teachers</code> table and put the teacher's name as a column in <code>courses</code>?
+						<ul>
+							<li class="incremental">repeated teacher names are redundant and large in size</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Entities and relationships</h1>
+
+				<div class="centerfigure">
+					<img src="images/er_diagram.gif" alt="ER diagram" />
+				</div>
+
+				<ul>
+					<li>an <span class="term">entity</span> is a record in a table in the database</li>
+					<li>a <span class="term">relationship</span> is a connection between two or more entities</li>
+					<li>database designers often draw <span class="term">ER diagrams</span> like the above to represent the entities and relationships in their databases</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The SQL <code>CREATE TABLE</code> statement
+					<span class="readingsection">(A.1.2)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+CREATE TABLE <var>name</var> (
+    <var>columnName</var> <var>type</var> <var>constraints</var>,
+    ...
+    <var>columnName</var> <var>type</var> <var>constraints</var>
+);
+</pre>
+
+				<pre class="examplecode sql">
+CREATE TABLE students (
+    sid INTEGER UNSIGNED NOT NULL PRIMARY KEY,
+    name VARCHAR(20),
+    email VARCHAR(32)
+);
+</pre>
+
+				<ul>
+					<li>adds/deletes an entire new table from this database</li>
+					<li>you can add constraints such as <code>NOT NULL</code> for a field that cannot be blank or <code>PRIMARY KEY</code> for a column that must be unique for every row</li>
+					<li>related commands: <code>CREATE DATABASE</code>, <code>DROP TABLE</code>, <code>ALTER TABLE</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					SQL <a href="http://dev.mysql.com/doc/refman/5.0/en/data-types.html">data types</a>
+				</h1>
+
+				<ul>
+					<li><code>BOOLEAN</code></li>
+					<li><code>INTEGER</code></li>
+					<li><code>FLOAT</code></li>
+					<li><code>VARCHAR</code> : a string</li>
+					<li><code>DATE</code>, <code>TIME</code>, <code>DATETIME</code></li>
+					<li><code>BLOB</code> : binary data</li>
+					<li><a href="http://kimbriggs.com/computers/computer-notes/mysql-notes/mysql-data-types.file">quick reference</a></li>
+				</ul>
+			</div>
+
+
+<!--
+
+import and export a database:
+# mysqldump -u username -ppassword database_name > FILE.sql
+
+# mysql -u username -ppassword database_name < FILE.sql
+
+
+
+
+
+
+    ALTER TABLE table_name
+     RENAME TO new_table_name;
+
+For example:
+
+    ALTER TABLE suppliers
+     RENAME TO vendors;
+
+
+
+
+
+
+    ALTER TABLE table_name
+     ADD column_name column-definition;
+
+For example:
+
+    ALTER TABLE supplier
+     ADD supplier_name  varchar2(50);
+
+
+
+    ALTER TABLE table_name
+    ADD ( 	column_1 	column-definition,
+      	column_2 	column-definition,
+      	... 	
+      	column_n 	column_definition );
+
+For example:
+
+    ALTER TABLE supplier
+    ADD ( 	supplier_name 	varchar2(50),
+      	city 	varchar2(45) );
+      	
+      	
+      	
+
+
+    ALTER TABLE table_name
+     MODIFY column_name column_type;
+
+For example:
+
+    ALTER TABLE supplier
+     MODIFY supplier_name   varchar2(100)     not null;
+
+
+
+
+
+    ALTER TABLE table_name
+    MODIFY ( 	column_1 	column_type,
+      	column_2 	column_type,
+      	... 	
+      	column_n 	column_type );
+
+For example:
+
+    ALTER TABLE supplier
+    MODIFY ( 	supplier_name 	varchar2(100) 	not null,
+    	city 	varchar2(75) 	  	);
+    	
+    	
+    	
+
+
+
+    ALTER TABLE table_name
+     DROP COLUMN column_name;
+
+For example:
+
+    ALTER TABLE supplier
+     DROP COLUMN supplier_name;
+
+
+
+
+
+
+    ALTER TABLE table_name
+     RENAME COLUMN old_name to new_name;
+
+For example:
+
+    ALTER TABLE supplier
+     RENAME COLUMN supplier_name to sname;
+
+
+
+DROP DATABASE [IF EXISTS] name
+-->
+
+<!--
+LIMIT 1 to speed up query
+
+
+GROUP BY, HAVING
+SELECT age FROM Student GROUP BY age;
+	one row per group
+
+MySQL download
+http://dev.mysql.com/downloads/
+
+MySQL tutorial
+http://dev.mysql.com/doc/#Tutorial
+
+w3schools
+http://www.w3schools.com/sql/default.asp
+
+idea of joins
+http://www.w3schools.com/sql/sql_join.asp
+	inner join, left join, right join
+
+functions (AVG, COUNT, FIRST, LAST, MAX, MIN, STDEV, SUM, ...
+http://www.w3schools.com/sql/sql_functions.asp
+
+quick reference chart
+http://www.w3schools.com/sql/sql_quickref.asp
+
+notion of indexes?
+
+
+transactions
+    * BEGIN WORK (or START TRANSACTION, depending on SQL dialect) can be used to mark the start of a database transaction, which either completes completely or not at all.
+    * COMMIT causes all data changes in a transaction to be made permanent.
+    * ROLLBACK causes all data changes since the last COMMIT or ROLLBACK to be discarded, so that the state of the data is "rolled back" to the way it was prior to those changes being requested.
+
+
+subqueries
+SELECT *
+FROM   students
+WHERE  age IN (SELECT age
+               FROM   students
+               WHERE  name = 'Bart');
+
+SELECT *
+FROM   students s
+WHERE EXISTS (SELECT * FROM Student
+              WHERE NAME = 'Bart'
+              AND age = s.age);
+
+who has the highest GPA?
+SELECT *
+FROM   students
+WHERE  GPA >= ALL (SELECT GPA FROM Student);
+
+SELECT *
+FROM   students
+WHERE NOT (GPA < ANY (SELECT GPA FROM Student));
+
+-->
+
+
+<!--#include virtual="commonbottom.html" -->

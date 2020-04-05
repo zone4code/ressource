@@ -1,0 +1,694 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 6: Intro to PHP</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 6</h1>
+				<h2>Introduction to PHP</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 6 <br /> Introduction to PHP</h3>
+				<h4>Reading: 5.1 - 5.3</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.4: Sizing and Positioning</h1>
+				
+				<ul>
+					<li>
+						4.1: Styling Page Sections
+					</li>
+					<li>
+						4.2: Introduction to Layout
+					</li>
+					<li>
+						4.3: Floating Elements
+					</li>
+					<li>
+						<strong>4.4: Sizing and Positioning</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <a href="http://www.w3schools.com/css/pr_class_display.asp"><code>display</code></a> property
+					<span class="readingsection">(4.4.4)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+h2 { <em>display: inline;</em> background-color: yellow; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<h2>This is a heading</h2>
+						<h2>This is another heading</h2>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>display</code>
+						</td>
+						<td>
+							sets the type of CSS box model an element is displayed with
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>values: <code>none</code>, <code>inline</code>, <code>block</code>, <code>run-in</code>, <code>compact</code>, ...</li>
+					<li>use sparingly, because it can radically alter the page layout</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Displaying block elements as inline</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;ul id=&quot;topmenu&quot;&gt;
+	&lt;li&gt;Item 1&lt;/li&gt;
+	&lt;li&gt;Item 2&lt;/li&gt;
+	&lt;li&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+<pre class="examplecode css">
+#topmenu li {
+	<em>display: inline;</em>
+	border: 2px solid gray;
+	margin-right: 1em;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>lists and other block elements can be displayed inline
+						<ul>
+							<li>flow left-to-right on same line</li>
+							<li>width is determined by content (block elements are 100% of page width)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!-- absolute pos and 100% body size -->
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/css/pr_class_visibility.asp"><code>visibility</code></a> property</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p.secret {
+	<em>visibility: hidden;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p class="secret">
+							Since nobody can see this anyway: ca-ca poo-poo pee-pee!!!
+						</p>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>visibility</code>
+						</td>
+						<td>
+							sets whether an element should be shown onscreen; <br />
+							can be <code>visible</code> (default) or <code>hidden</code>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						<code>hidden</code> elements will still take up space onscreen, but will not be shown
+						<ul>
+							<li>to make it not take up any space, set <code>display</code> to <code>none</code> instead</li>
+						</ul>
+					</li>
+					<li>can be used to show/hide dynamic HTML content on the page in response to events</li>
+				</ul>
+			</div>			
+
+
+
+			<div class="slide titleslide">
+				<h1>5.1: Server-Side Basics</h1>
+				
+				<ul>
+					<li>
+						<strong>5.1: Server-Side Basics</strong>
+					</li>
+					<li>
+						5.2: PHP Basic Syntax
+					</li>
+					<li>
+						5.3: Embedded PHP
+					</li>
+					<li>
+						5.4: Advanced PHP Syntax
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>URLs and web servers</h1>
+
+<pre class="example exampleurl url">
+http://<var>server</var>/<var>path</var>/<var>file</var>
+</pre>
+
+				<ul>
+					<li>usually when you type a URL in your browser:
+						<ul>
+							<li>your computer looks up the server's IP address using DNS</li>
+							<li>your browser connects to that IP address and requests the given file</li>
+							<li>the web server software (e.g. Apache) grabs that file from the server's local file system, and sends back its contents to you</li>
+						</ul>
+					</li>
+				</ul>
+
+				<ul>
+					<li>some URLs actually specify <em>programs</em> that the web server should run, and then send their output back to you as the result:
+
+<pre>
+https://webster.cs.washington.edu/quote2.php
+</pre>
+
+						<ul>
+							<li>the above URL tells the server <code>webster.cs.washington.edu</code> to run the program <code>quote2.php</code> and send back its output</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Server-Side web programming</h1>
+				
+				<div style="text-align: center">
+					<img src="images/php_logo.gif" alt="php" style="margin-right: 2em" />
+					<img src="images/javaee.gif" alt="jsp" style="margin-right: 2em" />
+					<img src="images/ruby_on_rails.png" alt="ruby on rails" style="margin-right: 2em" />
+					<img src="images/asp_net.png" alt="asp.net" />
+				</div>
+				
+				<ul>
+					<li>server-side pages are programs written using one of many web programming languages/frameworks
+						<ul>
+							<li>
+								examples:
+								<a href="http://php.net/">PHP</a>,
+								<a href="http://java.sun.com/products/jsp/">Java/JSP</a>,
+								<a href="http://www.rubyonrails.org/">Ruby on Rails</a>,
+								<a href="http://www.asp.net/">ASP.NET</a>,
+								<a href="http://www.djangoproject.com/">Python</a>,
+								<a href="http://www.cgi101.com/learn/">Perl</a>
+							</li>
+						</ul>
+					</li>
+					<li>the web server contains software that allows it to run those programs and send back their output as responses to web requests</li>
+					<li>each language/framework has its pros and cons
+						<ul>
+							<li>we use PHP for server-side programming in this textbook</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					What is PHP?
+					<span class="readingsection">(5.1.2)</span>
+				</h1>
+				
+				<div>
+					<img src="images/php_logo.gif" alt="PHP logo" style="float: right; margin-left: 1em" />
+				</div>
+
+				<ul>
+					<li><span class="term">PHP</span> stands for &quot;PHP Hypertext Preprocessor&quot;</li>
+					<li>a server-side scripting language</li>
+					<li>used to make web pages dynamic:
+						<ul>
+							<li>provide different content depending on context</li>
+							<li>interface with other services: database, e-mail, etc</li>
+							<li>authenticate users</li>
+							<li>process form information</li>
+						</ul>
+					</li>
+					<li>PHP code can be embedded in XHTML code</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Lifecycle of a PHP web request
+					<span class="readingsection">(5.1.1)</span>
+				</h1>
+
+				<div style="text-align: center"><img src="images/figure_1_server.png" alt="PHP server" style="width: 55%" /></div>
+				
+				<ul>
+					<li>browser requests a <code>.html</code> file (<span class="term">static content</span>): server just sends that file</li>
+					<li>browser requests a <code>.php</code> file (<span class="term">dynamic content</span>): server reads it, runs any script code inside it, then sends result across the network
+						<ul>
+							<li>script produces output that becomes the response sent back</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Why PHP?</h1>
+
+				<p>
+					There are many other options for server-side languages: Ruby on Rails, JSP, ASP.NET, etc.  Why choose PHP?
+				</p>
+
+				<ul>
+					<li><a href="http://www.php.net">free and open source</a>: anyone can run a PHP-enabled server free of charge</li>
+					<li>compatible: supported by most popular web servers</li>
+					<li>simple: lots of built-in functionality; familiar syntax</li>
+					<li>available: installed on UW's servers (Dante, Webster) and most commercial web hosts</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>Hello, World!</h1>
+
+<pre class="examplecode php">
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+ &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Hello world&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot;
+ content=&quot;text/html; charset=iso-8859-1&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+<em>&lt;?php
+print &quot;Hello, World&quot;;
+?&gt;</em>
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+					<li>when a client views the source, only HTML is visible</li>
+
+
+			</div>
+-->
+
+
+
+			<div class="slide">
+				<h1>Hello, World!</h1>
+
+				<p>
+					The following contents could go into a file <code>hello.php</code>:
+				</p>
+
+				<div class="example">
+<pre class="examplecode php">
+<em>&lt;?php</em>
+print &quot;Hello, world!&quot;;
+<em>?&gt;</em>
+</pre>
+
+					<div class="exampleoutput">
+						Hello, world!
+					</div>
+				</div>
+				
+				<ul>
+					<li>a block or file of PHP code begins with <code>&lt;?php</code> and ends with <code>?&gt;</code></li>
+					<li>PHP statements, function declarations, etc. appear between these endpoints</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Viewing PHP output</h1>
+
+				<div style="text-align: center">
+					<img src="images/php_output_local.png" alt="PHP local output" />
+					<img src="images/php_output_server.png" alt="PHP server output" />
+				</div>
+				
+				<ul>
+					<li>you can't view your <code>.php</code> page on your local hard drive; you'll either see nothing or see the PHP source code</li>
+					<li>if you upload the file to a PHP-enabled web server, requesting the <code>.php</code> file will run the program and send you back its output</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>5.2: PHP Basic Syntax</h1>
+				
+				<ul>
+					<li>
+						5.1: Server-Side Basics
+					</li>
+					<li>
+						<strong>5.2: PHP Basic Syntax</strong>
+					</li>
+					<li>
+						5.3: Embedded PHP
+					</li>
+					<li>
+						5.4: Advanced PHP Syntax
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>System information: <code><a href="http://www.php.net/phpinfo">phpinfo()</a></code></h1>
+
+<pre class="examplecode php">
+&lt;?php
+<em>phpinfo();</em>
+?&gt;
+</pre>
+
+				<ul>
+					<li>a typical way to test an installation</li>
+					<li>good way to find out where configuration files are</li>
+					<li>describes built-in variables</li>
+					<li>lists which modules are enabled</li>
+				</ul>
+			</div>
+-->
+
+
+
+			<div class="slide">
+				<h1>
+					Console output: <code><a href="http://www.php.net/print">print</a></code>
+					<span class="readingsection">(5.2.2)</span>
+				</h1>
+
+				<div class="example">
+<pre class="syntaxtemplate php">
+print &quot;<var>text</var>&quot;;
+</pre>
+
+<pre class="examplecode php">
+print &quot;Hello, World!\n&quot;;
+print &quot;Escape \&quot;chars\&quot; are the SAME as in Java!\n&quot;;
+
+print &quot;You can have
+line breaks in a string.&quot;;
+
+print 'A string can use &quot;single-quotes&quot;.  It\'s cool!';
+</pre>
+
+						<div class="exampleoutput">
+							Hello, World!
+							Escape "chars" are the SAME as in Java!
+							You can have
+							line breaks in a string.
+							A string can use "single-quotes".  It's cool!
+						</div>
+					</div>
+				
+
+				<ul>
+					<li>some PHP programmers use the equivalent <code>echo</code> instead of <code>print</code></li>
+					<!--<li>you can optionally surround the string with parentheses:
+<pre class="php">
+print(&quot;Hello, world!&quot;);
+</pre>
+					</li>-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/variables">Variables</a>
+					<span class="readingsection">(5.2.5)</span>
+				</h1>
+
+				<div class="example">
+<pre class="syntaxtemplate php">
+$<var>name</var> = <var>expression</var>;
+</pre>
+
+<pre class="examplecode php">
+$user_name = &quot;PinkHeartLuvr78&quot;;
+$age = 16;
+$drinking_age = $age + 5;
+$this_class_rocks = TRUE;
+</pre>
+				</div>
+
+				<ul>
+					<li>names are case sensitive; separate multiple words with _</li>
+					<li>names always begin with <code>$</code>, on both declaration and usage</li>
+					<li>always implicitly declared by assignment (type is not written)</li>
+					<li>a loosely typed language (like JavaScript or Python)</li>
+				</ul>
+			</div>
+			
+			
+			<div class="slide">
+				<h1>
+					Types
+					<span class="readingsection">(5.2.3)</span>
+				</h1>
+
+				<ul>
+					<li>basic types:
+						<a href="http://www.php.net/manual/en/language.types.integer.php"><code>int</code></a>,
+						<a href="http://www.php.net/manual/en/language.types.float.php"><code>float</code></a>,
+						<a href="http://www.php.net/manual/en/language.types.boolean.php"><code>boolean</code></a>,
+						<a href="http://www.php.net/manual/en/language.types.string.php"><code>string</code></a>,
+						<a href="http://www.php.net/manual/en/language.types.array.php"><code>array</code></a>,
+						<a href="http://www.php.net/manual/en/language.types.object.php"><code>object</code></a>,
+						<a href="http://www.php.net/manual/en/language.types.null.php"><code>NULL</code></a>
+						
+						<ul>
+							<li>test what type a variable is with <code>is_<var>type</var></code> functions, e.g. <a href="http://www.php.net/manual/en/function.is-string.php"><code>is_string</code></a></li>
+							<li><a href="http://www.php.net/gettype"><code>gettype</code></a> function returns a variable's type as a string (not often needed)</li>
+						</ul>
+					</li>
+					<li>PHP <a href="http://www.php.net/language.types.type-juggling">converts between types automatically</a> in many cases:
+						<ul>
+							<li><code>string</code> &rarr; <code>int</code> auto-conversion on <code>+</code></li>
+							<li><code>int</code> &rarr; <code>float</code> auto-conversion on <code>/</code></li>
+						</ul>
+					</li>
+					<li>type-cast with <code>(<var>type</var>)</code>:
+						<ul>
+							<li><code>$age = <em>(int)</em> &quot;21&quot;;</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/operators">Arithmetic operators</a>
+					<span class="readingsection">(5.2.4)</span>
+				</h1>
+
+				<ul>
+					<li>
+						<code>
+						+ - * / % . ++ -- <br />
+						= += -= *= /= %= .=<br />
+						</code>
+					</li>
+
+					<li>many operators auto-convert types: <code>5 + &quot;7&quot;</code> is <code>12</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Comments
+					<span class="readingsection">(5.2.7)</span>
+				</h1>
+
+<pre class="syntaxtemplate php">
+<span class="comment"># <var>single-line comment</var></span>
+
+<span class="comment">// <var>single-line comment</var></span>
+
+<span class="comment">/*
+<var>multi-line comment</var>
+*/</span>
+</pre>
+
+				<ul>
+					<li>like Java, but <code>#</code> is also allowed
+						<ul>
+							<li>a lot of PHP code uses <code>#</code> comments instead of <code>//</code></li>
+							<li>we recommend <code>#</code> and will use it in our examples</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/jsref/jsref_obj_string.asp"><code>String</code></a> type
+					<span class="readingsection">(5.2.6)</span>
+				</h1>
+
+<pre class="examplecode php">
+$favorite_food = &quot;Ethiopian&quot;;
+print $favorite_food[2];            <span class="comment"># h</span>
+</pre>
+
+				<ul>
+					<li>zero-based indexing using bracket notation</li>
+					<li>string concatenation operator is <code>.</code> (period), not <code>+</code>
+						<ul>
+							<li><code>5 + &quot;2 turtle doves&quot; === 7</code></li>
+							<li><code>5 . &quot;2 turtle doves&quot; === &quot;52 turtle doves&quot;</code></li>
+						</ul>
+					</li>
+					<li>can be specified with <code>&quot;&quot;</code> or <code>''</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Interpreted strings</h1>
+
+<pre class="examplecode php">
+$age = 16;
+<span class="deleted">print &quot;You are &quot; . $age . &quot; years old.\n&quot;;</span>
+print &quot;You are <em>$age</em> years old.\n&quot;;    <span class="comment"># You are 16 years old.</span>
+</pre>
+
+				<ul>
+					<li>strings inside <code>&quot; &quot;</code> are <span class="term">interpreted</span>
+						<ul>
+							<li>variables that appear inside them will have their values inserted into the string</li>
+						</ul>
+					</li>
+					<li>strings inside <code>' '</code> are <em>not</em> interpreted:
+
+<pre class="examplecode php">
+print 'You are $age years old.\n';    <span class="comment"># You are $age years old.\n</span>
+</pre>
+					
+					</li>
+					<li class="incremental">if necessary to avoid ambiguity, can enclose variable in <code>{}</code>:
+
+<pre class="examplecode php">
+<span class="deleted">print &quot;Today is your <em class="error">$ageth</em> birthday.\n&quot;;</span>     <span class="comment"># $ageth not found</span>
+print &quot;Today is your <em>{$age}th</em> birthday.\n&quot;;
+</pre>
+
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/manual/en/control-structures.for.php"><code>for</code></a> loop
+					<span class="sameasjava">(same as Java)</span>
+					<span class="readingsection">(5.2.9)</span>
+					</h1>
+
+<pre class="syntaxtemplate php">
+for (<var>initialization</var>; <var>condition</var>; <var>update</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+<pre class="examplecode php">
+for ($i = 0; $i &lt; 10; $i++) {
+	print &quot;$i squared is &quot; . $i * $i . &quot;.\n&quot;;
+}
+</pre>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->

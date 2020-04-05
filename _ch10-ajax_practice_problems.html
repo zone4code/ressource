@@ -1,0 +1,86 @@
+			<div class="slide">
+				<h1>Practice problem: ASCIImation viewer</h1>
+
+				<ul>
+					<li>Edit the provided get_ascii files (<a href="examples/get_ascii.html">HTML</a>, <a href="examples/get_ascii.js">JS</a>) to fetch the student's ASCIImation program from the server-side <code>get_ascii.php</code> program using Ajax.</li>
+					<li>Add code to allow a custom file name.</li>
+					<li>Add code so that the page gives a good error message if the URL is broken or the file is not found.</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide practiceproblem">
+				<h1>Practice problem: Submitting ASCII art</h1>
+				
+				<ul>
+					<li>Let's revisit the <code>ascii.php</code> example from a previous lecture.</li>
+					<li>Suppose that the <code>ascii.php</code> service also accepts <code>post</code> requests, where you can submit a new ASCIImation into the system.</li>
+					<li>The <code>post</code> requires two parameters:
+						<li><code>name</code> : the last name of the student whose art is being submitted (String)</li>
+						<li><code>ascii</code> : the text of the ASCIImation to store (String)</li>
+					</li>
+					<li class="incremental">Modify our page to be able to both retrieve and submit ASCII art to this service.</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Practice problem: Animal game</h1>
+				
+				<ul>
+					<li>Write a program that guesses which animal the user is thinking of. The program will arrive at a guess based on the user's responses to yes or no questions. The questions come from a web app named <code>animalgame.php</code>.</li>
+				</ul>
+				
+				<p style="text-align: center; "><img src="images/animalgame.png" alt="The Animal Game" /></p>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Practice problem: Animal game (cont'd)</h1>
+				
+				<ul>
+					<li>The data comes in the following format:
+
+					<pre class="syntaxtemplate xml">
+&lt;node nodeid=&quot;<var>id</var>&quot;&gt;
+	&lt;question&gt;<var>question</var>&lt;/question&gt;
+	&lt;yes nodeid=&quot;<var>id</var>&quot; /&gt;
+	&lt;no nodeid=&quot;<var>id</var>&quot; /&gt;
+&lt;/node&gt;
+</pre>
+
+					<pre class="syntaxtemplate xml">
+&lt;node nodeid=&quot;<var>id</var>&quot;&gt;
+	&lt;answer&gt;<var>answer</var>&lt;/answer&gt;
+&lt;/node&gt;
+</pre>
+
+					</li>
+					
+					<li>to get a node with a given id:  <code>animalgame.php?nodeid=<var>id</var></code>
+					</li>
+					
+					<li>start by requesting the node with <code>nodeid</code> of <code>1</code> to get the first question</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Attacking the problem</h1>
+
+				<p>Questions we should ask ourselves:</p>
+				<ul>
+					<li>How do I retrieve data from the web app? (what URL, etc.)</li>
+					<li>Once I retrieve a piece of data, what should I do with it?</li>
+					<li>When the user clicks &quot;Yes&quot;, what should I do?</li>
+					<li>When the user clicks &quot;No&quot;, what should I do?</li>
+					<li>How do I know when the game is over?  What should I do in this case?</li>
+				</ul>
+			</div>
+
+
+

@@ -1,0 +1,711 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 8: PHP File I/O</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 8</h1>
+				<h2>PHP File Input/Output</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 8 <br /> PHP File I/O and Query Parameters</h3>
+				<h4>Reading: 5.4 - 5.5</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>5.4: Advanced PHP Syntax</h1>
+				
+				<ul>
+					<li>
+						5.1: Server-Side Basics
+					</li>
+					<li>
+						5.2: PHP Basic Syntax
+					</li>
+					<li>
+						5.3: Embedded PHP
+					</li>
+					<li>
+						<strong>5.4: Advanced PHP Syntax</strong>
+					</li>
+					<li>
+						6.1: Parameterized Pages
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Functions
+					<span class="readingsection">(5.4.1)</span>
+				</h1>
+
+				<pre class="syntaxtemplate php">
+function <var>name</var>(<var>parameterName</var>, <var>...</var>, <var>parameterName</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+				<pre class="examplecode php">
+function quadratic($a, $b, $c) {
+	return -$b + sqrt($b * $b - 4 * $a * $c) / (2 * $a);
+}
+</pre>
+
+				<ul>
+					<li>parameter types and return types are not written</li>
+					<li>a function with no <code>return</code> statements implicitly returns <code>NULL</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Calling functions</h1>
+
+<pre class="syntaxtemplate php">
+<var>name</var>(<var>expression</var>, <var>...</var>, <var>expression</var>);
+</pre>
+
+<pre class="examplecode php">
+$x = -2;
+$a = 3;
+$root = <em>quadratic(1, $x, $a - 2)</em>;
+</pre>
+
+				<ul>
+					<li>if the wrong number of parameters are passed, it's an error</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Default parameter values</h1>
+
+<pre class="syntaxtemplate php">
+function <var>name</var>(<var>parameterName</var>, <var>...</var>, <var>parameterName</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+<pre class="examplecode php">
+function print_separated($str, <em>$separator = &quot;, &quot;</em>) {
+	if (strlen($str) &gt; 0) {
+		print $str[0];
+		for ($i = 1; $i &lt; strlen($str); $i++) {
+			print $separator . $str[$i];
+		}
+	}
+}
+</pre>
+
+<pre class="examplecode php">
+print_separated(&quot;hello&quot;);        <span class="comment"># h, e, l, l, o</span>
+print_separated(&quot;hello&quot;<em>, &quot;-&quot;</em>);   <span class="comment"># h-e-l-l-o</span>
+</pre>
+
+				<ul>
+					<li>if no value is passed, the default will be used (defaults must come last)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Variable scope: global and local vars</h1>
+				
+<pre class="examplecode php">
+$school = &quot;UW&quot;;                   <span class="comment"># global</span>
+...
+
+function downgrade() {
+	<em>global $school;</em>
+	$suffix = &quot;Tacoma&quot;;             <span class="comment"># local</span>
+
+	$school = &quot;$school $suffix&quot;;
+	print &quot;$school\n&quot;;
+}
+</pre>
+
+				<ul>
+					<li>variables declared in a function are <span class="term">local</span> to that function</li>
+					<li>variables not declared in a function are <span class="term">global</span></li>
+					<li>if a function wants to use a global variable, it must have a <code>global</code> statement</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>6.1: Parameterized Pages</h1>
+				
+				<ul>
+					<li>
+						5.1: Server-Side Basics
+					</li>
+					<li>
+						5.2: PHP Basic Syntax
+					</li>
+					<li>
+						5.3: Embedded PHP
+					</li>
+					<li>
+						5.4: Advanced PHP Syntax
+					</li>
+					<li>
+						<strong>6.1: Parameterized Pages</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Query strings and parameters
+					<span class="readingsection">(6.1.1)</span>
+				</h1>
+
+<pre class="syntaxtemplate url">
+<var>URL</var><em>?</em><var>name</var><em>=</em><var>value</var><em>&amp;</em><var>name</var><em>=</em><var>value</var>...
+</pre>
+
+<pre class="url">
+http://www.google.com/search?<em>q=Obama</em>
+http://example.com/student_login.php?<em>username=stepp</em>&<em>id=1234567</em>
+</pre>
+				
+				<ul>
+					<li><span class="term">query string</span>: a set of parameters passed from a browser to a web server
+						<ul>
+							<li>often passed by placing name/value pairs at the end of a URL</li>
+							<li>above, parameter <code>username</code> has value <code>stepp</code>, and <code>sid</code> has value <code>1234567</code></li>
+						</ul>
+					</li>
+					<li>PHP code on the server can examine and utilize the value of parameters</li>
+					<li>a way for PHP code to produce different output based on values passed by the user</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Query parameters:
+					<a href="http://us2.php.net/manual/en/reserved.variables.request.php" class="underscorelink"><code>$_REQUEST</code></a>
+					<span class="readingsection">(6.4.2)</span>
+				</h1>
+
+<pre class="examplecode php">
+$user_name = <em>$_REQUEST[&quot;username&quot;]</em>;
+$id_number = (int) <em>$_REQUEST[&quot;id&quot;]</em>;
+$eats_meat = FALSE;
+if (isset(<em>$_REQUEST[&quot;meat&quot;]</em>)) {
+	$eats_meat = TRUE;
+}
+</pre>
+
+				<ul>
+					<li>
+						<code>$_REQUEST[&quot;<var>parameter name</var>&quot;]</code> returns a parameter's value as a string
+					</li>
+					
+					<li>test whether a given parameter was passed with <code>isset</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>5.4: PHP File Input/Output</h1>
+				
+				<ul>
+					<li>
+						5.1: Server-Side Basics
+					</li>
+					<li>
+						5.2: PHP Basic Syntax
+					</li>
+					<li>
+						5.3: Embedded PHP
+					</li>
+					<li>
+						<strong>5.4: Advanced PHP Syntax</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					PHP file I/O functions
+					<span class="readingsection">(5.4.5)</span>
+				</h1>
+				
+				<table class="standard">
+					<tr>
+						<th>
+							function name(s)
+						</th>
+						<th>
+							category
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/file"><code><em>file</em></code></a>, 
+							<a class="underscorelink" href="http://www.php.net/file_get_contents"><code><em>file_get_contents</em></code></a>, <br />
+							<a class="underscorelink" href="http://www.php.net/file_put_contents"><code><em>file_put_contents</em></code></a>
+						</td>
+						<td>
+							reading/writing entire files
+						</td>
+					</tr>
+					</li>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/basename"><code><em>basename</em></code></a>, 
+							<a class="underscorelink" href="http://www.php.net/file_exists"><code>file_exists</code></a>, 
+							<a href="http://www.php.net/filesize"><code>filesize</code></a>,  <br />
+							<a href="http://www.php.net/fileperms"><code>fileperms</code></a>, 
+							<a href="http://www.php.net/filemtime"><code>filemtime</code></a>, 
+							<a class="underscorelink" href="http://www.php.net/is_dir"><code>is_dir</code></a>, <br />
+							<a class="underscorelink" href="http://www.php.net/is_readable"><code>is_readable</code></a>,
+							<a class="underscorelink" href="http://www.php.net/is_writable"><code>is_writable</code></a>,
+							<a class="underscorelink" href="http://www.php.net/disk_free_space"><code>disk_free_space</code></a>
+						</td>
+						<td>
+							asking for information
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://www.php.net/copy"><code>copy</code></a>, 
+							<a href="http://www.php.net/rename"><code>rename</code></a>, 
+							<a href="http://www.php.net/unlink"><code>unlink</code></a>, <br />
+							<a href="http://www.php.net/chmod"><code>chmod</code></a>, 
+							<a href="http://www.php.net/chgrp"><code>chgrp</code></a>, 
+							<a href="http://www.php.net/chown"><code>chown</code></a>, <br />
+							<a href="http://www.php.net/mkdir"><code>mkdir</code></a>, 
+							<a href="http://www.php.net/rmdir"><code>rmdir</code></a>
+						</td>
+						<td>
+							manipulating files and directories
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/glob"><code><em>glob</em></code></a>,
+							<a href="http://www.php.net/scandir"><code><em>scandir</em></code></a>
+						</td>
+						<td>
+							reading directories
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Reading/writing files</h1>
+
+				<table class="standard">
+					<tr>
+						<th>contents of foo.txt</th>
+						<th><code>file(&quot;foo.txt&quot;)</code></th>
+						<th><code>file_get_contents(&quot;foo.txt&quot;)</code></th>
+					</tr>
+					<tr>
+						<td>
+							<pre>
+Hello
+how are
+you?
+
+I'm fine
+</pre>
+						</td>
+						<td>
+							<pre>
+array(
+	&quot;Hello\n&quot;,    <span class="comment"># 0</span>
+	&quot;how are\n&quot;,  <span class="comment"># 1</span>
+	&quot;you?\n&quot;,     <span class="comment"># 2</span>
+	&quot;\n&quot;,         <span class="comment"># 3</span>
+	&quot;I'm fine\n&quot;  <span class="comment"># 4</span>
+)
+</pre>
+						</td>
+						<td>
+							<pre>
+&quot;Hello\n
+how are\n
+you?\n
+\n
+I'm fine\n&quot;
+</pre>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li><a class="underscorelink" href="http://www.php.net/file"><code>file</code></a> returns lines of a file as an array</li>
+					<li><a class="underscorelink" href="http://www.php.net/file_get_contents"><code>file_get_contents</code></a> returns entire contents of a file as a string</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Reading/writing an entire file</h1>
+
+<pre class="examplecode php"><span class="comment"># reverse a file</span>
+$text = <em>file_get_contents(&quot;poem.txt&quot;)</em>;
+$text = strrev($text);
+<em>file_put_contents(&quot;poem.txt&quot;, $text)</em>;
+</pre>
+
+				<ul>
+					<li><a class="underscorelink" href="http://www.php.net/file_get_contents"><code>file_get_contents</code></a> returns entire contents of a file as a string
+						<ul>
+							<li>if the file doesn't exist, you'll get a warning</li>
+						</ul>
+					</li>
+					<li><a class="underscorelink" href="http://www.php.net/file_put_contents"><code>file_put_contents</code></a> writes a string into a file, replacing any prior contents</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Appending to a file</h1>
+
+<pre class="examplecode php"><span class="comment"># add a line to a file</span>
+$new_text = &quot;P.S. ILY, GTG TTYL!~&quot;;
+file_put_contents(&quot;poem.txt&quot;, $new_text<em>, FILE_APPEND</em>);
+</pre>
+
+				<table class="standard">
+					<tr>
+						<th>old contents</th>
+						<th>new contents</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<pre>
+Roses are red,
+Violets are blue.
+All my base,
+Are belong to you.
+</pre>
+						</td>
+						<td>
+							<pre>
+Roses are red,
+Violets are blue.
+All my base,
+Are belong to you.
+P.S. ILY, GTG TTYL!~
+</pre>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li><a class="underscorelink" href="http://www.php.net/file_put_contents"><code>file_put_contents</code></a> can be called with an optional third parameter</li>
+					<li>appends (adds to the end) rather than replacing previous contents</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.php.net/file"><code>file</code></a> function</h1>
+
+<pre class="examplecode php"><span class="comment"># display lines of file as a bulleted list</span>
+$lines = <em>file(&quot;todolist.txt&quot;)</em>;
+foreach ($lines as $line) {
+	?&gt;
+	&lt;li&gt; &lt;?= $line ?&gt; &lt;/li&gt;
+	&lt;?php
+}
+</pre>
+
+				<ul>
+					<li><a href="http://www.php.net/file"><code>file</code></a> returns the lines of a file as an array of strings
+						<ul>
+							<li>each string ends with <code>\n</code></li>
+							<li>
+								to strip the <code>\n</code> off each line, use optional second parameter:
+								<pre class="examplecode php">
+$lines = file(&quot;todolist.txt&quot;, <em>FILE_IGNORE_NEW_LINES</em>);
+</pre>
+							</li>
+						</ul>
+					</li>
+					<li>common idiom: <code>foreach</code> loop over lines of file</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Unpacking an array: <code>list</code></h1>
+				
+<pre class="syntaxtemplate php">list($<var>var1</var>, ..., $<var>varN</var>) = <var>array</var>;
+</pre>
+
+<pre class="examplecode php">$values = array(&quot;stepp&quot;, &quot;17&quot;, &quot;m&quot;, &quot;94&quot;);
+<var>...</var>
+<em>list($username, $age, $gender, $iq)</em> = $values;
+</pre>
+
+				<ul>
+					<li>the <a href="http://www.php.net/list"><code>list</code></a> function accepts a comma-separated list of variable names as parameters</li>
+					<li>can be assigned from an array (or the result of a function that returns an array)
+					<li>use this to quickly "unpack" an array's contents into several variables
+						<ul>
+							<li>
+								a convenience, so you can refer to <code>$username</code> instead of <code>$values[0]</code>, etc.
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Fixed-length files, <code>file</code> and <code>list</code></h1>
+
+				<div class="filename">contents of input file <code>personal.txt</code></div>
+
+				<pre class="inputfile">
+Marty Stepp
+(206) 685-2181
+570-86-7326
+</pre>
+
+<pre class="examplecode php">
+<em>list</em>($name, $phone, $ssn) = <em>file</em>(&quot;personal.txt&quot;);
+<var>...</var>
+</pre>
+
+				<ul>
+					<li>
+						when you know a file's exact length/format, you can use <code>file</code> and <code>list</code> to quickly examine it
+					</li>
+					<li>
+						reads the file into an array of lines and unpacks the lines into variables
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Splitting/joining strings</h1>
+
+				<pre class="syntaxtemplate php">$<var>array</var> = explode(<var>delimiter</var>, <var>string</var>);
+$<var>string</var> = implode(<var>delimiter</var>, <var>array</var>);
+</pre>
+
+				<pre class="examplecode php">$s  = &quot;CSE 190 M&quot;;
+$a  = <em>explode(&quot; &quot;, $s);</em>     <span class="comment"># (&quot;CSE&quot;, &quot;190&quot;, &quot;M&quot;)</span>
+$s2 = <em>implode(&quot;...&quot;, $a);</em>   <span class="comment"># &quot;CSE...190...M&quot;</span>
+</pre>
+
+				<ul>
+					<li><code>explode</code> and <code>implode</code> convert between strings and arrays</li>
+					<li>for more complex string splitting, you can use <span class="term">regular expressions</span> (later)</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Example with <code>explode</code></h1>
+
+				<div class="filename">contents of input file <code>names.txt</code></div>
+
+				<pre class="inputfile">
+Martin D Stepp
+Jessica K Miller
+Victoria R Kirst
+</pre>
+
+				<div class="example">
+					<pre class="examplecode php">
+foreach (file(&quot;names.txt&quot;) as $name) {
+	list($first, $mid, $last) = <em>explode(&quot; &quot;, $name)</em>;
+	?&gt;
+
+	&lt;p&gt; author: &lt;?= $last ?&gt;, &lt;?= $first ?&gt; &lt;/p&gt;
+
+	&lt;?php
+}
+</pre>
+
+					<div class="exampleoutput">
+						<p> author: Stepp, Marty </p>
+						<p> author: Miller, Jessica </p>
+						<p> author: Kirst, Victoria </p>
+					</div>
+				</div>
+			</div>
+
+
+
+			<!-- *** glob? -->
+
+
+
+			<div class="slide">
+				<h1>Reading directories</h1>
+
+				<table class="standard">
+					<tr>
+						<th>function</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td><a href="http://www.php.net/scandir"><code>scandir</code></a></td>
+						<td>returns an array of all file names in a given directory <br ?>
+							(returns just the file names, such as <code>&quot;myfile.txt&quot;</code>)
+						</td>
+					</tr>
+					
+					<tr>
+						<td><a href="http://www.php.net/glob"><code>glob</code></a></td>
+						<td>returns an array of all file names that match a given pattern <br />
+							(returns a file path and name, such as <code>&quot;foo/bar/myfile.txt&quot;</code>)
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						<code>glob</code> can filter by accepting wildcard paths with the <code>*</code> character
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>glob</code> example</h1>
+
+				<pre class="examplecode php">
+<span class="comment"># reverse all poems in the poetry directory</span>
+$poems = <em>glob(&quot;poetry/poem*.dat&quot;)</em>;
+foreach ($poems as $poemfile) {
+	$text = file_get_contents($poemfile);
+	file_put_contents($poemfile, strrev($text));
+	print &quot;I just reversed &quot; . <em>basename($poemfile)</em>;
+}
+</pre>
+				
+				<ul>
+					<li>
+						<code>glob</code> can match a "wildcard" path with the <code>*</code> character
+						<ul>
+							<li>
+								<code>glob(&quot;foo/bar/<em>*.doc</em>&quot;)</code> returns all <code>.doc</code> files in the <code>foo/bar</code> subdirectory
+							</li>
+							<li>
+								<code>glob(&quot;<em>food*</em>&quot;)</code> returns all files whose names begin with &quot;food&quot;
+							</li>
+							<li>
+								<code>glob(&quot;<em>lecture*</em>/<em>slides*.ppt</em>&quot;)</code> examines all directories whose names begin with <code>lecture</code> and grabs all files whose names begin with &quot;slides&quot; and end with &quot;.ppt&quot;
+							</li>
+						</ul>
+					</li>
+					<li>
+						the <code>basename</code> function strips any leading directory from a file path
+						<ul>
+							<li>
+								<code>basename(&quot;foo/bar/baz.txt&quot;)</code> returns <code>&quot;baz.txt&quot;</code>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>scandir</code> example</h1>
+
+				<div class="example">
+					<pre class="examplecode php">
+&lt;ul&gt;
+	&lt;?php
+	$folder = &quot;taxes/old&quot;;
+	foreach (<em>scandir($folder)</em> as $filename) {
+		?&gt;
+		&lt;li&gt; &lt;?= $filename ?&gt; &lt;/li&gt;
+		&lt;?php
+	}
+	?&gt;
+&lt;/ul&gt;
+</pre>
+
+					<div class="exampleoutput" style="font-size: smaller">
+						<ul>
+							<li>
+								.
+							</li>
+							<li>
+								..
+							</li>
+							<li>
+								2007_w2.pdf
+							</li>
+							<li>
+								2006_1099.doc
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+				<ul>
+					<li>annoyingly, the current directory (<code>&quot;.&quot;</code>) and parent directory (<code>&quot;..&quot;</code>) are included in the array</li>
+					<li>
+						don't need <code>basename</code> with <code>scandir</code> because it returns the file's names only
+					</li>
+				</ul>
+			</div>
+
+
+			
+<!--#include virtual="commonbottom.html" -->

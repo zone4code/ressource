@@ -1,0 +1,337 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lab 5: JavaScript Debugging</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lab 5</h1>
+				<h2>JavaScript Debugging</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lab 5 <br /> JavaScript Debugging</h3>
+				<h4>Reading: 7.2</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Debugging common errors
+					<span class="readingsection">(7.2.6)</span>
+				</h1>
+				
+				<ul>
+					<li>
+						JavaScript's syntax is looser than Java's, but its errors are meaner
+						<ul>
+							<li>
+								most errors produce no visible output or error message!
+							</li>
+						</ul>
+					</li>
+					
+					<li>some common error symptoms:
+						<ul>
+							<li><q>My program does nothing.</q> (most errors produce no output)</li>
+							<li><q>It just prints <code>undefined</code>.</q> (many typos lead to undefined variables)</li>
+							<li><q>I get an error that says, <code>foo</code> has no properties.</q></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Debugging JS code in Firebug</h1>
+				
+				<div class="rightfigure">
+					<img src="images/firebug_js.png" alt="Firebug JS" />
+				</div>
+				
+				<ul>
+					<li>Firebug JS debugger can set breakpoints, step through code, examine values (Script tab)</li>
+					<li>interaction pane for typing in arbitrary JS expressions (Console tab; Watch tab within Script tab)</li>
+				</ul>
+			</div>
+
+
+			
+			<div class="slide">
+				<h1>JSLint</h1>
+				
+				<div class="rightfigure">
+					<img src="images/jslint.png" alt="JSLint" style="width: 100%" />
+				</div>
+				
+				<ul>
+					<li><span class="term">JSLint</span>: an analyzer that checks your JS code, much like a compiler, and points out common errors
+						<ul>
+							<li><a href="http://webster.cs.washington.edu/jslint/">Marty's version</a></li>
+							<li><a href="http://www.jslint.com/">original version</a>, by Douglas Crockford of Yahoo!</li>
+						</ul>
+					</li>
+					<li>when your JS code doesn't work, paste it into JSLint first to find many common problems</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Debugging checklist
+				</h1>
+				
+				<ul>
+					<li>
+						Are you sure the browser is even loading your JS file at all? <br /> Put an <code>alert</code> at the top of it and make sure it appears.
+					</li>
+
+					<li>When you change your code, do a <strong>full browser refresh (Shift-Ctrl-R)</strong></li>
+
+					<li>
+						<img class="rightfigure" src="images/firebug_js_error.png" alt="Firebug JS error" />
+
+						Check bottom-right corner of Firefox for Firebug syntax errors.
+					</li>
+					<li>
+						Paste your code into our <a href="http://webster.cs.washington.edu/jslint/">JSLint</a> tool to find problems.
+					</li>
+					<li>Type some test code into Firebug's console or use a breakpoint.</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>&quot;My program does nothing&quot;</h1>
+
+				<p>
+					Since Javascript has no compiler, many errors will cause your Javascript program to just &quot;do nothing.&quot;  Some questions you should ask when this happens:
+				</p>
+
+				<ul>
+					<li>Is the browser even loading my script file?</li>
+					<li>If so, is it reaching the part of the file that I want it to reach?</li>
+					<li>If so, what is it doing once it gets there?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Is my JS file loading?</h1>
+
+				<ul>
+					<li>put an <code>alert</code> at the VERY TOP of your script: <br />
+					<img src="images/js_alert_loaded.png" alt="loaded" />
+					</li>
+					<li class="incremental">if it shows up, good!</li>
+					<li class="incremental">if it doesn't show up:
+						<ul>
+							<li>maybe your HTML file isn't linking to the script properly
+								<ul>
+								<li>double-check file names and directories</li>
+								</ul>
+							</li>
+							<li class="incremental">maybe your script has a syntax error
+								<ul>
+									<li>check bottom-right for Firebug error text <img class="incremental" src="images/firebug_errors.png" alt="error" /></li>
+									<li>comment out the rest of your script and try it again</li>
+									<li>run your script through <a href="http://webster.cs.washington.edu/jslint/">JSLint</a> to find some syntax problems</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Is it reaching the code I want it to run?</h1>
+
+				<ul>
+					<li>put an <code>alert</code> at the start of the appropriate function: <br />
+					<img src="images/js_alert_called.png" alt="loaded" />
+						<ul>
+							<li>write a descriptive message, not just <code>&quot;hello&quot;</code> or <code>&quot;here&quot;</code></li>
+						</ul>
+					</li>
+					<li>if it shows up, good!</li>
+					<li class="incremental">if it doesn't show up:
+						<ul>
+							<li>if it's an event handler, maybe you didn't attach it properly</li>
+							<li>maybe your script has a syntax error; run <a href="http://webster.cs.washington.edu/jslint/">JSLint</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Object 'foo' has no properties</h1>
+				
+				<ul>
+					<li>
+						these errors mean you are trying to utilize an undefined value:
+						<ul>
+							<li><code>Object foo has no properties</code></li>
+							<li><code>ReferenceError: foo is not defined</code></li>
+							<li><code>TypeError: foo.bar is not a function</code></li>
+						</ul>
+					</li>
+					<li>possible causes:
+						<ul>
+							<li>you're trying to access a variable that is out of scope</li>
+							<li>you're trying access a DOM element with an invalid <code>id</code></li>
+							<li>you've run off the bounds of an array</li>
+							<li>you've spelled the variable's name incorrectly</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common bug: bracket mismatches</h1>
+
+<pre class="examplecode js">
+function foo() {
+	...   <span class="comment">// missing closing curly brace!</span>
+
+function bar() {
+	...
+}
+</pre>
+
+				<ul>
+					<li>JS doesn't always tell us when we have too many/few brackets
+						<ul>
+							<li>(it is legal in JavaScript to declare one function inside another)</li>
+						</ul>
+					</li>
+					<li><strong>symptom</strong>: script becomes (fully or partially) non-functional</li>
+					<li><strong>detection</strong>: bracket matching in TextPad (highlight bracket, press Ctrl-M); using an <a href="http://www.cs.washington.edu/education/courses/cse190m/09sp/indent.html">Indenter</a> tool; <a href="http://webster.cs.washington.edu/jslint/">JSLint</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Firebug's debugger</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_debugger.png" alt="Firebug JS Debugger" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li>open Firebug, click <strong>Script</strong> tab</li>
+					<li>click to the left of a line to set a <strong>breakpoint</strong></li>
+					<li><strong>refresh</strong> page;  when script gets to that line, program will halt</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Breakpoints</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_debugger_breakpoint.png" alt="Firebug breakpoint" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li>once stopped at a breakpoint, you can examine variables in the <strong>Watch</strong> tab at right
+						<ul>
+							<li>can click <span style="border: 1px solid black;">+</span> to see properties/methods inside any object</li>
+							<li><strong>this</strong> variable holds data about current object, or global data</li>
+							<li>if the object is global or not listed, type its name in the &quot;New watch expression...&quot; box</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Stepping through code</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_debugger_breakpoint.png" alt="Firebug breakpoint" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li>once stopped at a breakpoint, you can continue execution:
+						<ul>
+							<li><img src="images/debugger_continue.png" alt="debug" /> <strong>continue</strong> (F8): start program running again</li>
+							<li><img src="images/debugger_step_over.png" alt="debug" /> <strong>step over</strong> (F10): run current line of code completely, then stop again</li>
+							<li><img src="images/debugger_step_into.png" alt="debug" /> <strong>step into</strong> (F11): run current line of code; if it contains a call to another function, go into it</li>
+							<li><img src="images/debugger_step_out.png" alt="debug" /> <strong>step out</strong> (Shift-F11): run the current function to completion and return, then stop</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Debugging CSS property code</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_css_debug.png" alt="Firebug Debug CSS" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li>expand DOM object with <span style="border: 1px solid black;">+</span>, and expand its <code>style</code> property to see all styles</li>
+					<li>also look at HTML (left) tab, Style (right) tab to see styles</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>General good coding practices</h1>
+
+				<ul>
+					<li>ALWAYS code with Firebug installed</li>
+					<li>incremental development: code a little, test a little</li>	
+					<li>follow good general coding principles
+						<ul>
+							<li>remove redundant code</li>
+							<li>make each line short and simple</li>
+						</ul>
+					</li>
+					<li>use lines and variables liberally
+						<ul>
+							<li>it's good to save parts of a complex computation as variables</li>
+							<li>helps see what part of a big expression was bad/undefined/etc.</li>
+							<li>blank lines and profuse whitespace make code easier to read</li>
+						</ul>
+					</li>
+					<li>don't fear the Firebug debugger</li>
+				</ul>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

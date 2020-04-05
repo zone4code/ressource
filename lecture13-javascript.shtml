@@ -1,0 +1,957 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 13: JavaScript</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 13</h1>
+				<h2>JavaScript</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 13 <br /> Introduction to JavaScript</h3>
+				<h4>Reading: 7.1 - 7.4</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Client-side scripting
+					<span class="readingsection">(7.1.1)</span>
+				</h1>
+				
+				<div class="centerfigure">
+					<img src="images/figure_2_client_side_scripting.png" alt="client-side scripting" width="50%" />
+				</div>
+				
+				<ul>
+					<li><span class="term">client-side script</span>: code runs in browser after page is sent back from server
+						<ul>
+							<li>often this code manipulates the page or responds to user actions</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Why use client-side programming?</h1>
+			
+				<p>
+					PHP already allows us to create dynamic web pages.  Why also use client-side scripting?
+				</p>
+
+				<ul>
+					<li>
+						client-side scripting (JavaScript) benefits:
+						<ul>
+							<li><span class="term">usability</span>: can modify a page without having to post back to the server (faster UI)</li>
+							<li><span class="term">efficiency</span>: can make small, quick changes to page without waiting for server</li>
+							<li><span class="term">event-driven</span>: can respond to user actions like clicks and key presses</li>
+						</ul>
+					</li>
+
+					<li>
+						server-side programming (PHP) benefits:
+						<ul>
+							<li><strong>security</strong>: has access to server's private data; client can't see source code</li>
+							<li><strong>compatibility</strong>: not subject to browser compatibility issues</li>
+							<li><strong>power</strong>: can write files, open connections to servers, connect to databases, ...</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					What is JavaScript?
+					<span class="readingsection">(7.1)</span>
+				</h1>
+				
+				<ul>
+					<li>a lightweight programming language ("scripting language")</li>
+					<li>used to make web pages interactive
+						<ul>
+							<li>insert dynamic text into HTML (ex: user name)</li>
+							<li>react to events (ex: page load user click)</li>
+							<li>get information about a user's computer (ex: browser type)</li>
+							<li>perform calculations on user's computer (ex: form validation)</li>
+						</ul>
+					</li>
+					<li>a <a href="http://www.webstandards.org/">web standard</a> (but not supported identically by <a href="http://en.wikipedia.org/wiki/Criticisms_of_Internet_Explorer#JavaScript_and_DOM">all browsers</a>)</li>
+					<li>NOT related to Java other than by name and some syntactic similarities</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>JavaScript vs. Java</h1>
+
+				<div class="rightfigure">
+					<img style="width: 100px" src="images/java.jpg" alt="Java" />
+					+
+					<img style="width: 100px" src="images/cannabis.png" alt="mary jane, da endo, aight" />
+					= JavaScript
+				</div>
+
+				<ul>
+					<li><span class="term">interpreted</span>, not compiled</li>
+					<li>more relaxed syntax and rules
+						<ul>
+							<li>fewer and &quot;looser&quot; data types</li>
+							<li>variables don't need to be declared</li>
+							<li>errors often silent (few exceptions)</li>
+						</ul>
+					</li>
+					<li>key construct is the <span class="term">function</span> rather than the class
+						<ul>
+							<li>"first-class" functions are used in many situations</li>
+						</ul>
+					</li>
+					<li>contained within a web page and integrates with its HTML/CSS content</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>JavaScript vs. PHP</h1>
+
+				<div class="rightfigure">
+					JS &lt;3
+					<img src="images/php_logo.gif" alt="php" style="margin-right: 2em" />
+				</div>
+
+				<ul>
+					<li>similarities:
+						<ul>
+							<li>both are <span class="term">interpreted</span>, not compiled</li>
+							<li>both are relaxed about syntax, rules, and types</li>
+							<li>both are case-sensitive</li>
+							<li>both have built-in regular expressions for powerful text processing</li>
+						</ul>
+					</li>
+					
+					<li>differences:
+						<ul>
+							<li>JS is more object-oriented: <code>noun.verb()</code>, less procedural: <code>verb(noun)</code></li>
+							<li>JS focuses on user interfaces and interacting with a document; PHP is geared toward HTML output and file/form processing</li>
+							<li>JS code runs on the client's browser; PHP code runs on the web server</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Linking to a JavaScript file:
+					<a href="http://www.w3schools.com/tags/tag_script.asp"><code>script</code></a>
+				</h1>
+
+				<pre class="syntaxtemplate html">
+&lt;script src=&quot;<var>filename</var>&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+
+				<pre class="examplecode html">
+&lt;script src=&quot;example.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+
+				<ul>
+					<li><code>script</code> tag should be placed in HTML page's <code>head</code></li>
+					<li>script code is stored in a separate <code>.js</code> file</li>
+					<li>JS code can be placed directly in the HTML file's <code>body</code> or <code>head</code> (like CSS)
+						<ul>
+							<li>but this is bad style (should separate content, presentation, and behavior)</li>
+						</ul>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					A JavaScript statement:
+					<a href="http://www.w3schools.com/js/js_popup.asp"><code>alert</code></a>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+alert(&quot;<var>message</var>&quot;);
+</pre>
+
+				<div class="example">
+					<pre class="examplecode js">
+alert(&quot;IE6 detected.  Suck-mode enabled.&quot;);
+</pre>
+
+					<div class="exampleoutput">
+						<img src="images/alert.png" alt="alert" /> 
+					</div>
+				</div>
+				
+				<ul>
+					<li>a JS command that pops up a dialog box with a message</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_variables.asp">Variables</a> and types
+					<span class="readingsection">(7.2.1, 7.2.3)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+var <var>name</var> = <var>expression</var>;
+</pre>
+
+<pre class="examplecode js">
+var clientName = &quot;Connie Client&quot;;
+var age = 32;
+var weight = 127.4;
+</pre>
+
+				<ul>
+					<li>variables are declared with the <code>var</code> keyword (case sensitive)</li>
+					<li>types are not specified, but JS does have types (&quot;loosely typed&quot;)
+						<ul>
+							<li><code>Number</code>, <code>Boolean</code>, <code>String</code>, <code>Array</code>, <code>Object</code>, <code>Function</code>, <code>Null</code>, <code>Undefined</code></li>
+							<li>can find out a variable's type by calling <a href="http://javascript.crockford.com/remedial.html"><code>typeof</code></a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<code>Number</code> type
+					<span class="readingsection">(7.2.2)</span>
+				</h1>
+
+<pre class="examplecode js">
+var enrollment = 99;
+var medianGrade = 2.8;
+var credits = 5 + 4 + (2 * 3);
+</pre>
+
+				<ul>
+					<li>integers and real numbers are the same type (no <code>int</code> vs. <code>double</code>)</li>
+					<li>
+						same operators: <code>+ - * / % ++ -- = += -= *= /= %=</code>
+					</li>
+					<li>similar <a href="http://www.codehouse.com/javascript/precedence/">precedence</a> to Java</li>
+					<li>many operators auto-convert types: <code>&quot;2&quot; * 3</code> is <code>6</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Comments
+					<span class="sameasjava">(same as Java)</span>
+					<span class="readingsection">(7.2.4)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+<span class="comment">// <var>single-line comment</var>
+
+/* <var>multi-line comment</var> */</span>
+</pre>
+
+				<ul>
+					<li>identical to Java's comment syntax</li>
+					<li>recall: 4 comment syntaxes
+						<ul>
+							<li><span style="float: left; width: 6em">HTML:</span> <code>&lt;!-- <var>comment</var> --&gt;</code></li>
+							<li><span style="float: left; width: 6em">CSS/JS/PHP:</span> <code>/* <var>comment</var> */</code></li>
+							<li><span style="float: left; width: 6em">Java/JS/PHP:</span> <code>// <var>comment</var></code></li>
+							<li><span style="float: left; width: 6em">PHP:</span> <code># <var>comment</var></code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/jsref/jsref_obj_string.asp"><code>String</code></a> type
+					<span class="readingsection">(7.2.7)</span>
+				</h1>
+
+<pre class="examplecode js">
+var s = &quot;Connie Client&quot;;
+var fName = s.<em>substring</em>(0, s.<em>indexOf</em>(&quot; &quot;));   <span class="comment">// &quot;Connie&quot;</span>
+var len = s.<em>length</em>;                           <span class="comment">// 13</span>
+var s2 = 'Melvin Merchant';
+</pre>
+
+				<ul>
+					<li>methods:
+						<a href="http://www.w3schools.com/jsref/jsref_charAt.asp"><code>charAt</code></a>,
+						<a href="http://www.w3schools.com/jsref/jsref_charCodeAt.asp"><code>charCodeAt</code></a>,
+						<a href="http://www.w3schools.com/jsref/jsref_fromCharCode.asp"><code>fromCharCode</code></a>,
+						<a href="http://www.w3schools.com/jsref/jsref_indexOf.asp"><code>indexOf</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_lastIndexOf.asp"><code>lastIndexOf</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_replace.asp"><code>replace</code></a>,
+						<a href="http://www.w3schools.com/jsref/jsref_split.asp"><code>split</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_substring.asp"><code>substring</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_toLowerCase.asp"><code>toLowerCase</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_toUpperCase.asp"><code>toUpperCase</code></a>
+						
+						<ul>
+							<li><code>charAt</code> returns a one-letter <code>String</code> (there is no <code>char</code> type)</li>
+						</ul>
+					</li>
+					<li><code>length</code> property (not a method as in Java)</li>
+					<li>Strings can be specified with <code>&quot;&quot;</code> or <code>''</code></li>
+					<li>
+						concatenation with <code>+</code> :
+						<ul>
+							<li>
+								<code>1</code> + 1 is <code>2</code>, but
+								<code>&quot;1&quot;</code> + 1 is <code>&quot;11&quot;</code>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+			<div class="slide">
+				<h1>More about <code>String</code></h1>
+
+				<ul>
+					<li>
+						escape sequences behave as in Java:
+						<code>\' \&quot; \&amp; \n \t \\</code>
+					</li>
+					<li>converting between numbers and <code>String</code>s:
+						<pre class="examplecode js">
+var count = 10;
+var s1 = &quot;&quot; + </em>count<em></em>;</code>                      <span class="comment">// &quot;10&quot;</span>
+var s2 = count <em>+</em> &quot; bananas, ah ah ah!&quot;;</code>   <span class="comment">// &quot;10 bananas, ah ah ah!&quot;</span>
+var n1 = <em>parseInt</em>(&quot;42 is the answer&quot;);    <span class="comment">// 42</span></code>
+var n2 = parseFloat(&quot;booyah&quot;);            <span class="comment">// <a href="http://www.w3schools.com/jsref/jsref_NaN.asp">NaN</a></span>
+</pre>
+					</li>
+					<li>accessing the letters of a <code>String</code>:
+						<pre class="examplecode js">
+var firstLetter = s<em>[0]</em>;          <span class="comment">// fails in IE</span></code>
+var firstLetter = s<em>.charAt(0)</em>;   <span class="comment">// does work in IE</span></code>
+var lastLetter = <em>s.charAt(s.length - 1);</em>
+</pre>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<!-- *** example program: name converter -->
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_loop_for.asp"><code>for</code></a> loop
+					<span class="sameasjava">(same as Java)</span>
+					<span class="readingsection">(7.2.8)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+for (<var>initialization</var>; <var>condition</var>; <var>update</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+<pre class="examplecode js">
+var sum = 0;
+<em>for (var i = 0; i &lt; 100; i++) {</em>
+	sum = sum + i;
+<em>}</em>
+</pre>
+
+<pre class="examplecode js">
+var s1 = &quot;hello&quot;;
+var s2 = &quot;&quot;;
+<em>for (var i = 0; i &lt; s.length; i++) {</em>
+	s2 += s1.charAt(i) + s1.charAt(i);
+<em>}</em>
+<span class="comment">// s2 stores &quot;hheelllloo&quot;</span>
+</pre>
+			</div>
+
+
+
+			<!-- *** example program: factorializer -->
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/jsref/jsref_obj_math.asp">Math</a> object
+					<span class="readingsection">(7.2.9)</span>
+				</h1>
+
+<pre class="examplecode js">
+var rand1to10 = <em>Math.floor</em>(<em>Math.random()</em> * 10 + 1);
+var three = <em>Math.floor</em>(<em>Math.PI</em>);
+</pre>
+
+				<ul>
+					<li>methods: 
+						<code><a href="http://www.w3schools.com/jsref/jsref_abs.asp">abs</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_ceil.asp">ceil</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_cos.asp">cos</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_floor.asp">floor</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_log.asp">log</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_max.asp">max</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_min.asp">min</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_pow.asp">pow</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_random.asp">random</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_round.asp">round</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_sin.asp">sin</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_sqrt.asp">sqrt</a></code>, 
+						<code><a href="http://www.w3schools.com/jsref/jsref_tan.asp">tan</a></code></li>
+					</li>
+					<li>properties:
+						<code>E</code>,
+						<code>PI</code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Special values: <code>null</code> and <code>undefined</code>
+					<span class="readingsection">(7.2.10)</span>
+				</h1>
+
+<pre class="examplecode js">
+var ned = null;
+var benson = 9;
+var caroline;
+
+<span class="comment">// at this point in the code,
+//   ned is null
+//   benson's 9
+//   caroline is undefined</span>
+</pre>
+
+				<ul>
+					<li><code>undefined</code> : has not been declared, does not exist</li>
+					<li><code>null</code> : exists, but was specifically assigned an empty or <code>null</code> value</li>
+					<li>Why does JavaScript have both of these?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Logical operators
+					<span class="readingsection">(7.3.1, 7.3.4)</span>
+				</h1>
+				
+				<ul>
+					<li>
+						<code>&gt; &lt; &gt;= &lt;= &amp;&amp; || ! == != <em>=== !==</em></code>
+					</li>
+					<li>
+						most logical operators automatically convert types:
+						<ul>
+							<li>
+								<code>5 &lt; &quot;7&quot;</code> is <code>true</code>
+							</li>
+							<li>
+								<code>42 == 42.0</code> is <code>true</code>
+							</li>
+							<li><code>&quot;5.0&quot; == 5</code> is <code>true</code></li>
+						</ul>
+					</li>
+					<li>
+						<code>===</code> and <code>!==</code> are strict equality tests; checks both type and value
+						<ul>
+							<li>
+								<code>&quot;5.0&quot; === 5</code> is <code>false</code></li>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_if_else.asp"><code>if/else</code></a> statement
+					<span class="sameasjava">(same as Java)</span>
+					<span class="readingsection">(7.3.2)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+if (<var>condition</var>) {
+	<var>statements</var>;
+} else if (<var>condition</var>) {
+	<var>statements</var>;
+} else {
+	<var>statements</var>;
+}
+</pre>
+
+				<ul>
+					<li>identical structure to Java's <code>if/else</code> statement</li>
+					<li>JavaScript allows almost anything as a <var>condition</var></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_obj_boolean.asp">Boolean</a> type
+					<span class="readingsection">(7.3.3)</span>
+				</h1>
+
+<pre class="examplecode js">
+var iLike190M = true;
+var ieIsGood = &quot;IE6&quot; &gt; 0;   <span class="comment">// false</span>
+if (&quot;web dev is great&quot;) {  <span class="comment">/* true */</span> }
+if (0) {  <span class="comment">/* false */</span> }
+</pre>
+
+				<ul>
+					<li>
+						<img class="rightfigure" src="images/colbert.png" alt="Stephen Colbert is the man" />
+						any value can be used as a <code>Boolean</code>
+						<ul>
+							<li>
+								&quot;falsey&quot; values: <code>0</code>, <code>0.0</code>, <code>NaN</code>, <code>&quot;&quot;</code>, <code>null</code>, and <code>undefined</code> 
+							</li>
+							<li>&quot;truthy&quot; values: anything else</li>
+						</ul>
+					</li>
+					<li>converting a value into a <code>Boolean</code> explicitly:
+						<ul>
+							<li><code>var boolValue = <em>Boolean(</em><var>otherValue</var><em>)</em>;</code></li>
+							<li><code>var boolValue = <em>!!</em>(<var>otherValue</var>);</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_loop_while.asp"><code>while</code></a> loops
+					<span class="sameasjava">(same as Java)</span>
+					<span class="readingsection">(7.3.5)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+while (<var>condition</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+<pre class="syntaxtemplate js">
+do {
+	<var>statements</var>;
+} while (<var>condition</var>);
+</pre>
+
+				<ul>
+					<li><code><a href="http://www.w3schools.com/js/js_break.asp">break</a></code> and <code>continue</code> keywords also behave as in Java</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_popup.asp">Popup boxes</a>
+					<span class="readingsection">(7.4.4)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+alert(&quot;<var>message</var>&quot;);     <span class="comment">// message</span>
+confirm(&quot;<var>message</var>&quot;);   <span class="comment">// returns true or false</span>
+prompt(&quot;<var>message</var>&quot;);    <span class="comment">// returns user input string</span>
+</pre>
+
+				<div>
+					<img src="images/alert.png" alt="alert" style="width: 30%" /> 
+					<img src="images/confirm.png" alt="confirm" style="width: 30%" /> 
+					<img src="images/prompt.png" alt="prompt" style="width: 30%" />
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/js/js_obj_array.asp">Arrays</a>
+					<span class="readingsection">(7.4.2)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+var <var>name</var> = [];                          <span class="comment">// empty array</span>
+var <var>name</var> = [<var>value</var>, <var>value</var>, ..., <var>value</var>];   <span class="comment">// pre-filled</span>
+<var>name</var>[<var>index</var>] = <var>value</var>;                     <span class="comment">// store element</span>
+</pre>
+
+<pre class="examplecode js">
+var ducks = [&quot;Huey&quot;, &quot;Dewey&quot;, &quot;Louie&quot;];
+
+var stooges = [];        <span class="comment">// stooges.length is 0</span>
+stooges[0] = &quot;Larry&quot;;    <span class="comment">// stooges.length is 1</span>
+stooges[1] = &quot;Moe&quot;;      <span class="comment">// stooges.length is 2</span>
+stooges[4] = &quot;Curly&quot;;    <span class="comment">// stooges.length is 5</span>
+stooges[4] = &quot;Shemp&quot;;    <span class="comment">// stooges.length is 5</span>
+</pre>
+				
+				<ul>
+					<li>two ways to initialize an array</li>
+					<li><code>length</code> property (grows as needed when elements are added)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Array <a href="http://www.w3schools.com/jsref/jsref_obj_array.asp">methods</a>
+				</h1>
+
+<pre class="examplecode js">
+var a = [&quot;Stef&quot;, &quot;Jason&quot;];   <span class="comment">// Stef, Jason</span>
+a.<em>push</em>(&quot;Brian&quot;);             <span class="comment">// Stef, Jason, Brian</span>
+a.<em>unshift</em>(&quot;Kelly&quot;);          <span class="comment">// Kelly, Stef, Jason, Brian</span>
+a.<em>pop</em>();                     <span class="comment">// Kelly, Stef, Jason</span>
+a.<em>shift</em>();                   <span class="comment">// Stef, Jason</span>
+a.<em>sort</em>();                    <span class="comment">// Jason, Stef</span>
+</pre>
+
+				<ul>
+					<li>array serves as many data structures: list, queue, stack, ...</li>
+					<li>methods:
+						<a href="http://www.w3schools.com/jsref/jsref_concat_array.asp"><code>concat</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_join.asp"><code>join</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_pop.asp"><code>pop</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_push.asp"><code>push</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_reverse.asp"><code>reverse</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_shift.asp"><code>shift</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_slice_array.asp"><code>slice</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_sort.asp"><code>sort</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_splice.asp"><code>splice</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_toString_array.asp"><code>toString</code></a>, 
+						<a href="http://www.w3schools.com/jsref/jsref_unshift.asp"><code>unshift</code></a>
+
+						<ul>
+							<li><code>pu<span class="slightemphasis">sh</span></code> and <code>pop</code> add / remove from back</li>
+							<li><code>unshift</code> and <code><span class="slightemphasis">sh</span>ift</code> add / remove from front</li>
+							<li><code>shift</code> and <code>pop</code> return the element that is removed</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Splitting strings:
+					<a href="http://www.w3schools.com/jsref/jsref_split.asp"><code>split</code></a> and <a href="http://www.w3schools.com/jsref/jsref_join.asp"><code>join</code></a>
+				</h1>
+
+<pre class="examplecode js">
+var s = &quot;the quick brown fox&quot;;
+var a = s.<em>split</em>(&quot; &quot;);          <span class="comment">// [&quot;the&quot;, &quot;quick&quot;, &quot;brown&quot;, &quot;fox&quot;]</span>
+a.reverse();                   <span class="comment">// [&quot;fox&quot;, &quot;brown&quot;, &quot;quick&quot;, &quot;the&quot;]</span>
+s = a.<em>join</em>(&quot;!&quot;);               <span class="comment">// &quot;fox!brown!quick!the&quot;</span>
+</pre>
+
+				<ul>
+					<li>
+						<code>split</code> breaks apart a string into an array using a delimiter
+						<ul>
+							<li>
+								can also be used with <span class="term">regular expressions</span> (seen later)
+							</li>
+						</ul>
+					</li>
+					<li><code>join</code> merges an array into a single string, placing a delimiter between them</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide titleslide">
+				<h1>Event-driven JavaScript</h1>
+				
+				<ul>
+					<li>
+						7.2, 7.3
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://en.wikipedia.org/wiki/Event_driven_programming">Event-driven programming</a>
+				</h1>
+				
+				<div class="centerfigure">
+					<img src="images/figure_3_event.png" alt="event" width="50%" />
+				</div>
+				
+				<ul>
+					<li>you are used to programs start with a <code>main</code> method (or implicit <code>main</code> like in PHP)</li>
+					<li>JavaScript programs instead wait for user actions called <span class="term">events</span> and respond to them</li>
+					<li><span class="term">event-driven programming</span>: writing programs driven by user events</li>
+					<li class="incremental">
+						Let's write a page with a clickable button that pops up a &quot;Hello, World&quot; window...
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Buttons:
+					<a href="http://www.w3schools.com/tags/tag_button.asp"><code>&lt;button&gt;</code></a>
+				</h1>
+				
+				<p class="description">
+					the canonical clickable UI control (inline)
+				</p>
+
+				<div class="example">
+					<pre class="examplecode html">
+<em>&lt;button&gt;</em>Click me!<em>&lt;/button&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>button's text appears inside tag; can also contain images</li>
+
+					<li>To make a responsive button or other UI control:
+						<ol>
+							<li>choose the control (e.g. button) and event (e.g. mouse click) of interest</li>
+							<li>write a JavaScript function to run when the event occurs</li>
+							<li>attach the function to the event on the control</li>
+						</ol>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>JavaScript functions</h1>
+
+				<pre class="syntaxtemplate js">
+function <var>name</var>() {
+	<var>statement</var> ;
+	<var>statement</var> ;
+	...
+	<var>statement</var> ;
+}
+</pre>
+
+				<pre class="examplecode js">
+function myFunction() {
+	alert(&quot;Hello!&quot;);
+	alert(&quot;How are you?&quot;);
+}
+</pre>
+
+				<ul>
+					<li>the above could be the contents of <code>example.js</code> linked to our HTML page</li>
+					<li>statements placed into functions can be evaluated in response to user events</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Event handlers</h1>
+
+					<pre class="syntaxtemplate html">
+&lt;<var>element</var> <var>attributes</var> <em>onclick=&quot;<var>function</var>();&quot;</em>&gt;...
+</pre>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;button <em>onclick=&quot;myFunction();&quot;</em>&gt;Click me!&lt;/button&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<script type="text/javascript">
+							function myFunction() {
+								alert("Hello!");
+								alert("How are you?");
+							}
+						</script>
+					</div>
+				</div>
+
+				<ul>
+					<li>JavaScript functions can be set as <span class="term">event handlers</span>
+						<ul>
+							<li>when you interact with the element, the function will execute</li>
+						</ul>
+					</li>
+					<li><code><a href="http://www.w3schools.com/jsref/jsref_onclick.asp">onclick</a></code> is just one of many event HTML attributes we'll use</li>
+				</ul>
+				
+				<hr />
+				
+				<ul>
+					<li class="incremental">
+						but popping up an <code>alert</code> window is disruptive and annoying
+						<ul>
+							<li>
+								A better user experience would be to have the message appear on the page...
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Document Object Model
+					(<a href="http://www.w3.org/TR/2004/PR-DOM-Level-3-Core-20040205/introduction.html">DOM</a>)
+					<span class="readingsection">(7.1.4)</span>
+				</h1>
+				
+				<p class="description">
+					a set of JavaScript objects that represent each element on the page
+				</p>
+				
+				<div class="rightfigure">
+					<img src="images/dom.png" alt="DOM" style="width: 100%" />
+				</div>
+
+				<ul>
+					<li>most JS code manipulates elements on an HTML page</li>
+					<li>we can examine elements' state
+						<ul>
+							<li>e.g. see whether a box is checked</li>
+						</ul>
+					<li>we can change state
+						<ul>
+							<li>e.g. insert some new text into a <code>div</code></li>
+						</ul>
+					</li>
+					<li>we can change styles
+						<ul>
+							<li>e.g. make a paragraph red</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					DOM element objects
+					<span class="readingsection">(7.2.5)</span>
+				</h1>
+				
+				<div class="figure">
+					<img src="images/figure_5_dom.png" alt="dom object" />
+				</div>
+				
+				<ul>
+					<li>
+						every element on the page has a corresponding DOM object
+					</li>
+					<li>
+						access/modify the attributes of the DOM object with <code><var>objectName</var>.<var>attributeName</var></code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Accessing elements: <code>document.getElementById</code></h1>
+
+				<pre class="syntaxtemplate js">
+var <var>name</var> = document.getElementById(&quot;<var>id</var>&quot;);
+</pre>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;button onclick=&quot;changeText();&quot;&gt;Click me!&lt;/button&gt;
+&lt;span <em>id=&quot;output&quot;</em>&gt;replace me&lt;/span&gt;
+&lt;input <em>id=&quot;textbox&quot;</em> type=&quot;text&quot; /&gt;
+</pre>
+
+					<pre class="examplecode examplecode2 js">
+function changeText() {
+	var span = <em>document.getElementById(&quot;output&quot;)</em>;
+	var textBox = <em>document.getElementById(&quot;textbox&quot;)</em>;
+	<em>textBox.value</em> = span.innerHTML;
+	<em>span.innerHTML</em> = &quot;Hello, how are you?&quot;;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>
+						<code>document.getElementById</code> returns the DOM object for an element with a given <code>id</code>
+					</li>
+					<li>
+						can change the text inside most elements by setting the <code>innerHTML</code> property
+					</li>
+					<li>
+						can change the text in form controls by setting the <code>value</code> property
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

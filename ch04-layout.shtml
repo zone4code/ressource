@@ -1,0 +1,1559 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Chapter 4: Page Layout</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Chapter 4</h1>
+				<h2>Page Layout</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Chapter 4 <br /> Page Layout</h3>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.1: Styling Page Sections</h1>
+				
+				<ul>
+					<li>
+						<strong>4.1: Styling Page Sections</strong>
+					</li>
+					<li>
+						4.2: Introduction to Layout
+					</li>
+					<li>
+						4.3: Floating Elements
+					</li>
+					<li>
+						4.4: Sizing and Positioning
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Motivation for page sections</h1>
+
+				<p class="description" style="float: right; width: 50%; margin-left: 1em">
+					<img src="images/ultimate.png" alt="flow" style="width: 100%" />
+				</p>
+
+				<ul>
+					<li>want to be able to <strong>style individual elements, groups of elements, sections of text</strong> or of the page</li>
+					<li>(later) want to create complex page layouts</li>
+				</ul>
+				
+				<p style="clear: right"></p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Sections of a page:
+					<a href="http://www.w3schools.com/tags/tag_div.asp"><code>&lt;div&gt;</code></a>
+					<span class="readingsection">(4.1.1)</span>
+				</h1>
+
+				<p class="description">
+					a section or division of your HTML page (block)
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;div class=&quot;standout&quot;&gt;</em>
+	&lt;h2&gt;Spatula City!  Spatula City!&lt;/h2&gt;
+	&lt;p class=&quot;special&quot;&gt;See our spectacular spatula specials!&lt;/p&gt;
+	&lt;p&gt;We'll beat any advertised price!&lt;/p&gt;
+<em>&lt;/div&gt;</em>
+</pre>
+
+					<div class="exampleoutput" style="color: red; font-family: cursive; line-height: 1.1em;">
+						<h2 style="font-size: larger;">Spatula City!  Spatula City!</h2>
+						<p style="background-color: yellow; font-weight: bold;">See our spectacular spatula specials!</p>
+						<p>We'll beat any advertised price!</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>a tag used to indicate a logical section or area of a page</li>
+					<li>has no appearance by default, but you can apply styles to it</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Inline sections:
+					<a href="http://www.w3schools.com/tags/tag_span.asp"><code>&lt;span&gt;</code></a>
+					<span class="readingsection">(4.1.2)</span>
+				</h1>
+
+				<p class="description">
+					an inline element used purely as a range for applying styles
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;h2&gt;Spatula City!  Spatula City!&lt;/h2&gt;
+&lt;p&gt;See our <em>&lt;span class=&quot;special&quot;&gt;</em>spectacular<em>&lt;/span&gt;</em> spatula specials!&lt;/p&gt;
+&lt;p&gt;We'll beat <em>&lt;span class=&quot;standout&quot;&gt;</em>any advertised price<em>&lt;/span&gt;</em>!&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput" style="line-height: 1.1em;">
+						<h2 style="font-size: larger;">Spatula City!  Spatula City!</h2>
+						<p>See our <span style="background-color: yellow; font-weight: bold;">spectacular</span> spatula specials!</p>
+						<p>We'll beat <span style="color: red; font-family: cursive;">any advertised price</span>!</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>has no onscreen appearance, but you can apply a style or ID to it, which will be applied to the text inside the <code>span</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					CSS context selectors
+					<span class="readingsection">(4.1.3)</span>
+				</h1>
+
+<pre class="syntaxtemplate css">
+<var>selector1</var> <var>selector2</var> {
+	<var>properties</var>
+}
+</pre>
+
+				<ul>
+					<li>applies the given properties to <var>selector2</var> only if it is inside a <var>selector1</var> on the page</li>
+				</ul>
+
+<pre class="syntaxtemplate css" style="margin-top: 1em">
+<var>selector1</var> <em>&gt;</em> <var>selector2</var> {
+	<var>properties</var>
+}
+</pre>
+
+				<ul>
+					<li>applies the given properties to <var>selector2</var> only if it is <em>directly</em> inside a <var>selector1</var> on the page (<var>selector2</var> tag is immediately inside <var>selector1</var> with no tags in between)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Context selector example</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;p&gt;Shop at <em>&lt;strong&gt;</em>Hardwick's Hardware<em>&lt;/strong&gt;</em>...&lt;/p&gt;
+&lt;ul&gt;
+	<em>&lt;li&gt;</em>The <em>&lt;strong&gt;</em>best<em>&lt;/strong&gt;</em> prices in town!&lt;/li&gt;
+	&lt;li&gt;Act while supplies last!&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+					<pre class="examplecode css">
+<em>li strong</em> { text-decoration: underline; }
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More complex example</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;div id=&quot;ad&quot;&gt;</em>
+	&lt;p&gt;Shop at &lt;strong&gt;Hardwick's Hardware&lt;/strong&gt;...&lt;/p&gt;
+	&lt;ul&gt;
+		<em>&lt;li class=&quot;important&quot;&gt;</em>The <em>&lt;strong&gt;</em>best<em>&lt;/strong&gt;</em>
+		prices in town!&lt;/li&gt;
+		&lt;li&gt;Act &lt;strong&gt;while supplies last!&lt;/strong&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+
+<pre class="examplecode css">
+<em>#ad li.important strong</em> { text-decoration: underline; }
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.2: Introduction to Layout</h1>
+				
+				<ul>
+					<li>
+						4.1: Styling Page Sections
+					</li>
+					<li>
+						<strong>4.2: Introduction to Layout</strong>
+					</li>
+					<li>
+						4.3: Floating Elements
+					</li>
+					<li>
+						4.4: Sizing and Positioning
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The CSS <a href="http://www.w3schools.com/html/default.asp">Box Model</a>
+					<span class="readingsection">(4.2.1)</span>
+				</h1>
+
+				<div class="rightfigure">
+					<img src="images/box_model.png" alt="box model" />
+				</div>
+
+				<ul>
+					<li>for layout purposes, every element is composed of:
+						<ul>
+							<li>the actual element's <span class="term">content</span></li>
+							<li>a <span class="term">border</span> around the element</li>
+							<li><span class="term">padding</span> between the content and the border (<em>inside</em>)</li>
+							<li>a <span class="term">margin</span> between the border and other content (<em>outside</em>)</li>
+						</ul>
+					</li>
+					<li>
+						width = content width + L/R padding + L/R border + L/R margin<br />
+						height = content height + T/B padding + T/B border + T/B margin
+						<ul>
+							<li><a href="http://en.wikipedia.org/wiki/Internet_Explorer_box_model_bug">IE6 doesn't do this right</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Document flow - block elements</h1>
+
+				<p class="description"><img src="images/layout1.png" alt="flow" /></p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Document flow - inline elements</h1>
+
+				<p class="description"><img src="images/layout2.png" alt="flow" /></p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Document flow - a larger example</h1>
+
+				<p class="description"><img src="images/layout3.png" alt="flow" /></p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>CSS properties for borders</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+h2 { <em>border: 5px solid red;</em> }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<h2>This is a heading.</h2>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_border.asp">border</a></code>
+						</td>
+						<td>
+							thickness/style/size of border on all 4 sides
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+				<li><span class="term">thickness</span> (specified in <code>px</code>, <code>pt</code>, <code>em</code>, or <code style="border: thin solid black;">thin</code>, <code style="border: medium solid black;">medium</code>, <code style="border: thick solid black;">thick</code>)</li>
+				<li style="line-height: 1.5em">
+					<span class="term">style</span>
+					(<code style="border: 5px none black;">none</code>, 
+					<code style="border: 5px hidden black;">hidden</code>, 
+					<code style="border: 5px dotted black;">dotted</code>, 
+					<code style="border: 5px dashed black;">dashed</code>, 
+					<code style="border: 5px double black;">double</code>, 
+					<code style="border: 5px groove black;">groove</code>, 
+					<code style="border: 5px inset black;">inset</code>, 
+					<code style="border: 5px outset black;">outset</code>,
+					<code style="border: 5px ridge black;">ridge</code>, 
+					<code style="border: 5px solid black;">solid</code>)
+				</li>
+				<li><span class="term">color</span> (specified as seen previously for text and background colors)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More border properties</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_border-color.asp">border-color</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-width.asp">border-width</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_border-style.asp">border-style</a></code>
+						</td>
+						<td>
+							specific properties of border on all 4 sides
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_border-bottom.asp">border-bottom</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-left.asp">border-left</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_border-right.asp">border-right</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-top.asp">border-top</a></code>
+						</td>
+						<td>
+							all properties of border on a particular side
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="font-size: smaller;">
+							<code><a href="http://www.w3schools.com/css/pr_border-bottom-color.asp">border-bottom-color</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-bottom-style.asp">border-bottom-style</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_border-bottom-width.asp">border-bottom-width</a></code>,
+
+							<code><a href="http://www.w3schools.com/css/pr_border-left-color.asp">border-left-color</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_border-left-style.asp">border-left-style</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-left-width.asp">border-left-width</a></code>, <br />
+
+							<code><a href="http://www.w3schools.com/css/pr_border-right-color.asp">border-right-color</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-right-style.asp">border-right-style</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_border-right-width.asp">border-right-width</a></code>, 
+
+							<code><a href="http://www.w3schools.com/css/pr_border-top-color.asp">border-top-color</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_border-top-style.asp">border-top-style</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_border-top-width.asp">border-top-width</a></code>
+						</td>
+						<td>
+							properties of border on a particular side
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="completelist" colspan="2">
+							<a href="http://www.w3schools.com/css/css_reference.asp#border">Complete list of border properties</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Border example 2</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+h2 {
+	<em>border-left: thick dotted #CC0088;</em>
+	<em>border-bottom-color: rgb(0, 128, 128);</em>
+	<em>border-bottom-style: double;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<h2>This is a heading.</h2>
+					</div>
+				</div>
+
+				<ul>
+					<li>each side's border properties can be set individually</li>
+					<li>if you omit some properties, they receive default values (e.g. <code>border-bottom-width</code> above)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>CSS properties for padding</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_padding.asp">padding</a></code>
+						</td>
+						<td>
+							padding on all 4 sides
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_padding-bottom.asp">padding-bottom</a></code>
+						</td>
+						<td>
+							padding on bottom side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_padding-left.asp">padding-left</a></code>
+						</td>
+						<td>
+							padding on left side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_padding-right.asp">padding-right</a></code>
+						</td>
+						<td>
+							padding on right side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_padding-top.asp">padding-top</a></code>
+						</td>
+						<td>
+							padding on top side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" class="completelist">
+							<a href="http://www.w3schools.com/css/css_reference.asp#padding">Complete list of padding properties</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Padding example 1</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p { <em>padding: 20px;</em> border: 3px solid black; }
+h2 { <em>padding: 0px;</em> background-color: yellow; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This is the first paragraph</p>
+						<p>This is the second paragraph</p>
+						<h2>This is a heading</h2>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Padding example 2</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>padding-left: 200px; padding-top: 30px;</em>
+	background-color: fuchsia;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This is the first paragraph</p>
+						<p>This is the second paragraph</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>each side's padding can be set individually</li>
+					<li>notice that padding shares the background color of the element</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>CSS properties for margins</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_margin.asp">margin</a></code>
+						</td>
+						<td>
+							margin on all 4 sides
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_margin-bottom.asp">margin-bottom</a></code>
+						</td>
+						<td>
+							margin on bottom side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_margin-left.asp">margin-left</a></code>
+						</td>
+						<td>
+							margin on left side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_margin-right.asp">margin-right</a></code>
+						</td>
+						<td>
+							margin on right side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_margin-top.asp">margin-top</a></code>
+						</td>
+						<td>
+							margin on top side only
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" class="completelist">
+							<a href="http://www.w3schools.com/css/css_reference.asp#margin">Complete list of margin properties</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Margin example 1</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>margin: 50px;</em>
+	background-color: fuchsia;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This is the first paragraph</p>
+						<p>This is the second paragraph</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>notice that margins are always transparent<br />(they don't contain the element's background color, etc.)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Margin example 2</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>margin-left: 8em;</em>
+	background-color: fuchsia;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This is the first paragraph</p>
+						<p>This is the second paragraph</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>each side's margin can be set individually</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Firefox <a href="https://addons.mozilla.org/firefox/1843/">Firebug</a> add-on
+					<span class="readingsection">(4.2.2)</span>
+				</h1>
+
+				<p>
+					<img style="vertical-align: middle; margin-right: 25px;" src="images/firebug1.png" alt="Firebug" /> 
+					<img style="vertical-align: middle; margin-right: 25px;" src="images/firebug2.png" alt="Firebug" />
+					<img style="vertical-align: middle;" src="images/firebug3.png" alt="Firebug" />
+				</p>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.3: Floating Elements</h1>
+				
+				<ul>
+					<li>
+						4.1: Styling Page Sections
+					</li>
+					<li>
+						4.2: Introduction to Layout
+					</li>
+					<li>
+						<strong>4.3: Floating Elements</strong>
+					</li>
+					<li>
+						4.4: Sizing and Positioning
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					CSS properties for <a href="http://www.w3schools.com/css/css_reference.asp#dimension">dimensions</a>					<span class="readingsection">(4.3, 4.4.1)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p { <em>width: 350px;</em> background-color: yellow; }
+h2 { <em>width: 50%;</em> background-color: aqua; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the first style above.</p>
+						<h2>An h2 heading</h2>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_dim_width.asp">width</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_dim_height.asp">height</a></code>
+						</td>
+						<td>
+							how wide or tall to make this element <br /> (block elements only)
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_dim_max-width.asp">max-width</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_dim_max-height.asp">max-height</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_dim_min-width.asp">min-width</a></code>, 
+							<code><a href="http://www.w3schools.com/css/pr_dim_min-height.asp">min-height</a></code>
+						</td>
+						<td>
+							max/min size of this element in given dimension
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Centering a block element: <code>auto</code> margins</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>margin-left: auto;</em>
+	<em>margin-right: auto;</em>
+	width: 750px;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>
+							<a href="http://en.wikipedia.org/wiki/Lorem_ipsum" style="text-decoration: none">Lorem ipsum</a> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>
+						works best if <code>width</code> is set (otherwise, may occupy entire width of page)
+					</li>
+					<li>
+						to center inline elements within a block element, use <code>text-align: center;</code>
+					</li>
+				</ul>
+			</div>
+
+
+			
+			<!--
+			<div class="slide">
+				<h1>Top/bottom margin collapse</h1>
+
+				<p class="description" style="float: right"><img src="images/margincollapse1.png" alt="margin collapse" /><br />
+				<img src="images/margincollapse2.png" alt="margin collapse" /></p>
+
+				<ul>
+					<li>when two block elements appear on top of each other, their margins are collapsed</li>
+					<li>their shared margin is the larger of the two individual margins</li>
+				</ul>
+			</div>
+			-->
+			
+			
+			
+			<div class="slide">
+				<h1>
+					The CSS <code><a href="http://www.w3schools.com/css/pr_class_float.asp">float</a></code> property
+					(<a href="http://www.w3.org/TR/REC-CSS2/visuren.html#floats">reference</a>)
+					<span class="readingsection">(4.3.1)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+img.headericon {
+	<em>float: right;</em>    width: 130px;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<img src="images/borat.jpg" alt="Borat" class="headericon" />
+						<a href="http://en.wikipedia.org/wiki/Borat">Borat</a> Sagdiyev (born July 30, 1972) is a fictional Kazakhstani journalist played by British-Jewish comedian Sacha Baron Cohen. He is the main character portrayed in the controversial and successful film Borat: Cultural Learnings of America for Make Benefit Glorious ...
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>float</code>
+						</td>
+						<td>
+							side to hover on; can be <code>left</code>, <code>right</code>, or <code>none</code> (default)
+						</td>
+					</tr>
+				</table>
+					
+				<ul>
+					<li>removed from normal document flow; underlying text wraps around as necessary</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Floating elements diagram</h1>
+
+				<p class="description"><img src="images/float.png" alt="float" /></p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common <code>float</code> bug: missing width</h1>
+
+				<p style="background-color: teal;">I am not floating, no width</p>
+				<p style="float: right; background-color: red;">I am floating right, no width</p>
+
+				<p style="clear: both; float: left; background-color: teal; width: 45%">I am not floating, 45% width</p>
+				<p style="float: right; background-color: red; width: 45%">I am floating right, 45% width</p>
+
+				<ul style="clear: both;">
+					<li>often floating block elements must have a <code>width</code> property value
+						<ul>
+							<li>if no <code>width</code> is specified, the floating element may occupy 100% of the page width, so no content can wrap around it</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code><a href="http://www.w3schools.com/css/pr_class_clear.asp">clear</a></code> property
+					<span class="readingsection">(4.3.2)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p { background-color: fuchsia; }
+h2 { <em>clear: right;</em> background-color: yellow; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p style="background-color: fuchsia"><img src="images/homestar_runner.png" alt="homestar runner" style="float: right" />Homestar Runner is a Flash animated Internet cartoon. It mixes surreal humour with references to 1980s and 1990s pop culture, notably video games, classic television and popular music.</p>
+
+						<h2 style="clear: right; background-color: yellow">My Homestar Runner Fan Site</h2>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>clear</code>
+						</td>
+						<td>
+							disallows floating elements from overlapping this element; <br />
+							can be <code>left</code>, <code>right</code>, or <code>none</code> (default)
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Clear diagram</h1>
+
+<pre class="examplecode css">
+div#sidebar { float: right; }
+p { <em>clear: right;</em> }
+</pre>
+
+				<p class="description">
+					<img src="images/clear.png" alt="float clear" />
+				</p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Common error: container too short (4.3.3)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;&lt;img src=&quot;images/homestar_runner.png&quot; alt=&quot;homestar runner&quot; /&gt;
+	Homestar Runner is a Flash animated Internet cartoon.
+	It mixes surreal humour with ....&lt;/p&gt;
+</pre>
+
+<pre class="examplecode examplecode2 css">
+p { border: 2px dashed black; }
+img { float: right; }
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>
+						We want the <code>p</code> containing the image to extend downward so that its border encloses the entire image
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code><a href="http://www.quirksmode.org/css/clearing.html">overflow</a></code> property
+					<span class="readingsection">(4.3.3)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p { border: 2px dashed black;
+    <em>overflow: hidden;</em> }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>
+							<img src="images/homestar_runner.png" alt="homestar runner" style="float: right" />
+							Homestar Runner is a Flash animated Internet cartoon. It mixes surreal humour with ....
+						</p>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>overflow</code>
+						</td>
+						<td>
+							specifies what to do if an element's content is too large; <br />
+							can be <code>auto</code>, <code>visible</code>, <code>hidden</code>, or <code>scroll</code>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Multi-column layouts
+					<span class="readingsection">(4.3.4)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;div&gt;
+	&lt;p&gt;first paragraph&lt;/p&gt;
+	&lt;p&gt;second paragraph&lt;/p&gt;
+	&lt;p&gt;third paragraph&lt;/p&gt;
+	Some other text that is important
+&lt;/div&gt;
+</pre>
+
+<pre class="examplecode css">
+p { float: right; width: 20%; margin: 0.5em; 
+    border: 2px solid black; }
+div { border: 3px dotted green; overflow: hidden; }
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.4: Sizing and Positioning</h1>
+				
+				<ul>
+					<li>
+						4.1: Styling Page Sections
+					</li>
+					<li>
+						4.2: Introduction to Layout
+					</li>
+					<li>
+						4.3: Floating Elements
+					</li>
+					<li>
+						<strong>4.4: Sizing and Positioning</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <a href="http://www.w3schools.com/css/pr_class_position.asp"><code>position</code></a> property
+					(<a href="http://www.w3schools.com/css/css_positioning.asp">examples</a>)
+					<span class="readingsection">(4.4.2)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+div#ad {
+	<em>position: fixed;</em>
+	right: 10%;
+	top: 45%;
+}
+</pre>
+				
+					<div class="exampleoutput insertoutput">
+						<div id="ad">Here I am!</div>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							value
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td rowspan="5">
+							<code>position</code>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>static</code>
+						</td>
+						<td>
+							default position
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>relative</code>
+						</td>
+						<td>
+							offset from its normal static position
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>absolute</code>
+						</td>
+						<td>
+							a fixed position <em>within its containing element</em>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>fixed</code>
+						</td>
+						<td>
+							a fixed position <em>within the browser window
+						</td>
+					</tr>
+				
+					<tr>
+						<td>
+							<a href="http://www.w3schools.com/css/pr_pos_top.asp"><code>top</code></a>,
+							<a href="http://www.w3schools.com/css/pr_pos_bottom.asp"><code>bottom</code></a>, <br />
+							<a href="http://www.w3schools.com/css/pr_pos_left.asp"><code>left</code></a>,
+							<a href="http://www.w3schools.com/css/pr_pos_right.asp"><code>right</code></a>
+						</td>
+						<td colspan="2">
+							positions of box's corners
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Absolute positioning</h1>
+
+<pre class="examplecode css">
+#sidebar {
+	<em>position: absolute;</em>
+	left: 400px;
+	top: 50px;
+}
+</pre>
+
+				<div class="rightfigure">
+					<img src="images/absoluteposition.png" alt="absolute positioning" style="width: 100%;" />
+				</div>
+
+				<ul>
+					<li>removed from normal flow (like floating ones)</li>
+					<li>positioned relative to the block element containing them (assuming that block also uses <code>absolute</code> or <code>relative</code> positioning)</li>
+					<li>actual position determined by <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code> values</li>
+					<li>should often specify a <code>width</code> property as well</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Relative positioning</h1>
+				
+<pre class="examplecode css">
+#area2 { <em>position: relative;</em> }
+</pre>
+
+				<div class="rightfigure">
+					<img src="images/relativeposition.png" alt="absolute positioning" style="width: 100%;" />
+				</div>
+
+				<ul>
+					<li>absolute-positioned elements are normally positioned at an offset from the corner of the overall web page</li>
+					<li>to instead cause the absolute element to position itself relative to some other element's corner, wrap the <code>absolute</code> element in an element whose <code>position</code> is <code>relative</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Fixed positioning</h1>
+
+				<div class="rightfigure">
+					<img src="images/fixedposition.png" alt="fixed positioning" style="width: 100%;" />
+				</div>
+
+				<ul>
+					<li>removed from normal flow (like floating ones)</li>
+					<li>positioned relative to the browser window
+						<ul>
+							<li>
+								even when the user scrolls the window, element will remain in the same place
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!--
+			<div class="slide">
+				<h1>Negative corners</h1>
+
+				<div class="rightfigure"><img src="images/fixed2.png" alt="fixed positioning" style="width: 100%;" /></div>
+
+				<ul>
+					<li><code>left</code>, <code>right</code>, <code>top</code>, or <code>bottom</code> value can be negative to create an element that sits outside the visible browser window</li>
+				</ul>
+			</div>
+			-->
+			
+
+
+			<!-- more about inline vs. block boxes 
+			anonymous block boxes?  <div>i'm anonymous<p>i'm a second box</p>i'm anonymous</div>
+
+			anonymous inline boxes?  <p>i'm anonymous <em>not me</em>i'm anonymous</p>
+
+
+			The vertical alignment of inline boxes within a line box is a topic that would probably fill an entire series of articles on its own. Without going into too much detail, we would like to illuminate one case which we know tends to cause lots of consternation in those who are new to the world of CSS.
+
+
+			It has to do with table cells which only contain an image. Those 
+			used to be much more common, of course, back when it was commonplace to use layout tables and <img> elements for things that we now prefer to do with CSS and background images.
+
+			<td><img src="x.gif" alt="..."></td>
+
+			If we use a strict document type and declare it in a way that puts the browser in standards-compliance mode, we will get a gap below the image. Why? Because the default value for the vertical-align property is baseline.
+
+			A line box is created in the cell, and this line box contains a single inline box: the image. This inline box is vertically aligned to the coordinate where the baseline would have been, had we had text in the cell. The baseline is typically some distance above the bottom edge of the line box, to make room for the descenders of certain lowercase letters (such as g or p). The bottom edge of the image box thus touches this baseline, and the gap we see is the distance between the baseline and the bottom edge of the line box.
+
+			There are several ways to solve this problem:
+
+				 1.   Set vertical-align: bottom on the <img>
+									element.
+				 2.   Set display: block on the <img>
+									element.
+				 3.   Set line-height: 0 for the cell.
+			-->
+
+
+
+			<div class="slide">
+				<h1>Alignment vs. float vs. position</h1>
+
+				<ol>
+					<li>if possible, lay out an element by <em>aligning</em> its content
+						<ul>
+							<li>horizontal alignment: <code>text-align</code>
+								<ul>
+									<li>set this on a block element; it aligns the content within it (not the block element itself)</li>
+								</ul>
+							</li>
+							<li>vertical alignment: <code>vertical-align</code>
+								<ul>
+									<li>set this on an inline element, and it aligns it vertically within its containing element</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>if alignment won't work, try <em>floating</em> the element</li>
+					<li>if floating won't work, try <em>positioning</em> the element
+						<ul>
+							<li>absolute/fixed positioning are a last resort and should not be overused</li>
+						</ul>
+					</li>
+				</ol>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Details about inline boxes</h1>
+
+				<ul>
+					<li>size properties (<code>width</code>, <code>height</code>, <code>min-width</code>, etc.) are ignored for inline boxes</li>
+					<li><code>margin-top</code> and <code>margin-bottom</code> are ignored, but <code>margin-left</code> and <code>margin-right</code> are not</li>
+					<li>the containing block box's <code>text-align</code> property controls horizontal position of inline boxes within it
+						<ul>
+							<li>text-align does not align block boxes within the page</li>
+						</ul>
+					</li>
+					<li>each inline box's <code>vertical-align</code> property aligns it vertically within its block box
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/css/pr_pos_vertical-align.asp"><code>vertical-align</code></a> property</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>vertical-align</code>
+						</td>
+						<td>
+							specifies where an inline element should be aligned vertically, with respect to other content on the same line within its block element's box
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li><img src="images/baseline.jpg" alt="baseline" style="float: right; margin-left: 40px;" />can be <code>top</code>, <code>middle</code>, <code>bottom</code>, <code>baseline</code> (default), <code>sub</code>, <code>super</code>, <code>text-top</code>, <code>text-bottom</code>, or a length value or <code>%</code>
+						<ul>
+							<li><code>baseline</code> means aligned with bottom of non-hanging letters</li>
+						</ul>
+					</li>
+
+<!--
+				<li>in DOM:<br />
+					<code class="smallcode"><span class="syntaxtemplate">object</span>.style.verticalAlign = "<span class="syntaxtemplate">value</span>";</code></li>
+-->
+
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>vertical-align</code> example</h1>
+
+				<div class="example">
+<pre class="examplecode html" style="font-size: smaller">
+&lt;p style=&quot;background-color: yellow;&quot;&gt;
+&lt;span style=&quot;<em>vertical-align: top;</em> border: 1px solid red;&quot;&gt;
+Don't be sad!  Turn that frown 
+&lt;img src=&quot;images/sad.jpg&quot; alt=&quot;sad&quot; /&gt; upside down!
+&lt;img style=&quot;<em>vertical-align: bottom</em>&quot; src=&quot;images/smiley.jpg&quot; alt=&quot;smile&quot; /&gt; 
+Smiling burns calories, you know.  
+&lt;img style=&quot;<em>vertical-align: middle</em>&quot; src=&quot;images/puppy.jpg&quot; alt=&quot;puppy&quot; /&gt; 
+Anyway, look at this cute puppy; isn't he adorable!  So cheer up,
+and have a nice day.  The End.
+&lt;/span&gt;&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common bug: space under image</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p style=&quot;background-color: red; padding: 0px; margin: 0px&quot;&gt;
+&lt;img src=&quot;images/smiley.png&quot; alt=&quot;smile&quot; /&gt;
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>red space under the image, despite <code>padding</code> and <code>margin</code> of 0</li>
+					<li>this is because the image is vertically aligned to the baseline of the paragraph (not the same as the bottom)</li>
+					<li>setting <code>vertical-align</code> to <code>bottom</code> fixes the problem (so does setting <code>line-height</code> to <code>0px</code>)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <a href="http://www.w3schools.com/css/pr_pos_z-index.asp"><code>z-index</code></a> property
+					<span class="readingsection">(4.4.3)</span>
+				</h1>
+
+				<!--
+				<div class="rightfigure"><img src="images/z-index.png" alt="z-index" style="width: 100%;" /></div>
+				-->
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>z-index</code>
+						</td>
+						<td>
+							sets which absolute positioned element will appear on top of another that occupies the same space
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>higher <code>z-index</code> elements appears on top of lower ones</li>
+					<li>can be <code>auto</code> (default) or a number</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					The <a href="http://www.w3schools.com/css/pr_class_display.asp"><code>display</code></a> property
+					<span class="readingsection">(4.4.4)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+h2 { <em>display: inline;</em> background-color: yellow; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<h2>This is a heading</h2>
+						<h2>This is another heading</h2>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>display</code>
+						</td>
+						<td>
+							sets the type of CSS box model an element is displayed with
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>values: <code>none</code>, <code>inline</code>, <code>block</code>, <code>run-in</code>, <code>compact</code>, ...</li>
+					<li>use sparingly, because it can radically alter the page layout</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Displaying block elements as inline</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;ul id=&quot;topmenu&quot;&gt;
+	&lt;li&gt;Item 1&lt;/li&gt;
+	&lt;li&gt;Item 2&lt;/li&gt;
+	&lt;li&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+<pre class="examplecode css">
+#topmenu li {
+	<em>display: inline;</em>
+	border: 2px solid gray;
+	margin-right: 1em;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>lists and other block elements can be displayed inline
+						<ul>
+							<li>flow left-to-right on same line</li>
+							<li>width is determined by content (block elements are 100% of page width)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!-- absolute pos and 100% body size -->
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/css/pr_class_visibility.asp"><code>visibility</code></a> property</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p.secret {
+	<em>visibility: hidden;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p class="secret">
+							Since nobody can see this anyway: ca-ca poo-poo pee-pee!!!
+						</p>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>visibility</code>
+						</td>
+						<td>
+							sets whether an element should be shown onscreen; <br />
+							can be <code>visible</code> (default) or <code>hidden</code>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						<code>hidden</code> elements will still take up space onscreen, but will not be shown
+						<ul>
+							<li>to make it not take up any space, set <code>display</code> to <code>none</code> instead</li>
+						</ul>
+					</li>
+					<li>can be used to show/hide dynamic HTML content on the page in response to events</li>
+				</ul>
+			</div>			
+
+<!--#include virtual="commonbottom.html" -->

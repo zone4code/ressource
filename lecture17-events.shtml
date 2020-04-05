@@ -1,0 +1,575 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 17: Events</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 17</h1>
+				<h2>Events</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 17 <br /> Events</h3>
+				<h4>Reading: 9.1 - 9.2</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide titleslide">
+				<h1>9.2: Event-Handling</h1>
+				
+				<ul>
+					<li>
+						9.1: The Prototype JavaScript Library
+					</li>
+					<li>
+						<strong>9.2: Event-Handling</strong>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					The keyword <code>this</code>
+					<span class="readingsection">(8.1.3)</span>
+				</h1>
+				
+<pre class="syntaxtemplate js">
+this.<var>fieldName</var>                  <span class="comment">// access field</span>
+this.<var>fieldName</var> = <var>value</var>;          <span class="comment">// modify field</span>
+
+this.<var>methodName</var>(<var>parameters</var>);    <span class="comment">// call method</span>
+</pre>
+
+				<ul>
+					<li>
+						all JavaScript code actually runs inside of an object
+					</li>
+					<li>
+						by default, code runs inside the global <code>window</code> object
+						
+						<ul>
+							<li>
+								all global variables and functions you declare become part of <code>window</code>
+							</li>
+						</ul>
+					</li>
+					<li>
+						the <code>this</code> keyword refers to the current object
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Event handler binding
+				</h1>
+				
+				<div class="example">
+					<pre class="examplecode js">
+function pageLoad() {
+	<em>$(&quot;ok&quot;).onclick = okayClick;</em>   <span class="comment">// bound to okButton here</span>
+}
+
+function okayClick() {           <span class="comment">// okayClick knows what DOM object</span>
+	<em>this</em>.innerHTML = &quot;booyah&quot;;     <span class="comment">// it was called on</span>
+}
+
+window.onload = pageLoad;
+</pre>
+					
+					<div class="exampleoutput">
+						<button id="ok" onclick="this.innerHTML = 'booyah';">OK</button>
+					</div>
+				</div>
+
+				<ul>
+					<li>event handlers attached unobtrusively are <span class="term">bound</span> to the element</li>
+					<li>inside the handler, that element becomes <code>this</code> (rather than the <code>window</code>)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Fixing redundant code with <code>this</code></h1>
+				
+<pre class="examplecode html">
+&lt;fieldset&gt;
+	&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;ducks&quot; <em>value=&quot;Huey&quot;</em>  /&gt; Huey&lt;/label&gt;
+	&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;ducks&quot; <em>value=&quot;Dewey&quot;</em> /&gt; Dewey&lt;/label&gt;
+	&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;ducks&quot; <em>value=&quot;Louie&quot;</em> /&gt; Louie&lt;/label&gt;
+&lt;/fieldset&gt;
+</pre>
+
+<pre class="examplecode js">
+function processDucks() {
+<del class="bad">	if ($(&quot;huey&quot;).checked) {
+		alert(&quot;Huey is checked!&quot;);
+	} else if ($(&quot;dewey&quot;).checked) {
+		alert(&quot;Dewey is checked!&quot;);
+	} else {
+		alert(&quot;Louie is checked!&quot;);
+	}</del>
+	<span class="errorfixed">alert(<em>this.value + </em>&quot; is checked!&quot;);</span>
+}
+</pre>
+
+				<ul>
+					<li>if the same function is assigned to multiple elements, each gets its own bound copy</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>More about events</h1>
+				
+				<table class="standard">
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onabort.asp">abort</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onblur.asp">blur</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onchange.asp">change</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onclick.asp">click</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_ondblclick.asp">dblclick</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onerror.asp">error</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onfocus.asp">focus</a></code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeydown.asp">keydown</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeypress.asp">keypress</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeyup.asp">keyup</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onload.asp">load</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousedown.asp">mousedown</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousemove.asp">mousemove</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseout.asp">mouseout</a></code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseover.asp">mouseover</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseup.asp">mouseup</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onreset.asp">reset</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onresize.asp">resize</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onselect.asp">select</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onsubmit.asp">submit</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onunload.asp">unload</a></code>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						the <code>click</code> event (<code>onclick</code>) is just one of many events that can be handled
+					</li>
+					<li>
+						<strong>problem</strong>: events are tricky and have <a href="http://www.quirksmode.org/js/introevents.html">incompatibilities</a> across browsers
+						<ul>
+							<li>
+								reasons: fuzzy W3C event specs; IE disobeying web standards; etc.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<strong>solution</strong>: Prototype includes many event-related features and fixes
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Attaching event handlers the Prototype way</h1>
+				
+				<pre class="syntaxtemplate js">
+<del><var>element</var>.on<var>event</var> = <var>function</var></del>;
+<var>element</var>.observe(&quot;<var>event</var>&quot;, &quot;<var>function</var>&quot;);
+</pre>
+
+				<pre class="examplecode js">
+<span class="comment">// call the playNewGame function when the Play button is clicked</span>
+$(&quot;play&quot;).observe(&quot;click&quot;, playNewGame);
+</pre>
+
+				<ul>
+					<li>
+						to use Prototype's event features, you must attach the handler using the DOM element object's <code>observe</code> method (added by Prototype)
+					</li>
+					<li>
+						pass the event of interest and the function to use as the handler
+					</li>
+					<li>
+						handlers <em>must</em> be attached this way for Prototype's event features to work
+					</li>
+				</ul>
+				
+				<ul class="aside" style="margin-top: 2em">
+					<li>
+						<code>observe</code> substitutes for <a href="http://www.quirksmode.org/js/events_advanced.html"><code>addEventListener</code></a> (not supported by IE)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Attaching multiple event handlers with <code>$$</code></h1>
+
+<pre class="examplecode js">
+<span class="comment">// listen to clicks on all buttons with class &quot;control&quot; that
+// are directly inside the section with ID &quot;game&quot;</span>
+window.onload = function() {
+	var gameButtons = <em>$$(&quot;#game > button.control&quot;)</em>;
+	for (var i = 0; i &lt; gameButtons.length; i++) {
+		<em>gameButtons[i].observe(&quot;click&quot;, gameButtonClick);</em>
+	}
+};
+
+function gameButtonClick() { ... }
+</pre>
+
+				<ul>
+					<li>you can use <code>$$</code> and other DOM walking methods to unobtrusively attach event handlers to a group of related elements in your <code>window.onload</code> code</li>
+				</ul>
+
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>The <code>Event</code> object</h1>
+
+				<pre class="syntaxtemplate js">
+function <var>name</var>(<em>event</em>) {
+	<span class="comment">// an event handler function ...</span>
+}
+</pre>
+
+				<ul>
+					<li>
+						Event handlers can accept an optional parameter to represent the event that is occurring.  Event objects have the following properties / methods:
+					</li>
+				</ul>
+				
+				<table class="standard">
+					<tr>
+						<th>
+							method / property name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>type</code>
+						</td>
+						<td>
+							what kind of event, such as <code>&quot;click&quot;</code> or <code>&quot;mousedown&quot;</code>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/element"><code>element()</code></a> *
+						</td>
+						<td>
+							the element on which the event occurred
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/stop"><code>stop()</code></a> **
+						</td>
+						<td>
+							cancels an event
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/stopObserving"><code>stopObserving()</code></a>
+						</td>
+						<td>
+							removes an event handler
+						</td>
+					</tr>
+				</table>
+				
+				<ul class="aside" style="list-style-type: none">
+					<li>
+						* &nbsp; replaces non-standard <code>srcElement</code> and <code>which</code> properties
+					</li>
+					<li>
+						** replaces non-standard <code>return false;</code>, <code>stopPropagation</code>, etc.
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Mouse events
+					<span class="readingsection">(9.2.2)</span>
+				</h1>
+
+				<table class="standard">
+					<caption>clicking</caption>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onclick.asp">click</a></code>
+						</td>
+						<td>
+							user presses/releases mouse button on this element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_ondblclick.asp">dblclick</a></code>
+						</td>
+						<td>
+							user presses/releases mouse button twice on this element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousedown.asp">mousedown</a></code>
+						</td>
+						<td>
+							user presses down mouse button on this element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseup.asp">mouseup</a></code>
+						</td>
+						<td>
+							user releases mouse button on this element
+						</td>
+					</tr>
+				</table>
+
+				<table class="standard">
+					<caption>movement</caption>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseover.asp">mouseover</a></code>
+						</td>
+						<td>
+							mouse cursor enters this element's box
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseout.asp">mouseout</a></code>
+						</td>
+						<td>
+							mouse cursor exits this element's box
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousemove.asp">mousemove</a></code>
+						</td>
+						<td>
+							mouse cursor moves around within this element's box
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Mouse event objects</h1>
+				
+				<p>
+					The <code>event</code> parameter passed to a mouse event handler has the following properties:
+				</p>
+				
+				<div class="rightfigure" style="width: 30%">
+					<img src="images/figure_2_mouse_events.png" alt="mouse event" style="width: 100%" />
+				</div>
+				
+				
+				<table class="standard">
+					<tr>
+						<th>
+							property/method
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>clientX</code>, <code>clientY</code>
+						</td>
+						<td>
+							coordinates in <em>browser window</em>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>screenX</code>, <code>screenY</code>
+						</td>
+						<td>
+							coordinates in <em>screen</em>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>offsetX</code>, <code>offsetY</code>
+						</td>
+						<td>
+							coordinates in <em>element</em>
+						</td>
+					</tr>
+					
+					<!--
+					<tr>
+						<td>
+							<code>pageX</code>, <code>pageY</code>
+						</td>
+						<td>
+							coordinates in <em>entire web page</em>
+						</td>
+					</tr>
+					-->
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/pointerX"><code>pointerX()</code></a>, <br />
+							<a href="http://prototypejs.org/api/event/pointerY"><code>pointerY()</code></a> *
+						</td>
+						<td>
+							coordinates in <em>entire web page</em>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/isLeftClick"><code>isLeftClick()</code></a> **
+						</td>
+						<td>
+							<code>true</code> if left button was pressed
+						</td>
+					</tr>
+				</table>
+				
+				<ul class="aside" style="list-style-type: none">
+					<li>
+						* &nbsp; replaces non-standard properties <code>pageX</code> and <code>pageY</code>
+					</li>
+					<li>
+						** replaces non-standard properties <code>button</code> and <code>which</code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Mouse event example</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;pre id=&quot;target&quot;&gt;Move the mouse over me!&lt;/pre&gt;
+</pre>
+
+					<pre class="examplecode js">
+window.onload = function() {
+	$(&quot;target&quot;).observe(&quot;mousemove&quot;, showCoords);
+};
+
+function showCoords(<em>event</em>) {
+	this.innerHTML = 
+		  &quot;pointer: (&quot; + <em>event.pointerX()</em> + &quot;, &quot; + <em>event.pointerY()</em> + &quot;)\n&quot;
+		+ &quot;screen : (&quot; + <em>event.screenX</em> + &quot;, &quot; + <em>event.screenY</em> + &quot;)\n&quot;
+		+ &quot;client : (&quot; + <em>event.clientX</em> + &quot;, &quot; + <em>event.clientY</em> + &quot;)&quot;;
+}
+</pre>
+
+					<div class="exampleoutput">
+						<pre onmousemove="this.innerHTML = 'pointer: (' + event.pageX + ', ' + event.pageY + ')\n' + 'screen : (' + event.screenX + ', ' + event.screenY + ')\n' + 'client : (' + event.clientX + ', ' + event.clientY + ')';">
+Move the mouse over me!</pre>
+					</div>
+				</div>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

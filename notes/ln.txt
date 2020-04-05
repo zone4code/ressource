@@ -1,0 +1,54 @@
+notes for Helene
+---
+
+good
+	calm, not nervous
+	friendly, good demeanor
+	spoke loudly / clearly / appropriate pace
+
+	didn't go through any material too fast (except few small places)
+	technical correctness, didn't seem like a rookie
+
+	very good demonstration of error with "int i", error console to see/fix it
+
+	good tie-in to previous material (link tag, mime type, etc.)
+
+	practice problems were staged, not everything at once
+	
+	practice problem with my pics was funny (they had not seen those yet!)
+
+
+improve
+	didn't introduce self
+		who are you?
+		why are you teaching today?
+
+	consider "fessing up" about lack of JS experience (builds trust)
+
+	read some slides to class (partly because I wrote those)
+	went a bit too slow in some parts (if, loops, etc.)
+	went a bit too fast in others (events/onclick slide)
+
+	when walking through code, tendency to ask too "small" of questions:
+		"how do we randomly choose between two things?"
+		rather than
+		"what kind of statement should we use?"
+
+		didn't finish date example partly because of this
+
+	slide 13, strings: mentioned that length is a property,
+		but didn't explain the consequences / meaning of this
+
+	slide 19, Math class: assumed familiarity with Math.random
+		when these students are likely more familiar with Random.nextInt()
+		(e.g. confusing 0--1 range, scale up, etc.)
+			
+	slide 25: popup boxes, would be good to do one in the error console 
+		to show how it works
+
+	slide 26, Date: didn't mention 0-based month
+		(would have been confusing if you'd gotten to Date stuff on
+		2nd practice problem)
+
+	probably should have just started 2nd practice problem in link 
+		mode rather than inline script (not a big deal)

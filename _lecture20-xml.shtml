@@ -1,0 +1,664 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 20: XML</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 20</h1>
+				<h2>XML</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 20 <br /> XML</h3>
+				<h4>Reading: 10.3 - 10.4</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+<!--
+Bad way to store text data
+	just a bunch of lines
+	with key=value pairings
+	show .ini file from old Windows?
+		idea of old days with lots of config files, etc.
+
+	why bad?
+		not standardized
+		error-prone
+		no common software to read/write them
+-->
+
+
+
+			<div class="slide">
+				<h1>What is XML?</h1>
+
+				<ul>
+					<li><strong>XML</strong>: a specification for creating languages to store data; used to share data between systems</li>
+					
+					<li>a basic syntax of tags &amp; attributes</li>
+					
+					<li>languages written in XML specify tag names, attribute names, and rules of use</li>
+					
+					<li>Example: XHTML is a "flavor" of XML
+						<ul>
+							<li>an adaptation of old HTML to fit XML's syntax requirements</li>
+							<li>XML specifies tag syntax: <code>&lt;... ...="..."&gt;&lt;/...&gt;</code></li>
+							<li>HTML contributes tag names (e.g. <code>h1</code>, <code>img</code>) and attributes (<code>id</code>/<code>class</code> on all, <code>src</code>/<code>alt</code> on <code>img</code>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>An example XML file</h1>
+
+				<pre class="examplecode xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;note&gt;
+	&lt;to&gt;Tove&lt;/to&gt;
+	&lt;from&gt;Jani&lt;/from&gt;
+	&lt;subject&gt;Reminder&lt;/subject&gt;
+	&lt;message language=&quot;english&quot;&gt;
+		Don't forget me this weekend!
+	&lt;/message&gt;
+&lt;/note&gt;
+</pre>
+
+				<ul>
+					<li>begins with an xml header tag, then a single <span class="term">document tag</span> (in this case, <code>note</code>)</li>
+					<li>tag, attribute, and comment syntax is identical to XHTML's</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>What tags are legal in XML?</h1>
+
+				<ul>
+					<li><em>any tag you want</em>; the person storing the data can make up their own tag structure</li>
+					<li>example: a person storing data about email messages may want tags named <code>to</code>, <code>from</code>, <code>subject</code></li>
+					<li>example: a person storing data about books may want tags named <code>book</code>, <code>title</code>, <code>author</code></li>
+					<li>"<a href="http://en.wikipedia.org/wiki/Garden_State_(film)">Garden State</a>" XML: if you're feeling unoriginal, make up some XML nobody's ever done before
+						<ul>
+							<li><code>&lt;bloop bleep="flibbetygibbet"&gt;quirkleblat&lt;/bloop&gt;</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Schemas</h1>
+				
+				<ul>
+					<li><span class="term"><a href="http://en.wikipedia.org/wiki/XML_schema">schema</a></span>: an optional set of rules specifying which tags and attributes are valid, and how they can be used together</li>
+					
+					<li>used to <em>validate</em> XML files to make sure they follow the rules of that "flavor"
+						<ul>
+							<li>XHTML has a schema; W3C validator uses it to validate</li>
+							<li>doctype at top of XHTML file specifies schema</li>
+						</ul>
+					</li>
+
+					<li>two ways to define a schema:
+						<ul>
+							<li><a href="http://en.wikipedia.org/wiki/Document_Type_Definition">Document Type Definition (DTD)</a></li>
+							<li><a href="http://en.wikipedia.org/wiki/XML_Schema_%28W3C%29">W3C XML Schema</a></li>
+						</ul>
+					</li>
+					
+					<li>(we won't cover schemas any further here)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Uses of XML</h1>
+				
+				<ul>
+					<li>XML data comes from many sources on the web: 
+						<ul>
+							<li><span class="term">web servers</span> store data as XML files</li>
+							<li><span class="term">databases</span> sometimes return query results as XML</li>
+							<li><span class="term">web services</span> use XML to communicate</li>
+						</ul>
+					</li>
+					
+					<li>XML languages are used for <a href="http://en.wikipedia.org/wiki/MusicXML">music</a>, <a href="http://en.wikipedia.org/wiki/MathML">math</a>, <a href="http://en.wikipedia.org/wiki/SVG">vector graphics</a></li>
+					
+					<li>popular use: <a href="http://en.wikipedia.org/wiki/RSS">RSS</a> for news feeds &amp; podcasts</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Pros and cons of XML</h1>
+
+				<p>pro:</p>
+				<ul style="margin-top: 0em">
+					<li style="margin-top: 0em">easy to read (for humans and computers)</li>
+					<li>standard format makes automation easy</li>
+					<li>don't have to "reinvent the wheel" for storing new types of data</li>
+					<li>international, platform-independent, open/free standard</li>
+					<li>can represent almost any general kind of data (record, list, tree)</li>
+				</ul>
+
+				<p style="margin-top: 1em">con:</p>
+				<ul style="margin-top: 0em">
+					<li style="margin-top: 0em">bulky syntax/structure makes files large; can decrease performance
+						<ul>
+							<li>example: <a href="http://en.wikipedia.org/wiki/MathML#Example">quadratic formula in MathML</a></li>
+						</ul>
+					</li>
+					<li>can be hard to "shoehorn" data into a good XML format (not needed for this class)</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>Structure of an XML document</h1>
+				
+				<p>
+					XML's syntax looks much like XHTML's:
+				</p>
+				
+				<ul>
+					<li>a header, then a single document tag that can contain other tags
+<pre class="example xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<var>document tag</var>
+</pre>
+					</li>
+
+					<li>tag syntax:
+<pre class="example xml">
+&lt;<var>element</var> <var>attribute(s)</var>&gt;
+	<var>text or tags</var>
+&lt;/<var>element</var>&gt;
+</pre>
+
+						<ul>
+							<li>or a tag with no inner content can end with /&gt;</li>
+						</ul>
+					</li>
+
+					<li>attribute syntax:
+<pre class="example xml">
+<var>name</var>=&quot;<var>value</var>&quot;
+</pre>
+					</li>
+
+					<li>comments: <code>&lt;!- <var>comment</var> -&gt;</code></li>
+					<li>entities: <code>&amp;lt;</code></li>
+				</ul>
+			</div>
+-->
+
+
+
+			<div class="slide">
+				<h1>Fetching XML using AJAX (template)</h1>
+
+<pre class="syntaxtemplate js">
+	new Ajax.Request(
+		&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;,
+			onSuccess: <var>functionName</var>
+		}
+	);
+	...
+
+function <var>functionName</var>(ajax) {
+	<var>do something with ajax.response<em>XML</em></var>;
+}
+</pre>
+
+				<ul>
+					<li><code>ajax.response<em>Text</em></code> contains the XML data in plain text</li>
+					<li><code>ajax.<a href="http://www.w3schools.com/ajax/ajax_responsexml.asp">response<em>XML</em></a></code> is a pre-parsed DOM object representing the XML file as a tree (more useful)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Using XML data in a web page</h1>
+
+				<ul>
+					<li>custom flavor of XML needs to be converted to XHTML, then injected into page</li>
+					
+					<li>we will transform using Javascript XML DOM</li>
+					
+					<li>basic technique:
+						<ol>
+							<li>fetch XML data using Ajax</li>
+							<li>examine the <code>response<em>XML</em></code> object, using DOM methods and properties</li>
+							<li>extract data from XML elements and wrap them in HTML elements</li>
+							<li>inject HTML elements into web page</li>
+						</ol>
+					</li>
+					<li>other ways to transform XML (not covered): CSS, <a href="http://en.wikipedia.org/wiki/Extensible_Stylesheet_Language">XSLT</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Recall: Javascript XML (XHTML) DOM</h1>
+				
+				<p>
+					The DOM properties and methods* we already know can be used on XML nodes:
+				</p>
+
+				<ul>
+					<li>properties:
+						<ul>
+							<li><code>firstChild</code>, <code>lastChild</code>, <code>childNodes</code>, <code>nextSibling</code>, <code>previousSibling</code>, <code>parentNode</code></li>
+							<li><code><strong>nodeName</strong></code>, <code><strong>nodeType</strong></code>, <code><strong>nodeValue</strong></code>, <code><strong>attributes</strong></code></li>
+						</ul>
+					</li>
+
+					<li>methods:
+						<ul>
+							<li><code>appendChild</code>, <code>insertBefore</code>, <code>removeChild</code>, <code>replaceChild</code></li>
+							<li><code><strong>getElementsByTagName</strong></code>, <strong><code>getAttribute</code></strong>, <code><strong>hasAttributes</strong></code>, <code><strong>hasChildNodes</strong></code></li>
+						</ul>
+					</li>
+					
+					<!--
+					<li>Prototype methods:
+						<ul>
+							<li>
+								<a href="http://prototypejs.org/api/element/ancestors"><code>ancestors</code></a>,
+								<a href="http://prototypejs.org/api/element/childElements"><code>childElements</code></a>,
+								<a href="http://prototypejs.org/api/element/descendants"><code>descendants</code></a>,
+								<a href="http://prototypejs.org/api/element/firstDescendant"><code>firstDescendant</code></a>,
+								<a href="http://prototypejs.org/api/element/descendantOf"><code>descendantOf</code></a>,
+								<a href="http://prototypejs.org/api/element/next"><code>next</code></a>,
+								<a href="http://prototypejs.org/api/element/previous"><code>previous</code></a>,
+								<a href="http://prototypejs.org/api/element/siblings"><code>siblings</code></a>,
+								<a href="http://prototypejs.org/api/element/previousSiblings"><code>previousSiblings</code></a>,
+								<a href="http://prototypejs.org/api/element/nextSiblings"><code>nextSiblings</code></a>,
+								<a href="http://prototypejs.org/api/element/adjacent"><code>adjacent</code></a>
+							</li>
+						</ul>
+					</li>
+					-->
+				</ul>
+				
+				<p class="aside" style="margin-top: 2em">
+					* (though not Prototype's, such as <code>up</code>, <code>down</code>, <code>ancestors</code>, <code>childElements</code>, <code>descendants</code>, or <code>siblings</code>)
+				</p>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>XML DOM tree structure</h1>
+
+				<div class="rightfigure" style="width: 45%">
+					<img src="images/figure_6_textbook_cat.gif" alt="node tree" style="width: 100%" />
+				</div>
+
+				<pre class="examplecode xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;categories&gt; 
+  &lt;category&gt;children&lt;/category&gt; 
+  &lt;category&gt;computers&lt;/category&gt; 
+  ... 
+&lt;/categories&gt;
+</pre>
+
+				<ul>
+					<li>the XML tags have a tree structure</li>
+					<li>DOM nodes have parents, children, and siblings</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Analyzing a fetched XML file using DOM</h1>
+				
+				<pre class="examplecode xml" style="font-size: smaller">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;foo bloop="bleep"&gt;
+	&lt;bar/&gt;
+	&lt;baz&gt;&lt;quux/&gt;&lt;/baz&gt;
+	&lt;baz&gt;&lt;xyzzy/&gt;&lt;/baz&gt;
+&lt;/foo&gt;
+</pre>
+				<p>We can use DOM properties and methods on <code>ajax.responseXML</code>:</p>
+				
+				<pre class="examplecode js" style="font-size: smaller">
+<span class="comment">// zeroth element of array of length 1</span>
+var foo = ajax.responseXML.getElementsByTagName("foo")[0];
+
+<span class="comment">// same</span>
+var bar = foo.getElementsByTagName("bar")[0];
+
+<span class="comment">// array of length 2</span>
+var all_bazzes = foo.getElementsByTagName("baz");
+
+<span class="comment">// string "bleep"</span>
+var bloop = foo.getAttribute("bloop");
+</pre>
+				
+			</div>
+
+
+			<div class="slide">
+				<h1>Recall: Pitfalls of the DOM</h1>
+
+				<pre class="examplecode xml" style="font-size: smaller">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;foo bloop="bleep"&gt;
+	&lt;bar/&gt;
+	&lt;baz&gt;&lt;quux/&gt;&lt;/baz&gt;
+	&lt;baz&gt;&lt;xyzzy/&gt;&lt;/baz&gt;
+&lt;/foo&gt;
+</pre>
+				<p>We are reminded of some pitfalls of the DOM:</p>
+
+				<pre class="examplecode js" style="font-size: smaller">
+<span class="comment">// works - XML prolog is removed from document tree</span>
+var foo = ajax.responseXML.firstChild;
+
+<span class="comment">// WRONG - just a text node with whitespace!</span>
+var bar = foo.firstChild;
+
+<span class="comment">// works</span>
+var first_baz = foo.getElementsByTagName("baz")[0];
+
+<span class="comment">// WRONG - just a text node with whitespace!</span>
+var second_baz = first_baz.nextSibling;
+
+<span class="comment">// works - why?</span>
+var xyzzy = second_baz.firstChild;
+</pre>
+
+			</div>
+
+
+			<div class="slide">
+				<h1>Larger XML file example</h1>
+
+				<pre class="examplecode xml" style="font-size: smaller">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;bookstore&gt;
+	&lt;book category=&quot;cooking&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;Everyday Italian&lt;/title&gt;
+		&lt;author&gt;Giada De Laurentiis&lt;/author&gt;
+		&lt;year&gt;2005&lt;/year&gt;&lt;price&gt;30.00&lt;/price&gt;
+	&lt;/book&gt;
+	&lt;book category=&quot;computers&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;XQuery Kick Start&lt;/title&gt;
+		&lt;author&gt;James McGovern&lt;/author&gt;
+		&lt;year&gt;2003&lt;/year&gt;&lt;price&gt;49.99&lt;/price&gt;
+	&lt;/book&gt;
+	&lt;book category=&quot;children&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;Harry Potter&lt;/title&gt;
+		&lt;author&gt;J K. Rowling&lt;/author&gt;
+		&lt;year&gt;2005&lt;/year&gt;&lt;price&gt;29.99&lt;/price&gt;
+	&lt;/book&gt;
+	&lt;book category=&quot;computers&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;Learning XML&lt;/title&gt;
+		&lt;author&gt;Erik T. Ray&lt;/author&gt;
+		&lt;year&gt;2003&lt;/year&gt;&lt;price&gt;39.95&lt;/price&gt;
+	&lt;/book&gt;
+&lt;/bookstore&gt;
+</pre>
+			</div>
+
+
+<!--
+			<div class="slide">
+				<h1>Details about XML node <a href="http://www.w3schools.com/dom/dom_nodes_info.asp">properties</a></h1>
+
+				<ul>
+					<li><code>nodeType</code> : what kind of node it is
+						<table>
+							<tr><th class="spaced">Kind of node</th><th><code>nodeType</code> value</th></tr>
+							<tr><td>element</td><td>1</td></tr>
+							<tr><td>attribute</td><td>2</td></tr>
+							<tr><td>text</td><td>3</td></tr>
+							<tr><td>comment</td><td>8</td></tr>
+							<tr><td>document</td><td>9</td></tr>
+						</table>
+					</li>
+
+					<li><code>nodeName</code> : uppercase version of tag such as <code>&quot;DIV&quot;</code> or <code>&quot;ARTICLE&quot;</code>
+						<ul>
+							<li>an attribute node's name is the attribute's name</li>
+							<li>all text nodes have name <code>&quot;#text&quot;</code></li>
+							<li>document node has name <code>&quot;#document&quot;</code></li>
+						</ul>
+					</li>
+
+					<li><code>nodeValue</code> : text inside a text node, or value of an attribute node</li>
+				</ul>
+			</div>
+-->
+
+
+
+			<div class="slide">
+				<h1>Navigating the node tree</h1>
+				
+				<ul>
+					<li>don't have <code>id</code>s or <code>class</code>es to use to get specific nodes</li>
+					
+					<li><code>firstChild</code>/<code>nextSibling</code> properties are unreliable</li>
+					
+					<li>
+						best way to walk the tree is using <code>getElementsByTagName</code>:
+						<pre class="syntaxtemplate js">
+<var>node</var>.getElementsByTagName(&quot;<var>tagName</var>&quot;)
+</pre>
+
+						<ul>
+							<li>get an array of all <var>node</var>'s children that are of the given tag (<code>&quot;book&quot;</code>, <code>&quot;subject&quot;</code>, etc.)</li>
+							<li>can be called on the overall XML document or on a specific node</li>
+						</ul>
+					</li>
+					
+					<li>
+						<pre class="syntaxtemplate js">
+<var>node</var>.getAttribute(&quot;<var>attributeName</var>&quot;)
+</pre>
+
+						<ul>
+							<li>gets an attribute from a node (e.g., <code>category</code>, <code>lang</code>)</li>
+						</ul>
+					</li>
+					
+					<!--
+					<li>
+						Prototype methods also useful: <code>childElements</code>, <code>siblings</code>, <code>next</code>/<code>previous</code>, etc.
+					</li>
+					-->
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Navigating node tree example</h1>
+
+				<pre class="examplecode js narrow">
+<span class="comment">// make a paragraph for each book about computers</span>
+var books = ajax.responseXML.getElementsByTagName(&quot;book&quot;);
+for (var i = 0; i &lt; books.length; i++) {
+	var category = books[i].getAttribute(&quot;category&quot;);
+	if (category == &quot;computers&quot;) {
+		var title = books[i].getElementsByTagName(&quot;title&quot;)[0].firstChild.nodeValue;
+		var author = books[i].getElementsByTagName(&quot;author&quot;)[0].firstChild.nodeValue;
+		
+		<span class="comment">// make an XHTML &lt;p&gt; tag based on the book's XML data</span>
+		var p = document.createElement(&quot;p&quot;);
+		p.innerHTML = title + &quot;, by &quot; + author;
+		document.body.appendChild(p);
+	}
+}
+</pre>
+
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>A historical interlude: why XHTML?</h1>
+				
+				<ul>
+					<li>in XML, different "flavors" can be combined in single document</li>
+					<li>theoretical benefit of including other XML data in XHTML
+						<ul>
+							<li>nobody does this</li>
+						</ul>
+					</li>
+					
+					<li>most embedded data are in non-XML formats (e.g., Flash)
+						<ul>
+							<li>non-XML data must be embedded another way (we'll talk about this later on)</li>
+						</ul>
+					</li>
+					
+					<li>requires browser/plugin support for other "flavor" of XML
+						<ul>
+							<li>development slow to nonexistent</li>
+							<li>most XML flavors are specialized uses</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Why XML in AJAX?</h1>
+				
+				<ul>
+					<li>most data you want are provided in XML
+						<ul>
+							<li>the <em>de facto</em> universal format</li>
+						</ul>
+					</li>
+					
+					<li>the browser can already parse XML (i.e., XHTML) into DOM objects
+						<ul>
+							<li>DOM only defined for XML-based formats, may not map directly to another format</li>
+						</ul>
+					</li>
+					
+					<li>would have to manually parse a different format
+						<ul>
+							<li>simple formats can be parsed manually from <code>ajax.responseText</code></li>
+							<li>most data are easier to manipulate as DOM objects than to parse manually</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Exercise: Animal game</h1>
+				
+				<ul>
+					<li>Write a program that guesses which animal the user is thinking of. The program will arrive at a guess based on the user's responses to yes or no questions. The questions come from a web app named <code>animalgame.php</code>.</li>
+				</ul>
+				
+				<div class="figure">
+					<img src="images/animalgame.png" alt="The Animal Game" />
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Practice problem: Animal game (cont'd)</h1>
+				
+				<ul>
+					<li>The data comes in the following format:
+
+					<pre class="syntaxtemplate xml">
+&lt;node nodeid=&quot;<var>id</var>&quot;&gt;
+	&lt;question&gt;<var>question</var>&lt;/question&gt;
+	&lt;yes nodeid=&quot;<var>id</var>&quot; /&gt;
+
+	&lt;no nodeid=&quot;<var>id</var>&quot; /&gt;
+&lt;/node&gt;
+</pre>
+
+					<pre class="syntaxtemplate xml">
+&lt;node nodeid=&quot;<var>id</var>&quot;&gt;
+	&lt;answer&gt;<var>answer</var>&lt;/answer&gt;
+
+&lt;/node&gt;
+</pre>
+					</li>
+					
+					<li>to get a node with a given id:  <code>animalgame.php?nodeid=<var>id</var></code>
+					</li>
+					
+					<li>start by requesting the node with <code>nodeid</code> of <code>1</code> to get the first question</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Attacking the problem</h1>
+
+				<p>Questions we should ask ourselves:</p>
+
+				<ul>
+					<li>How do I retrieve data from the web app? (what URL, etc.)</li>
+					<li>Once I retrieve a piece of data, what should I do with it?</li>
+					<li>When the user clicks &quot;Yes&quot;, what should I do?</li>
+					<li>When the user clicks &quot;No&quot;, what should I do?</li>
+					<li>How do I know when the game is over?  What should I do in this case?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Debugging <code>responseXML</code> in Firebug</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_debug_ajax.png" alt="Firebug Debug Ajax" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li>can examine the entire XML document, its node/tree structure</li>
+				</ul>
+			</div>
+			
+<!--#include virtual="commonbottom.html" -->

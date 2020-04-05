@@ -1,0 +1,591 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 5: Floating and Positioning</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 5</h1>
+				<h2>Floating and Positioning</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 5 <br /> Floating and Positioning</h3>
+				<h4>Reading: 4.3 - 4.5</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.3: Floating Elements</h1>
+				
+				<ul>
+					<li>
+						4.1: Styling Page Sections
+					</li>
+					<li>
+						4.2: Introduction to Layout
+					</li>
+					<li>
+						<strong>4.3: Floating Elements</strong>
+					</li>
+					<li>
+						4.4: Sizing and Positioning
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The CSS <code><a href="http://www.w3schools.com/css/pr_class_float.asp">float</a></code> property
+					(<a href="http://www.w3.org/TR/REC-CSS2/visuren.html#floats">reference</a>)
+					<span class="readingsection">(4.3.1)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+img.headericon {
+	<em>float: right;</em>    width: 130px;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<img src="images/borat.jpg" alt="Borat" class="headericon" />
+						<a href="http://en.wikipedia.org/wiki/Borat">Borat</a> Sagdiyev (born July 30, 1972) is a fictional Kazakhstani journalist played by British-Jewish comedian Sacha Baron Cohen. He is the main character portrayed in the controversial and successful film Borat: Cultural Learnings of America for Make Benefit Glorious ...
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>float</code>
+						</td>
+						<td>
+							side to hover on; can be <code>left</code>, <code>right</code>, or <code>none</code> (default)
+						</td>
+					</tr>
+				</table>
+					
+				<ul>
+					<li>removed from normal document flow; underlying text wraps around as necessary</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Floating elements diagram</h1>
+
+				<p class="description"><img src="images/float.png" alt="float" /></p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common <code>float</code> bug: missing width</h1>
+
+				<p style="background-color: teal;">I am not floating, no width</p>
+				<p style="float: right; background-color: red;">I am floating right, no width</p>
+
+				<p style="clear: both; float: left; background-color: teal; width: 45%">I am not floating, 45% width</p>
+				<p style="float: right; background-color: red; width: 45%">I am floating right, 45% width</p>
+
+				<ul style="clear: both;">
+					<li>often floating block elements must have a <code>width</code> property value
+						<ul>
+							<li>if no <code>width</code> is specified, the floating element may occupy 100% of the page width, so no content can wrap around it</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code><a href="http://www.w3schools.com/css/pr_class_clear.asp">clear</a></code> property
+					<span class="readingsection">(4.3.2)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p { background-color: fuchsia; }
+h2 { <em>clear: right;</em> background-color: yellow; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p><img src="images/homestar_runner.png" alt="homestar runner" style="float: right" />Homestar Runner is a Flash animated Internet cartoon. It mixes surreal humour with references to 1980s and 1990s pop culture, notably video games, classic television and popular music.</p>
+
+						<h2>My Homestar Runner Fan Site</h2>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>clear</code>
+						</td>
+						<td>
+							disallows floating elements from overlapping this element; <br />
+							can be <code>left</code>, <code>right</code>, or <code>none</code> (default)
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Clear diagram</h1>
+
+<pre class="examplecode css">
+div#sidebar { float: right; }
+p { <em>clear: right;</em> }
+</pre>
+
+				<p class="description">
+					<img src="images/clear.png" alt="float clear" />
+				</p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Common error: container too short (4.3.3)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;&lt;img src=&quot;images/homestar_runner.png&quot; alt=&quot;homestar runner&quot; /&gt;
+	Homestar Runner is a Flash animated Internet cartoon.
+	It mixes surreal humour with ....&lt;/p&gt;
+</pre>
+
+<pre class="examplecode examplecode2 css">
+p { border: 2px dashed black; }
+img { float: right; }
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>
+						We want the <code>p</code> containing the image to extend downward so that its border encloses the entire image
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code><a href="http://www.quirksmode.org/css/clearing.html">overflow</a></code> property
+					<span class="readingsection">(4.3.3)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p { border: 2px dashed black;
+    <em>overflow: hidden;</em> }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>
+							<img src="images/homestar_runner.png" alt="homestar runner" style="float: right" />
+							Homestar Runner is a Flash animated Internet cartoon. It mixes surreal humour with ....
+						</p>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>overflow</code>
+						</td>
+						<td>
+							specifies what to do if an element's content is too large; <br />
+							can be <code>auto</code>, <code>visible</code>, <code>hidden</code>, or <code>scroll</code>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Multi-column layouts
+					<span class="readingsection">(4.3.4)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;div&gt;
+	&lt;p&gt;first paragraph&lt;/p&gt;
+	&lt;p&gt;second paragraph&lt;/p&gt;
+	&lt;p&gt;third paragraph&lt;/p&gt;
+	Some other text that is important
+&lt;/div&gt;
+</pre>
+
+<pre class="examplecode css">
+p { float: right; width: 20%; margin: 0.5em; 
+    border: 2px solid black; }
+div { border: 3px dotted green; overflow: hidden; }
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>4.4: Sizing and Positioning</h1>
+				
+				<ul>
+					<li>
+						4.1: Styling Page Sections
+					</li>
+					<li>
+						4.2: Introduction to Layout
+					</li>
+					<li>
+						4.3: Floating Elements
+					</li>
+					<li>
+						<strong>4.4: Sizing and Positioning</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <a href="http://www.w3schools.com/css/pr_class_position.asp"><code>position</code></a> property
+					(<a href="http://www.w3schools.com/css/css_positioning.asp">examples</a>)
+					<span class="readingsection">(4.4.2)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+div#ad {
+	<em>position: fixed;</em>
+	right: 10%;
+	top: 45%;
+}
+</pre>
+				
+					<div class="exampleoutput insertoutput">
+						<div id="ad">Here I am!</div>
+					</div>
+				</div>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							value
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td rowspan="5">
+							<code>position</code>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>static</code>
+						</td>
+						<td>
+							default position
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>relative</code>
+						</td>
+						<td>
+							offset from its normal static position
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>absolute</code>
+						</td>
+						<td>
+							a fixed position <em>within its containing element</em>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>fixed</code>
+						</td>
+						<td>
+							a fixed position <em>within the browser window
+						</td>
+					</tr>
+				
+					<tr>
+						<td>
+							<a href="http://www.w3schools.com/css/pr_pos_top.asp"><code>top</code></a>,
+							<a href="http://www.w3schools.com/css/pr_pos_bottom.asp"><code>bottom</code></a>, <br />
+							<a href="http://www.w3schools.com/css/pr_pos_left.asp"><code>left</code></a>,
+							<a href="http://www.w3schools.com/css/pr_pos_right.asp"><code>right</code></a>
+						</td>
+						<td colspan="2">
+							positions of box's corners
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Absolute positioning</h1>
+
+<pre class="examplecode css">
+#menubar {
+	<em>position: absolute;</em>
+	left: 400px;
+	top: 50px;
+}
+</pre>
+
+				<div class="rightfigure">
+					<img src="images/absoluteposition.png" alt="absolute positioning" style="width: 100%;" />
+				</div>
+
+				<ul>
+					<li>removed from normal flow (like floating ones)</li>
+					<li>positioned relative to the block element containing them (assuming that block also uses <code>absolute</code> or <code>relative</code> positioning)</li>
+					<li>actual position determined by <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code> values</li>
+					<li>should often specify a <code>width</code> property as well</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Relative positioning</h1>
+				
+<pre class="examplecode css">
+#area2 { <em>position: relative;</em> }
+</pre>
+
+				<div class="rightfigure">
+					<img src="images/relativeposition.png" alt="absolute positioning" style="width: 100%;" />
+				</div>
+
+				<ul>
+					<li>absolute-positioned elements are normally positioned at an offset from the corner of the overall web page</li>
+					<li>to instead cause the absolute element to position itself relative to some other element's corner, wrap the <code>absolute</code> element in an element whose <code>position</code> is <code>relative</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Fixed positioning</h1>
+
+				<div class="rightfigure">
+					<img src="images/fixedposition.png" alt="fixed positioning" style="width: 100%;" />
+				</div>
+
+				<ul>
+					<li>removed from normal flow (like floating ones)</li>
+					<li>positioned relative to the browser window
+						<ul>
+							<li>
+								even when the user scrolls the window, element will remain in the same place
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Alignment vs. float vs. position</h1>
+
+				<ol>
+					<li>if possible, lay out an element by <em>aligning</em> its content
+						<ul>
+							<li>horizontal alignment: <code>text-align</code>
+								<ul>
+									<li>set this on a block element; it aligns the content within it (not the block element itself)</li>
+								</ul>
+							</li>
+							<li>vertical alignment: <code>vertical-align</code>
+								<ul>
+									<li>set this on an inline element, and it aligns it vertically within its containing element</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>if alignment won't work, try <em>floating</em> the element</li>
+					<li>if floating won't work, try <em>positioning</em> the element
+						<ul>
+							<li>absolute/fixed positioning are a last resort and should not be overused</li>
+						</ul>
+					</li>
+				</ol>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Details about inline boxes</h1>
+
+				<ul>
+					<li>size properties (<code>width</code>, <code>height</code>, <code>min-width</code>, etc.) are ignored for inline boxes</li>
+					<li><code>margin-top</code> and <code>margin-bottom</code> are ignored, but <code>margin-left</code> and <code>margin-right</code> are not</li>
+					<li>the containing block box's <code>text-align</code> property controls horizontal position of inline boxes within it
+						<ul>
+							<li>text-align does not align block boxes within the page</li>
+						</ul>
+					</li>
+					<li>each inline box's <code>vertical-align</code> property aligns it vertically within its block box
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/css/pr_pos_vertical-align.asp"><code>vertical-align</code></a> property</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>vertical-align</code>
+						</td>
+						<td>
+							specifies where an inline element should be aligned vertically, with respect to other content on the same line within its block element's box
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li><img src="images/baseline.jpg" alt="baseline" style="float: right; margin-left: 40px;" />can be <code>top</code>, <code>middle</code>, <code>bottom</code>, <code>baseline</code> (default), <code>sub</code>, <code>super</code>, <code>text-top</code>, <code>text-bottom</code>, or a length value or <code>%</code>
+						<ul>
+							<li><code>baseline</code> means aligned with bottom of non-hanging letters</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>vertical-align</code> example</h1>
+
+				<div class="example">
+<pre class="examplecode html" style="font-size: smaller">
+&lt;p style=&quot;background-color: yellow;&quot;&gt;
+&lt;span style=&quot;<em>vertical-align: top;</em> border: 1px solid red;&quot;&gt;
+Don't be sad!  Turn that frown 
+&lt;img src=&quot;images/sad.jpg&quot; alt=&quot;sad&quot; /&gt; upside down!
+&lt;img style=&quot;<em>vertical-align: bottom</em>&quot; src=&quot;images/smiley.jpg&quot; alt=&quot;smile&quot; /&gt; 
+Smiling burns calories, you know.  
+&lt;img style=&quot;<em>vertical-align: middle</em>&quot; src=&quot;images/puppy.jpg&quot; alt=&quot;puppy&quot; /&gt; 
+Anyway, look at this cute puppy; isn't he adorable!  So cheer up,
+and have a nice day.  The End.
+&lt;/span&gt;&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common bug: space under image</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p style=&quot;background-color: red; padding: 0px; margin: 0px&quot;&gt;
+&lt;img src=&quot;images/smiley.png&quot; alt=&quot;smile&quot; /&gt;
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>red space under the image, despite <code>padding</code> and <code>margin</code> of 0</li>
+					<li>this is because the image is vertically aligned to the baseline of the paragraph (not the same as the bottom)</li>
+					<li>setting <code>vertical-align</code> to <code>bottom</code> fixes the problem (so does setting <code>line-height</code> to <code>0px</code>)</li>
+				</ul>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->

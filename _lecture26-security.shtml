@@ -1,0 +1,415 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 26: Web Security</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 26</h1>
+				<h2>Web Security</h2>
+			</div>
+		</div>
+
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 26 <br /> Web Security</h3>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp, Jessica Miller, and Kevin Wallace.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>1. PHP/SQL review</h1>
+				
+				<ul>
+					<li><strong>PHP/SQL review</strong></li>
+					<li>some basic web attacks</li>
+					<li>breaking and securing an example page</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Recall: PHP MySQL functions</h1>
+				
+				<table class="standard">
+					<tr>
+						<th>name</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_connect"><code>mysql_connect</code></a>
+						</td>
+						<td>
+							connects to a database server
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_select_db"><code>mysql_select_db</code></a>
+						</td>
+						<td>
+							chooses which database on server to use (similar to SQL <code>USE <var>database</var>;</code> command)
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_query"><code>mysql_query</code></a>
+						</td>
+						<td>
+							performs a SQL query on the database
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_real_escape_string"><code>mysql_real_escape_string</code></a>
+						</td>
+						<td>
+							encodes a value to make it safe for use in a query
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_fetch_array"><code>mysql_fetch_array</code></a>, ...
+						</td>
+						<td>
+							returns the query's next result row as an associative array
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_close"><code>mysql_close</code></a>
+						</td>
+						<td>
+							closes a connection to a database
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1>Complete PHP MySQL example</h1>
+
+				<pre class="examplecode php" style="font-size: smaller">
+<span class="comment"># connect to world database on local computer</span>
+<em>check(</em>mysql_connect(&quot;localhost&quot;, &quot;traveler&quot;, &quot;packmybags&quot;)<em>, &quot;connect&quot;);</em>
+<em>check(</em>mysql_select_db(&quot;world&quot;)<em>, &quot;selecting db&quot;);</em>
+
+<span class="comment"># execute a SQL query on the database</span>
+$query = &quot;SELECT * FROM countries WHERE population &gt; 100000000;&quot;;
+$results = mysql_query($query);
+<em>check(</em>$results<em>, &quot;query of $query&quot;);</em>
+
+<span class="comment"># loop through each country</span>
+while ($row = mysql_fetch_array($results)) {
+	?&gt;
+	&lt;li&gt; &lt;?= $row[&quot;name&quot;] ?&gt;, ruled by &lt;?= $row[&quot;head_of_state&quot;] ?&gt; &lt;/li&gt;
+	&lt;?php
+}
+
+<span class="comment"># makes sure result is not false/null; else prints error</span>
+<em>function check($result, $message) {
+	if (!$result) {
+		die(&quot;SQL error during $message: &quot; . mysql_error());
+	}
+}</em>
+?&gt;
+</pre>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1><code>simpsons</code> database w/ passwords</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+
+								<col /><col /><col /><col class="highlight" />
+				
+								<tr><th>id</th><th>name</th><th>email</th><th>password</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>bartman</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>catfood</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td><td>fallout</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>vegan</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th><th>teacher_id</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td><td>1234</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td><td>5678</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td><td>9012</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td><td>1234</td></tr>
+							</table>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+						
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>teachers</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>1234</td><td>Krabappel</td></tr>
+								<tr><td>5678</td><td>Hoover</td></tr>
+								<tr><td>9012</td><td>Stepp</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide practiceproblem">
+				<h1>Practice problem: Grades lookup</h1>
+				
+				<p>
+					Write the code to allow a student to look up their grades in the 'simpsons' database, by first entering a name and password.
+				</p>
+				
+				<p>
+					If the user fails to specify a correct name/password combo, display an error message.
+				</p>
+			</div>
+			
+			
+			
+			<div class="slide titleslide">
+				<h1>2. Some basic web attacks</h1>
+				
+				<ul>
+					<li>PHP/SQL review</li>
+					<li><strong>some basic web attacks</strong></li>
+					<li>breaking and securing an example page</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>CSE &lt;= 190M</h1>
+				
+				<div>
+					<img src="images/group_hug.jpg" style="float: right; margin-left: 1em" />
+				</div>
+				
+				<ul>
+					<li>until now, we have assumed:
+						<ul>
+							<li>valid user input</li>
+							<li>non-malicious users</li>
+							<li>nothing will ever go wrong</li>
+						</ul>
+					</li>
+					<li>this is unrealistic!</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>The real world</h1>
+				
+				<div>
+					<img src="images/orcs.jpg" style="float: right; margin-left: 1em" />
+				</div>
+				
+				<ul>
+					<li>in order to write secure code, we must assume:
+						<ul>
+							<li>invalid input</li>
+							<li>evil users</li>
+							<li>everybody is out to get you</li>
+						</ul>
+					</li>
+					<li>trust nothing</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>HTML injection</h1>
+				
+				<p class="description">
+					a flaw where a user is able to inject arbitrary HTML content into your page
+				</p>
+
+				<ul>
+					<li>why is this bad?  it allows others to:
+						<ul>
+							<li>disrupt the flow/layout of your site</li>
+							<li>put words into your mouth</li>
+							<li>(possibly) run JavaScript on other users' computers</li>
+						</ul>
+					</li>
+					<li>kinds of injected content:
+						<ul>
+							<li>annoying: <code>results.php?name=&lt;blink&gt;lololol&lt;/blink&gt;</code></li>
+							<li>malicious and harmful: <code>onlinebanking.php?text=&lt;script&gt;transferMoneyTo(&quot;Evil Kevin&quot;, 1000, &quot;USD&quot;);&lt;/script&gt;</code>
+								<ul>
+									<li>injecting JavaScript content is called <span class="term">cross-site scripting</span></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Securing against HTML injection</h1>
+				
+				<ul>
+					<li>one idea: disallow harmful characters
+						<ul>
+							<li>HTML injection is impossible without &lt; &gt;</li>
+							<li>can strip those characters from incoming input</li>
+							<li>or, just reject the entire request if they are present</li>
+						</ul>
+					</li>
+					
+					<li>better idea: allow them, but <span class="term">escape</span> them
+						<ul>
+							<li>&lt; &gt; &rarr; &amp;lt; &amp;gt;</li>
+							<li>PHP's <a href="http://www.php.net/htmlspecialchars"><code>htmlspecialchars</code></a> function escapes HTML characters:
+
+<pre class="php">
+$username = <em>htmlspecialchars</em>($_REQUEST[&quot;username&quot;]);
+</pre>
+
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>SQL injection</h1>
+				
+				<p class="description">
+					a flaw where the user is able to inject arbitrary SQL commands into your query
+				</p>
+				
+				<ul>
+					<li>
+						<code>$query = &quot;SELECT name, ssn, dob FROM users <br />
+						WHERE username = '$username' AND password = '$password'&quot;;</code>
+						
+						<ul>
+							<li>
+								Password: <input type="text" value="' OR '1'='1" />
+							</li>
+						</ul>
+					</li>
+					<li>
+						<code>$query = &quot;SELECT name, ssn, dob FROM users <br />
+						WHERE username = '$username' AND password = '<em class="highlight">' OR '1'='1</em>'&quot;;</code>
+						
+						<ul>
+							<li>
+								What will the above query return?  Why is this bad?
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Securing against SQL injection</h1>
+				
+				<div class="figure">
+					<img src="images/xkcd_tables.png" />
+				</div>
+
+				<ul>
+					<li>similar to securing against HTML injection, escape the string before you include it in your query</li>
+					<li>
+						use the PHP <a class="underscorelink" href="http://www.php.net/mysql_real_escape_string"><code>mysql_real_escape_string</code></a> function
+					
+						<pre class="examplecode php">
+$username = <em>mysql_real_escape_string($_REQUEST[&quot;username&quot;])</em>;
+$password = <em>mysql_real_escape_string($_REQUEST[&quot;password&quot;])</em>;
+$query = &quot;SELECT name, ssn, dob FROM users
+WHERE username = '$username' AND password = '$password'&quot;;
+</pre>
+
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide titleslide">
+				<h1>3. Breaking and securing an example page</h1>
+				
+				<ul>
+					<li>PHP/SQL review</li>
+					<li>some basic web attacks</li>
+					<li><strong>breaking and securing an example page</strong></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide practiceproblem">
+				<h1>Practice problem: Hack Recipeland</h1>
+				
+				<ul>
+					<li>How can we break this page? <br />
+						<a href="https://webster.cs.washington.edu/kwal/lec24/recipeland/view.php?page=recipes/cake.html">https://webster.cs.washington.edu/kwal/lec24/recipeland/view.php?page=recipes/cake.html</a>
+					</li>
+					
+					<li>How can we correct the security problems and fix the page?</li>
+				</ul>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->

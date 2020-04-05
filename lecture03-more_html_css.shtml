@@ -1,0 +1,984 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 3: More Basic HTML/CSS</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 3</h1>
+				<h2>More Basic HTML/CSS</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 3 <br /> More Basic HTML/CSS</h3>
+				<h4>Reading: 2.2; 3.1 - 3.3</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>2.2: More HTML Elements</h1>
+				
+				<ul>
+					<li>
+						2.1: Basic HTML
+					</li>
+					<li>
+						<strong>2.2: More HTML Elements</strong>
+					</li>
+					<li>
+						2.3: Web Standards
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Web page metadata:
+					<a href="http://www.w3schools.com/tags/tag_meta.asp"><code>&lt;meta&gt;</code></a>
+					<span class="readingsection">(2.3.3)</span>
+				</h1>
+
+				<p class="description">
+					information about your page (for a browser, search engine, etc.)
+				</p>
+
+<pre class="examplecode html">
+&lt;<em>meta</em> http-equiv=&quot;Content-Type&quot;
+ content=&quot;text/html; charset=iso-8859-1&quot; /&gt;
+&lt;<em>meta</em> name=&quot;description&quot; 
+ content=&quot;Authors' web site for Building Java Programs.&quot; /&gt;
+&lt;<em>meta</em> name=&quot;keywords&quot; content=&quot;java, textbook&quot; /&gt;
+</pre>
+
+				<ul>
+					<li>placed in the <code>head</code> of your XHTML page</li>
+					<li><code>meta</code> tags often have both the <code>name</code> and <code>content</code> attributes
+						<ul>
+							<li>some <code>meta</code> tags use the <code>http-equiv</code> attribute instead of <code>name</code></li>
+						</ul>
+					</li>
+					<li>using a <code>meta</code> tag for <code>Content-Type</code> gets rid of validator &quot;tentatively valid&quot; warnings
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Definition list:
+					<a href="http://www.w3schools.com/tags/tag_dl.asp"><code>&lt;dl&gt;</code></a>, <a href="http://www.w3schools.com/tags/tag_dt.asp"><code>&lt;dt&gt;</code></a>, <a href="http://www.w3schools.com/tags/tag_dd.asp"><code>&lt;dd&gt;</code></a>
+				</h1>
+
+				<p class="description">
+					<code>dl</code> represents a list of definitions of terms (block) <br />
+					<code>dt</code> represents each term, and <code>dd</code> its definition
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;dl&gt;</em>
+	<em>&lt;dt&gt;</em>newbie<em>&lt;/dt&gt; &lt;dd&gt;</em>one who does not have mad skills<em>&lt;/dd&gt;</em>
+	<em>&lt;dt&gt;</em>own<em>&lt;/dt&gt; &lt;dd&gt;</em>to soundly defeat
+		(e.g. I owned that newbie!)<em>&lt;/dd&gt;</em>
+	<em>&lt;dt&gt;</em>frag<em>&lt;/dt&gt; &lt;dd&gt;</em>a kill in a shooting game<em>&lt;/dd&gt;</em>
+<em>&lt;/dl&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput" style="font-size: smaller;"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Quotations: <a href="http://www.w3schools.com/tags/tag_blockquote.asp"><code>&lt;blockquote&gt;</code></a>
+					<span class="readingsection">(2.2.3)</span>
+				</h1>
+
+				<p class="description">
+					a lengthy quotation (block)
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;As Lincoln said in his famous Gettysburg Address:&lt;/p&gt;
+<em>&lt;blockquote&gt;</em>
+	&lt;p&gt;Fourscore and seven years ago, our fathers brought forth
+		on this continent a new nation, conceived in liberty, and 
+		dedicated to the proposition that all men are created equal.&lt;/p&gt;
+<em>&lt;/blockquote&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Inline quotations: <a href="http://www.w3schools.com/tags/tag_q.asp"><code>&lt;q&gt;</code></a></h1>
+
+				<p class="description">a short quotation (inline)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;Quoth the Raven, <em>&lt;q&gt;</em>Nevermore.<em>&lt;/q&gt;</em>&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>
+						Why not just write the following?<br />
+						<code>&lt;p&gt;Quoth the Raven, "Nevermore."&lt;/p&gt;</code>
+					</li>
+				</ul>
+
+				<div class="handout">
+					<p>We don't use &quot; marks for two reasons:</p>
+					<ol>
+						<li>XHTML shouldn't contain literal quotation mark characters; they should be written as <code>&amp;quot;</code></li>
+						<li>using <code>&lt;q&gt;</code> allows us to apply CSS styles to quotations (seen later)</li>
+					</ol>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					HTML Character Entities
+					<span class="readingsection">(2.2.4)</span>
+				</h1>
+
+				<p class="description">
+					a way of representing any <a href="http://en.wikipedia.org/wiki/Unicode">Unicode</a> character within a web page
+				</p>
+
+				<table class="standard">
+					<tr><th class="spaced slidetable">character(s)</th><th class="slidetable">entity</th></tr>
+					<tr class="code"><td>&lt; &gt;</td><td>&amp;lt; &amp;gt;</td></tr>
+					<tr class="code"><td>&eacute; &egrave; &ntilde;</td><td>&amp;eacute; &amp;egrave; &amp;ntilde;</td></tr>
+					<tr class="code"><td>&trade; &copy;</td><td>&amp;trade; &amp;copy;</td></tr>
+					<tr class="code"><td>&pi; &delta; &Delta;</td><td>&amp;pi; &amp;delta; &amp;Delta;</td></tr>
+					<tr class="code"><td>&#1048;</td><td>&amp;#1048;</td></tr>
+					<tr class="code"><td>&quot; &amp;</td><td>&amp;quot; &amp;amp;</td></tr>
+				</table>
+
+				<ul>
+					<li><a href="http://www.w3schools.com/tags/ref_entities.asp">Complete list of HTML entities</a></li>
+					<li>How would you display the text <code>&amp;amp;</code> on a web page?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>HTML-encoding text</h1>
+
+				<div class="example">
+<pre class="examplecode html" style="font-size: smaller;">
+<em>&amp;lt;</em>p<em>&amp;gt;
+	&amp;lt;</em>a href=<em>&amp;quot;</em>http://google.com/search?q=marty<em>&amp;amp;</em>ie=utf-8<em>&amp;amp;</em>aq=t<em>&amp;quot;&amp;gt;</em>
+		Search Google for Marty
+	<em>&amp;lt;</em>/a<em>&amp;gt;
+&amp;lt;</em>/p<em>&amp;gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>To display the link text in a web page, its special characters must be encoded as shown above</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Computer code:
+					<a href="http://www.w3schools.com/tags/tag_phrase_elements.asp"><code>&lt;code&gt;</code></a>
+				</h1>
+
+			<p class="description">
+				<code>code</code>: a short section of computer code (usually rendered in a fixed-width font)
+			</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;
+	The <em>&lt;code&gt;</em>ul<em>&lt;/code&gt;</em> and <em>&lt;code&gt;</em>ol<em>&lt;/code&gt;</em>
+	tags make lists.
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Preformatted text:
+					<a href="http://www.w3schools.com/tags/tag_pre.asp"><code>&lt;pre&gt;</code></a>
+				</h1>
+
+				<p class="description">a large section of pre-formatted text (block)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;pre&gt;</em>
+         Steve Jobs speaks loudly
+            reality distortion
+           Apple fans bow down
+<em>&lt;/pre&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>displayed with exactly the whitespace / line breaks given in the text</li>
+					<li>shown in a fixed-width font by default</li>
+					<li>how would it look if we had instead enclosed it in <code>code</code> tags?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>3.1: Basic CSS</h1>
+				
+				<ul>
+					<li>
+						<strong>3.1: Basic CSS</strong>
+					</li>
+					<li>
+						3.2: More CSS
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Grouping styles</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p<em>, h1, h2</em> {
+	color: green;
+}
+h2 {
+	background-color: yellow;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the above style.</p>
+						<h2>This h2 uses the above styles.</h2>
+					</div>
+				</div>
+
+				<ul>
+					<li>a style can select multiple elements separated by commas</li>
+					<li>the individual elements can also have their own styles (like <code>h2</code> above)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					CSS comments:
+					<code>/*</code> ... <code>*/</code>
+					<span class="readingsection">(3.1.4)</span>
+				</h1>
+
+				<pre class="examplecode css">
+<span class="comment">/* This is a comment.
+  It can span many lines in the CSS file. */</span>
+p {
+	color: red;
+	background-color: aqua;
+}
+</pre>
+
+				<ul>
+					<li>CSS (like HTML) is usually not commented as rigorously as programming languages such as Java</li>
+					<li>the <code>//</code> single-line comment style is NOT supported in CSS</li>
+					<li>the <code>&lt;!-- ... --&gt;</code> HTML comment style is also NOT supported in CSS</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					CSS properties for <a href="http://www.theonion.com/content/node/28261">fonts</a>
+					<span class="readingsection">(3.1.5)</span>
+				</h1>
+				
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_font_font-family.asp">font-family</a></code>
+						</td>
+						<td>
+							which font will be used
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_font_font-size.asp">font-size</a></code>
+						</td>
+						<td>
+							how large the letters will be drawn
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_font_font-style.asp">font-style</a></code>
+						</td>
+						<td>
+							used to enable/disable italic style
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_font_weight.asp">font-weight</a></code>
+						</td>
+						<td>
+							used to enable/disable bold style
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" class="completelist">
+							<a href="http://www.w3schools.com/css/css_reference.asp#font">Complete list of font properties</a>
+						</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_font_font-family.asp">font-family</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>font-family: Georgia;</em>
+}
+h2 {
+	<em>font-family: &quot;Courier New&quot;;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the first style above.</p>
+						<h2>This h2 uses the second style above.</h2>
+					</div>
+				</div>
+
+				<ul>
+					<li>enclose multi-word font names in quotes</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More about <code>font-family</code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	font-family: <em>Garamond, &quot;Times New Roman&quot;, serif</em>;
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the above style.</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>can specify multiple fonts from highest to lowest priority</li>
+					<li><span class="term">generic font names</span>: <br />
+					<span style="font-family: serif">serif</span>, <span style="font-family: sans-serif">sans-serif</span>, <span style="font-family: cursive">cursive</span>, <span style="font-family: fantasy">fantasy</span>, <span style="font-family: monospace">monospace</span></li>
+				</ul>
+
+				<div class="handout">
+					<ul>
+						<li>if the first font is not found on the user's computer, the next is tried</li>
+						<li>generally should specify similar fonts</li>
+						<li>placing a generic font name at the end of your <code>font-family</code> value ensures that every computer will use a valid font</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_font_font-size.asp">font-size</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>font-size: 14pt;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the style above.</p>
+					</div>
+
+				</div>
+
+				<ul>
+					<li><a href="http://www.w3schools.com/css/css_units.asp">units: pixels (<code>px</code>) vs. point (<code>pt</code>) vs. m-size (<code>em</code>)</a><br />
+					<code style="font-size: 16px;">16px</code>, <code style="font-size: 16pt;">16pt</code>, <code style="font-size: 1.16em;">1.16em</code></li>
+					<li>vague font sizes: <code style="font-size: xx-small;">xx-small</code>, <code style="font-size: x-small;">x-small</code>, <code style="font-size: small;">small</code>, <code style="font-size: medium;">medium</code>, <code style="font-size: large;">large</code>, <code style="font-size: x-large;">x-large</code>, <code style="font-size: xx-large;">xx-large</code>, <code style="font-size: smaller;">smaller</code>, <code style="font-size: larger;">larger</code></li>
+					<li>percentage font sizes, e.g.: <code style="font-size: 90%;">90%</code>, <code style="font-size: 120%;">120%</code></li>
+				</ul>
+
+				<div class="handout">
+					<ul>
+						<li><code>pt</code> specifies number of <em>point</em>, where a point is 1/72 of an inch onscreen</li>
+						<li><code>px</code> specifies a number of pixels on the screen</li>
+						<li><code>em</code> specifies number of <em>m-widths</em>, where 1 em is equal to the font's current size</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<code><a href="http://www.w3schools.com/css/pr_font_font-weight.asp">font-weight</a></code>,
+					<code><a href="http://www.w3schools.com/css/pr_font_font-style.asp">font-style</a></code>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>font-weight: bold;</em>
+	<em>font-style: italic;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the style above.</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>either of the above can be set to <code>normal</code> to turn them off (e.g. headings)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					CSS properties for text
+					<span class="readingsection">(3.1.6)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_text_text-align.asp">text-align</a></code>
+						</td>
+						<td>
+							alignment of text within its element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_text_text-decoration.asp">text-decoration</a></code>
+						</td>
+						<td>
+							decorations such as underlining
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_dim_line-height.asp">line-height</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_text_word-spacing.asp">word-spacing</a></code>, <br />
+							<code><a href="http://www.w3schools.com/css/pr_text_letter-spacing.asp">letter-spacing</a></code>
+						</td>
+						<td>
+							gaps between the various portions of the text
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_text_text-indent.asp">text-indent</a></code>
+						</td>
+						<td>
+							indents the first letter of each paragraph
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2" class="completelist">
+							<a href="http://www.w3schools.com/css/css_reference.asp#text">Complete list of text properties</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_text_text-align.asp">text-align</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+blockquote { <em>text-align: justify;</em> }
+h2 { <em>text-align: center;</em> }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<h2 style="text-align: center;">The Emperor's Quote</h2>
+
+						<blockquote style="text-align: justify;">
+							<p>
+								[TO LUKE SKYWALKER] The alliance... will die. As will your friends. Good, I can feel your anger. I am unarmed. Take your weapon. Strike me down with all of your hatred and your journey towards the dark side will be complete.
+							</p>
+						</blockquote>
+					</div>
+				</div>
+
+				<ul>
+					<li><code>text-align</code> can be <code>left</code>, <code>right</code>, <code>center</code>, or <code>justify</code> (which widens all full lines of the element so that they occupy its entire width) </li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_text_text-decoration.asp">text-decoration</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p {
+	<em>text-decoration: underline;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p style="text-decoration: underline;">This paragraph uses the style above.</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>can also be <code style="text-decoration: overline;">overline</code>, <code style="text-decoration: line-through;">line-through</code>, <code style="text-decoration: blink;">blink</code>, or <code>none</code></li>
+					<li>
+						effects can be combined:
+						<p><code>text-decoration: overline underline;</code></p>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <a href="http://www.w3schools.com/css/pr_list-style-type.asp"><code>list-style-type</code></a> property
+					<span class="readingsection">(3.2.4)</span>
+				</h1>
+
+				<pre class="examplecode css">
+ol { <em>list-style-type: lower-roman;</em> }
+</pre>
+				
+				<ul style="list-style-type: square">
+					<li>Possible values:
+						<ol style="list-style-type: lower-roman">
+							<li><code>none</code> : No marker</li>
+							<li><code>disc</code> (default), <code>circle</code>, <code>square</code></li>
+							<li><code>decimal</code> : 1, 2, 3, etc.</li>
+							<li><code>decimal-leading-zero</code> : 01, 02, 03, etc.</li>
+							<li><code>lower-roman</code> : i, ii, iii, iv, v, etc.</li>
+							<li><code>upper-roman</code> : I, II, III, IV, V, etc.</li>
+							<li><code>lower-alpha</code> : a, b, c, d, e, etc.</li>
+							<li><code>upper-alpha</code> : A, B, C, D, E, etc.</li>
+							<li><code>lower-greek</code> : alpha, beta, gamma, etc.</li>
+							<li>others: <code>hebrew</code>, <code>armenian</code>, <code>georgian</code>, <code>cjk-ideographic</code>, <code>hiragana</code>, <code>katakana</code>, <code>hiragana-iroha</code>, <code>katakana-iroha</code></li>
+						</ol>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>3.2: More CSS</h1>
+				
+				<ul>
+					<li>
+						3.1: Basic CSS
+					</li>
+					<li>
+						<strong>3.2: More CSS</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Body styles</h1>
+
+				<pre class="examplecode css">
+<em>body</em> {
+	font-size: 16px;
+}
+</pre>
+
+				<ul>
+					<li>to apply a style to the entire body of your page, write a selector for the <code>body</code> element</li>
+					<li>saves you from manually applying a style to each element</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><em>Cascading</em> style sheets</h1>
+
+				<ul>
+					<li>it's called Cascading Style Sheets because the properties of an element <em><a href="http://m-w.com/dictionary/cascade">cascade</a></em> together in this order:
+						<ul>
+							<li>browser's default styles</li>
+							<li>external style sheet files (in a <code>&lt;link&gt;</code> tag)</li>
+							<li>internal style sheets (inside a <code>&lt;style&gt;</code> tag in the page's header)</li>
+							<li>inline style (the <code>style</code> attribute of the HTML element)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Inheriting styles
+					(<a href="http://www.autisticcuckoo.net/archive.php?id=2005/01/22/inheritance-vs-cascade">explanation</a>)
+					<span class="readingsection">(3.2.1)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+body { font-family: sans-serif; background-color: yellow; }
+p { color: red; background-color: aqua; }
+a { text-decoration: overline underline; }
+h2 { font-weight: bold; text-align: center; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<h2>This is a heading.</h2>
+						<p>A styled paragraph.  <a href="2-html.html">Previous slides</a> are available on the web site.</p>
+						<ul>
+							<li>a bulleted list</li>
+						</ul>
+					</div>
+				</div>
+
+				<ul>
+					<li>when multiple styles apply to an element, they are <span class="term">inherited</span></li>
+					<li>a more tightly matching rule can override a more general inherited rule</li>
+					<li>not all properties are inherited (notice link's color above)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Styles that conflict</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+p, h1, h2 { color: blue; font-style: italic; }
+h2 { <em>color: red;</em> background-color: yellow; }
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This paragraph uses the first style above.</p>
+
+						<h2 style="font-size: larger; font-style: italic; color: red; background-color: yellow;">This heading uses both styles above.</h2>
+					</div>
+				</div>
+
+				<ul>
+					<li>when two styles set conflicting values for the same property, the latter style takes precedence</li>
+					<li>
+						(later we will learn about more specific styles that can override more general styles)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					W3C CSS Validator
+					<span class="readingsection">(3.2.6)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode css">
+&lt;p&gt;
+	&lt;a href=&quot;http://jigsaw.w3.org/css-validator/check/referer&quot;&gt;
+		&lt;img src=&quot;http://jigsaw.w3.org/css-validator/images/vcss&quot;
+			alt=&quot;Valid CSS!&quot; /&gt;&lt;/a&gt;
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput">
+						<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+					</div>
+				</div>
+
+				<ul>
+					<li><a href="http://jigsaw.w3.org/css-validator/">jigsaw.w3.org/css-validator/</a></li>
+					<li>checks your CSS to make sure it meets the official CSS specifications</li>
+					<li>more picky than the web browser, which may render malformed CSS correctly</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>CSS <a href="http://www.w3schools.com/css/css_reference.asp#background">properties for backgrounds</a></h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_background-color.asp">background-color</a></code>
+						</td>
+						<td>
+							color to fill background
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_background-image.asp">background-image</a></code>
+						</td>
+						<td>
+							image to place in background
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_background-position.asp">background-position</a></code>
+						</td>
+						<td>
+							placement of bg image within element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_background-repeat.asp">background-repeat</a></code>
+						</td>
+						<td>
+							whether/how bg image should be repeated
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_background-attachment.asp">background-attachment</a></code>
+						</td>
+						<td>
+							whether bg image scrolls with page
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/css/pr_background.asp">background</a></code>
+						</td>
+						<td>
+							shorthand to set all background properties
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_background-image.asp">background-image</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+body {
+	<em>background-image: url(&quot;images/draft.jpg&quot;);</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput" style="background-repeat: repeat; background-position: inherit;">
+						<p>
+							This is the first paragraph
+						</p>
+
+						<p>
+							This is the second paragraph...<br />
+							It occupies 2 lines
+						</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>background image/color fills the element's content area</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_background-repeat.asp">background-repeat</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+body {
+	background-image: url(&quot;images/draft.jpg&quot;);
+	<em>background-repeat: repeat-x;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput" style="background-position: inherit;">
+						<p>This is the first paragraph</p>
+						<p>This is the second paragraph...<br />
+						It occupies 2 lines</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>can be <code>repeat</code> (default), <code>repeat-x</code>, <code>repeat-y</code>, or <code>no-repeat</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code><a href="http://www.w3schools.com/css/pr_background-position.asp">background-position</a></code></h1>
+
+				<div class="example">
+<pre class="examplecode css">
+body {
+	background-image: url(&quot;images/draft.jpg&quot;);
+	background-repeat: no-repeat;
+	<em>background-position: 370px 20px;</em>
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<p>This is the first paragraph</p>
+						<p>This is the second paragraph...<br />
+						It occupies 2 lines</p>
+					</div>
+				</div>
+
+				<ul>
+					<li>value consists of two tokens, each of which can be <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code>, <code>center</code>, a percentage, or a length value in <code>px</code>, <code>pt</code>, etc.</li>
+					<li>value can be negative to shift left/up by a given amount</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Favorites icon (&quot;favicon&quot;)</h1>
+
+				<pre class="syntaxtemplate html">
+&lt;link href=&quot;<var>filename</var>&quot; type=&quot;<var>MIME type</var>&quot; rel=&quot;shortcut icon&quot; /&gt;
+</pre>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;link href=&quot;yahoo.gif&quot; type=&quot;image/gif&quot; rel=&quot;shortcut icon&quot; /&gt;
+</pre>
+
+					<div class="exampleoutput">
+						<img src="images/favicon1.gif" alt="favicon" /> <img src="images/favicon2.gif" alt="favicon" />
+					</div>
+				</div>
+
+				<ul>
+					<li>the <code>link</code> tag, placed in the HTML page's <code>head</code> section, can specify an icon for a web page
+						<ul>
+						<li>this icon will be placed in the browser title bar and bookmark/favorite</li>
+						</ul>
+					</li>
+					<li>IE6: this doesn't work; must place a file in <code>.ico</code> format named <code>favicon.ico</code> in the root directory of the web server (<a href="http://www.clickfire.com/viewpoints/articles/favicons.php">instructions</a>)</li>
+				</ul>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

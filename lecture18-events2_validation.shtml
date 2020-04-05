@@ -1,0 +1,489 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 18: More Events and Validation</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 18</h1>
+				<h2>More Events and Validation</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 18 <br /> More Events and Validation</h3>
+				<h4>Reading: 9.2 - 9.3</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Page/window events
+					<span class="readingsection">(9.2.5)</span>
+				</h1>
+				
+				<table class="standard">
+					<tr>
+						<th>name</th><th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onload.asp">load</a></code>
+						</td>
+						<td>
+							the browser loads the page
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onunload.asp">unload</a></code>
+						</td>
+						<td>
+							the browser exits the page
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onresize.asp">resize</a></code>
+						</td>
+						<td>
+							the browser window is resized
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>contextmenu</code>
+						</td>
+						<td>
+							the user right-clicks to pop up a context menu
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onerror.asp">error</a></code>
+						</td>
+						
+						<td>
+							an error occurs when loading a document or an image
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						The above events can be handled on the global <code>window</code> object.  Also:
+					</li>
+				</ul>
+
+				<pre class="examplecode js">
+<span class="comment">// best way to attach event handlers on page load</span>
+<del>window.onload = function() { ... };</del>
+<em>document.observe(&quot;dom:loaded&quot;</em>, function() {
+	$(&quot;orderform&quot;).observe(&quot;submit&quot;, verify);
+});
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Form events
+					<span class="readingsection">(9.2.4)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							event name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onsubmit.asp">submit</a></code>
+						</td>
+						<td>
+							form is being submitted
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onreset.asp">reset</a></code>
+						</td>
+						<td>
+							form is being reset
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onchange.asp">change</a></code>
+						</td>
+						<td>
+							the text or state of a form control has changed
+						</td>
+					</tr>
+							
+					<!--
+					<li><code><a href="http://www.w3schools.com/jsref/jsref_onabort.asp">onabort</a></code> : the loading of an image is aborted</li>
+					-->
+				</table>
+				
+				<pre class="examplecode js">
+window.observe(&quot;load&quot;, function() {
+	$(&quot;orderform&quot;).observe(&quot;submit&quot;, verify);
+});
+
+function verify(event) {
+	if (<em>$(&quot;zipcode&quot;)</em>.value.length &lt; 5) {
+		event.stop();       <span class="comment">// cancel form submission unless</span>
+	}                     <span class="comment">// zip code is 5 chars long</span>
+}
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Prototype and forms
+					<span class="readingsection">(9.1.6)</span>
+				</h1>
+				
+				<pre class="syntaxtemplate js">
+$(&quot;<var>id</var>&quot;)[&quot;<var>name</var>&quot;]
+</pre>
+
+				<ul style="margin-bottom: 1em">
+					<li>
+						gets parameter with given <strong>name</strong> from form with given <strong>id</strong>
+					</li>
+				</ul>
+
+				<pre class="syntaxtemplate js">
+<em>$F</em>(&quot;<var>id</var>&quot;)
+</pre>
+
+				<ul>
+					<li>
+						<code>$F</code> returns the value of a form control with the given <strong>id</strong>
+
+				<pre class="examplecode js">
+var name = <em>$F(&quot;username&quot;)</em>;
+if (name.length &lt; 4) {
+	$(&quot;username&quot;).<em>clear</em>();
+	$(&quot;login&quot;).<em>disable</em>();
+}
+</pre>
+					</li>
+				</ul>
+				
+				<ul>
+					<li>
+						other form control methods:
+					</li>
+				</ul>
+
+				<table class="standard">
+					<tr>
+						<td><code>activate</code></td>
+						<td><code>clear</code></td>
+						<td><code>disable</code></td>
+						<td><code>enable</code></td>
+					</tr>
+					<tr>
+						<td><code>focus</code></td>
+						<td><code>getValue</code></td>
+						<td><code>present</code></td>
+						<td><code>select</code></td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Client-side validation code</h1>
+
+<pre class="examplecode html">
+&lt;form <em>id=&quot;exampleform&quot;</em> action=&quot;http://foo.com/foo.php&quot;&gt;
+</pre>
+
+<pre class="examplecode js">
+window.onload = function() {
+	<em>$(&quot;exampleform&quot;).onsubmit</em> = checkData;
+};
+
+function checkData(<em>event</em>) {
+	if ($(&quot;city&quot;).value == &quot;&quot; || $(&quot;state&quot;).value.length != 2) {
+		<em>Event.stop(event);</em>
+		alert(&quot;Error, invalid city/state.&quot;);  <span class="comment">// show error message</span> 
+	}
+}
+</pre>
+
+				<ul>
+					<li>forms expose <code>onsubmit</code> and <code>onreset</code> events</li>
+					<li>to abort a form submission, call Prototype's <a href="http://www.prototypejs.org/api/event/stop"><code>Event.stop</code></a> on the event</li>
+				</ul>
+			</div>
+			
+			
+			
+			<!-- talk more about forms/validation -->
+			
+			
+			
+			<div class="slide">
+				<h1>Regular expressions in JavaScript</h1>
+
+				<ul>
+					<li><code><span class="syntaxtemplate">string</span>.match(<span class="syntaxtemplate">regex</span>)
+						<ul>
+							<li>if string fits the pattern, returns the matching text; else returns <code>null</code></li>
+							<li>can be used as a Boolean truthy/falsey test:<br />
+							<code>var name = $(&quot;name&quot;).value;<br />if (name.match(<em>/[a-z]+/</em>)) { ... }</code></li>
+						</ul>
+					</li>
+					<li>an <code>i</code> can be placed after the regex for a case-insensitive match
+						<ul>
+							<li><code>name.match(/Marty/i)</code> will match <code>&quot;marty&quot;</code>, <code>&quot;MaRtY&quot;</code>, ...</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Replacing text with regular expressions</h1>
+
+				<ul>
+					<li><code><span class="syntaxtemplate">string</span>.replace(<span class="syntaxtemplate">regex</span>, &quot;<span class="syntaxtemplate">text</span>&quot;)
+						<ul>
+							<li>replaces the first occurrence of given pattern with the given text</li>
+							<li><code>var str = "Marty Stepp";</code><br />
+							<code>str.replace(/[a-z]/, "x")</code> returns <code>&quot;M<em>x</em>rty Stepp&quot;</code></li>
+							<li>returns the modified string as its result; must be stored<br />
+							<code><em>str = </em>str.replace(/[a-z]/, &quot;x&quot;)</code></li>
+						</ul>
+					</li>
+					<li class="incremental">a <code>g</code> can be placed after the regex for a global match (replace all occurrences)
+						<ul>
+							<li><code>str.replace(/[a-z]/g, "x")</code> returns <code>"Mxxxx Sxxxx"</li>
+						</ul>
+					</li>
+					<li class="incremental">using a regex as a filter
+						<ul>
+							<li><code>str = str.replace(/[^A-Z]+/g, "")</code> turns <code>str</code> into <code>"MS"</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Keyboard/text events
+					<span class="readingsection">(9.2.3)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>name</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeydown.asp">keydown</a></code>
+						</td>
+						<td>
+							user presses a key while this element has keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeyup.asp">keyup</a></code>
+						</td>
+						<td>
+							user releases a key while this element has keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeypress.asp">keypress</a></code>
+						</td>
+						<td>
+							user presses and releases a key while this element has keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onfocus.asp">focus</a></code>
+						</td>
+						<td>
+							this element gains keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onblur.asp">blur</a></code>
+						</td>
+						<td>
+							this element loses keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onselect.asp">select</a></code>
+						</td>
+						<td>
+							this element's text is selected or deselected)
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						<span class="term">focus</span>: the attention of the user's keyboard (given to one element at a time)</li>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Key event objects</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>keyCode</code>
+						</td>
+						<td>
+							ASCII integer value of key that was pressed <br />
+							(convert to char with <a href="http://www.quirksmode.org/js/keys.html"><code>String.fromCharCode</code></a>)
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>altKey</code>, <code>ctrlKey</code>, <code>shiftKey</code>
+						</td>
+						<td>
+							<code>true</code> if Alt/Ctrl/Shift key is being held
+						</td>
+					</tr>
+				</table>
+				
+				<table class="standard" style="font-size: smaller">
+					<caption>Prototype's key code constants</caption>
+				
+					<tr>
+						<td>
+							<code>Event.KEY_BACKSPACE</code>
+						</td>
+						<td>
+							<code>Event.KEY_DELETE</code>
+						</td>
+						<td>
+							<code>Event.KEY_DOWN</code>
+						</td>
+						<td>
+							<code>Event.KEY_END</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Event.KEY_ESC</code>
+						</td>
+						<td>
+							<code>Event.KEY_HOME</code>
+						</td>
+						<td>
+							<code>Event.KEY_LEFT</code>
+						</td>
+						<td>
+							<code>Event.KEY_PAGEDOWN</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Event.KEY_PAGEUP</code>
+						</td>
+						<td>
+							<code>Event.KEY_RETURN</code>
+						</td>
+						<td>
+							<code>Event.KEY_RIGHT</code>
+						</td>
+						<td>
+							<code>Event.KEY_TAB</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Event.KEY_UP</code>
+						</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						issue: if the event you attach your listener to doesn't have the focus, you won't hear the event
+						<ul>
+							<li>
+								possible solution: attach key listener to entire page body, outer element, etc.
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

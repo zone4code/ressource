@@ -1,0 +1,430 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 28: What's Next?</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 28</h1>
+				<h2>What's Next?</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 28 <br /> What's Next?</h3>
+				<h4>Reading: Ch. 13</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp, Jessica Miller, and Alex Loddengaard.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>We've come so far...</h1>
+
+				<ul>
+					<li>web programming is now in your blood</li>
+					<li>you now (probably) get these jokes: <br />
+						<img src="images/html_tattoo.jpg" alt="HTML tattoo" /> 
+						<img src="images/noclue.jpg" alt="No clue T-shirt" /> 
+						<img src="images/delete_cookies.jpg" alt="Cookie Monster" /> 
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>Awesome student work!</h1>
+				
+				<div style="position: relative">
+					<div class="imageslideshow"><img src="images/hw1_1.png" alt="student work" class="incremental" /></div>
+					<div class="imageslideshow"><img src="images/hw2_1.png" alt="student work" class="incremental" /></div>
+					<div class="imageslideshow"><img src="images/hw2_2.png" alt="student work" class="incremental" /></div>
+					<div class="imageslideshow"><img src="images/hw4_1.png" alt="student work" class="incremental" /></div>
+					<div class="imageslideshow"><img src="images/hw4_2.png" alt="student work" class="incremental" /></div>
+					<div class="imageslideshow"><img src="images/hw4_3.png" alt="student work" class="incremental" /></div>
+					<div class="imageslideshow"><img src="images/hw4_4.png" alt="student work" class="incremental" /></div>
+
+					<ul>
+						<li>
+							HW1:
+							<a href="https://webster.cs.washington.edu/scharpn/hw1/index.html">Grandma's estate sale</a>,
+							<a href="https://pascal.cs.washington.edu/gradeit/courses/190m/08sp/hw1/files/MB/MEGAARD_0734203/index.html">John M.'s home cookin'</a>,
+							<a href="https://webster.cs.washington.edu/acleone/hw1/index.html">Rotating Pi</a>
+						</li>
+						
+						<li>
+							HW2:
+							<a href="https://webster.cs.washington.edu/jonobird/hw2/index.html">TMNT review</a>
+						</li>
+						
+						<li>
+							HW4: 
+							<a href="https://webster.cs.washington.edu/krystay/hw4/fifteen.html">Disney</a>, 
+							<a href="https://webster.cs.washington.edu/header/hw4/fifteen.html">kitty</a>,
+							<a href="https://webster.cs.washington.edu/bicknb/hw4/fifteen.html">hard to solve</a>,
+							<a href="https://webster.cs.washington.edu/thomsbg/hw4/fifteen.html">vg chars</a>, 
+							<a href="https://webster.cs.washington.edu/ganzhj/hw4/fifteen.html">animated</a>
+						</li>
+						
+						<li>
+							HW5:
+							<a href="https://webster.cs.washington.edu/andreja/hw5/names.html">multi-name</a>
+						</li>
+						
+						<li>
+							HW6:
+							<a href="https://webster.cs.washington.edu/crowinck/hw6/todolist.html">paper</a>,
+							<a href="https://webster.cs.washington.edu/johnsj8/hw6/todolist.html">Jillyn's</a>,
+							<a href="https://webster.cs.washington.edu/thomsbg/hw6/todolist.html">draggable</a>,
+							<a href="https://webster.cs.washington.edu/jhbell/hw6/todolist.html">surprise</a>,
+							<a href="https://webster.cs.washington.edu/jonesjg/hw6/todolist.html">superheroes</a>,
+							<a href="https://webster.cs.washington.edu/samwr/hw6/todolist.html">Schedulinator</a>,
+							<a href="https://webster.cs.washington.edu/obrerm/hw6/todolist.html">fading</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+-->
+			
+			
+			
+			<div class="slide">
+				<h1>Sharing your work with others</h1>
+
+				<ul>
+					<li>show off your awesome programs to your friends!</li>
+					<li>put your web dev skillz (and links to your programs) on your resume!</li>
+					<li><a href="http://www.washington.edu/computing/web/publishing/students.html">set up your Dante web space</a></li>
+					<li>your UW web site will be at http://students.washington.edu/YOUR_UWNETID</li>
+					<li>put this line at the top of your PHP code:
+
+						<pre class="examplecode php">
+&lt;?php
+error_reporting(E_ALL);   <span class="comment"># makes dante show error messages</span>
+...
+</pre>
+					
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Protecting web resources</h1>
+				
+				<ul>
+					<li>
+						please don't post your HW solutions on the web unprotected! <br />
+						(we want to be able to assign some of these programs again)
+					</li>
+					<li>posting resources with a shared password:
+						<ul>
+							<li>create files named <code>.htaccess</code> and <code>.htpasswd</code> with proper contents and put them in your HW root folder on Dante</li>
+							<li>doesn't require a UW NetID</li>
+							<li>can give password to friends / family / employers</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Example <code>htaccess</code>, <code>htpasswd</code> files</h1>
+
+				<p>
+					<code>.htaccess</code> :
+				</p>
+				
+<pre class="boxed">
+AuthUserFile .htpasswd
+AuthGroupFile /dev/null
+AuthName EnterPassword
+AuthType Basic
+require user <var>USERNAME</var>
+</pre>
+
+				<p>
+					<code>.htpasswd</code> :
+				</p>
+				
+<pre class="boxed">
+<var>USERNAME</var>:<var>ENCRYPTEDPASSWORD</var>
+</pre>
+
+				<hr />
+
+				<ul>
+					<li>place these files in the top folder of the content you want to protect</li>
+					<li><a href="http://www.htaccesstools.com/htpasswd-generator/">htpasswd generator</a> (gives you the text to copy-paste into your <code>.htpasswd</code> file)</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Getting Ajax to work</h1>
+				
+				<ul>
+					<li>Ajax (<code>XMLHttpRequest</code>, <code>Ajax.Request</code>) can only connect to the same server as where your .html and .js files are located</li>
+					<li>If you put your work up on Dante, your Ajax code will be unable to reach Webster!</li>
+					<li>Solution: Put <a href="../proxy.php">proxy.php</a> in the same folder as your Dante code, and change any Ajax URLs
+						<ul>
+							<li>from: <code>http://webster.cs.washington.edu/<var>dir</var>/<var>file.ext</var></code></li>
+							<li>to: <code><strong>proxy.php?url=</strong>http://webster.cs.washington.edu/<var>dir</var>/<var>file.ext</var></code></li>
+							<li>if URL has parameters, encode the query string with JS <a href="http://www.w3schools.com/jsref/jsref_escape.asp"><code>escape</code></a> function</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>MySQL on dante</h1>
+				
+				<ul>
+					<li>
+						<a href="http://www.washington.edu/computing/web/publishing/mysql-installed.html">How to use MySQL on Dante</a>
+
+						<ul>
+							<li>
+								or, if that doesn't work, <a href="http://www.washington.edu/computing/web/publishing/mysql-install.html">install it yourself</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						download our databases:
+						<a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/databases/simpsons.sql">simpsons.sql</a>,
+						<a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/databases/world.sql">world.sql</a>,
+						<a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/databases/imdb_small.sql">imdb_small.sql</a>,
+						<a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/databases/imdb.sql">imdb.sql</a>
+					</li>
+					
+					<li>importing a database into MySQL from a file:
+						<ul>
+							<li>
+								upload one of the above <code>.sql</code> files to your Dante space
+							</li>
+							<li>
+								open an SSH terminal window on Dante and type:
+							</li>
+						</ul>
+
+<pre>
+mysql -u <var>username</var> -p <var>databaseName</var> &lt; <var>filename</var>.sql
+</pre>
+
+					</li>
+					
+					<li>exporting a database from MySQL to a <code>.sql</code> file:
+
+<pre>
+mysqldump -u <var>username</var> -p <var>databaseName</var> &gt; <var>filename</var>.sql
+</pre>
+
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Setting up your own web server</h1>
+
+				<ul>
+					<li>why?
+						<ul>
+							<li>test your web apps locally without needing to upload them to Dante</li>
+							<li>host your own projects from your house and connect to them</li>
+							<li>other useful services: SSH, VNC, SMB (Samba), CVS, ...</li>
+						</ul>
+					</li>
+
+					<li>how?
+						<ul>
+							<li>Linux: <a href="http://www.howtoforge.com/perfect_setup_ubuntu704">Ubuntu (LAMP) server tutorial</a></li>
+							<li>Windows: <a href="http://www.expertsrt.com/tutorials/Matt/install-apache.html">Apache (WAMP) tutorial</a>; <a href="http://www.2000trainers.com/iis-web-server-on-windows-xp/setting-up-a-windows-xp-web-server-with-iis/">IIS tutorial</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Revisiting past homework assignments</h1>
+
+				<ul>
+					<li>extensions to the assignments from this course:
+						<ul>
+							<li>HW1,2: Pick other web sites and try to mimic them</li>
+							<li>HW4: implement persistent dating data, uploading of images, a login system</li>
+							<li>HW5: rewrite the <code>gallery.js</code> functionality yourself using Ajax</li>
+							<li>HW6: use Scriptaculous to add effects and animate the movement of the tiles</li>
+							<li>HW7: write the PHP that reads <code>names.txt</code> and feeds XML to client</li>
+							<li>HW9: implement the real 6 degrees of Kevin Bacon as seen at <a href="http://oracleofbacon.org/">oracleofbacon</a></li>
+						</ul>
+					</li>
+
+					<li>make your assignments compatible w/ IE6, Opera, Safari, etc.</li>
+					
+					<li>
+						complete the extra features you didn't have time for during the quarter
+					</li>
+					
+					<li>
+						go back and look at the Ruby lecture notes; try some of the programs
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Further Learning</h1>
+
+				<div class="rightfigure" style="width: 200px">
+					<a href="http://javascript.crockford.com/">
+						<img src="images/crockford.jpg" alt="Douglas Crockford" />
+					</a>
+				</div>
+
+				<ul>
+					<li><a href="http://developer.yahoo.com/yui/theater/">Yahoo! web developer videos</a></li>
+					<li>more Javascript
+						<ul>
+							<li>learn to write classes/objects in Javascript (tutorial <a href="http://www.howtocreate.co.uk/tutorials/javascript/objects">#1</a>, <a href="http://chunkysoup.net/advanced/oojavascript1/">#2</a>)</li>
+							<li>
+								learn other JS libraries such as <a href="http://code.google.com/apis/ajaxsearch/">Google Ajax Search API</a> (<a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/lectures/slides/lecture18.5-google_ajax_api.html">slides</a>),
+								<a href="http://developer.yahoo.com/yui/">Yahoo! UI</a>, or <a href="http://jquery.com/">jQuery</a>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						topics we didn't have time to cover:
+						<ul>
+							<li>
+								<a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/lectures/slides/lecture21.5-web_design.html">Web design and usability</a>
+							</li>
+							<li>
+								<a href="lecture29-going_live.ppt">Going &quot;live&quot;</a>, making a real web site with your own domain name
+							</li>
+							<li>
+								Embedding <a href="http://www.cs.washington.edu/education/courses/cse190m/08sp/lectures/slides/lecture12.5-multimedia.html">multimedia content</a>
+								(<a href="http://www.cs.washington.edu/education/courses/cse190m/07sp/homework/6-carmen_sandiego/specification/hw6-carmen_sandiego.html">old HW assignment</a>)
+								(<a href="http://www.cs.washington.edu/education/courses/cse190m/07sp/homework.shtml">resources</a>)
+							</li>
+							<li>
+								Macromedia Flash:
+								<a href="http://www.w3schools.com/Flash/default.asp">tutorial 1</a>,
+								<a href="http://www.echoecho.com/flash.htm">tutorial 2</a>,
+								<a href="http://www.adobe.com/support/flash/tutorial_index.html">tutorial 3</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li>server-side web programming in Java
+						<ul>
+							<li>JSP / servlets (<a href="http://www.apl.jhu.edu/~hall/java/Servlet-Tutorial/">#1</a>, <a href="http://java.sun.com/products/servlet/articles/tutorial/">#2</a>)</li>
+							<li>applets (<a href="http://www.dgp.toronto.edu/~mjmcguff/learn/java/">#1</a>, <a href="http://java.sun.com/docs/books/tutorial/deployment/applet/index.html">#2</a>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Courses you can/should take</h1>
+
+				<ul>
+					<li><a href="http://www.cs.washington.edu/143/">CSE 143</a> - learn more about structuring data and algorithms (if you haven't taken it yet!)</li>
+					<li><a href="http://www.cs.washington.edu/education/courses/cse403/07wi/">CSE 403</a> - software engineering (large software projects)</li>
+					<li><a href="http://www.cs.washington.edu/education/courses/cse490h/">CSE 490H</a> - distributed systems</li>
+					<li><a href="http://www.cs.washington.edu/education/courses/cse499/">CSE 498/499</a> - senior capstones and project courses</li>
+					<li><a href="https://faculty.washington.edu/loter/info344/syllabus.php">INFO 343/344</a> - web design, web tools/development</li>
+					<li>ENTRE 475/476 - business aspects of web development</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Taking a web site &quot;live&quot;</h1>
+				
+				<ul>
+					<li>
+						<img class="rightfigure" src="images/pagerank.png" alt="PageRank" />
+
+						buy your own domain name (e.g. martystepp.com):
+						<a href="http://www.dreamhost.com/">DreamHost</a>
+					</li>
+					
+					<li>
+						learn about (stalk) your users with <a href="http://www.google.com/analytics">Google Analytics</a> <br />
+
+						<img src="images/webmastertools.png" alt="Google Webmaster Tools" />
+					</li>
+					
+					<li>
+						<img class="rightfigure" src="images/acents.png" alt="sense" />
+
+						improve your page / improve <a href="http://en.wikipedia.org/wiki/PageRank">PageRank</a>:
+						<a href="http://en.wikipedia.org/wiki/Search_engine_optimization"><abbr title="Search Engine Optimization">SEO</abbr></a>, <a href="http://webdesign.about.com/cs/metatags/a/aa083099.htm">meta tags</a>
+					</li>
+					
+					<li>
+						make a few bucks with ads: <a href="www.google.com/adsense">Google AdSense</a>
+					</li>
+					
+					<li>
+						get the word out: <a href="http://adwords.google.com">Google AdWords</a>,
+						<a href="http://www.google.com/webmasters">Webmaster Tools</a> <br />
+
+						<img src="images/awords.png" alt="words" />
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>Web design</h1>
+
+				<ul>
+					<li><a href="http://en.wikipedia.org/wiki/Usability"><span class="term">usability</span></a> : how easily users can actually use your site</li>
+					<li><a href="http://en.wikipedia.org/wiki/Accessibility"><span class="term">accessibility</span></a> : how easily groups of people (e.g. the disabled) can use your site</li>
+					<li><a href="http://en.wikipedia.org/wiki/Software_localization"><span class="term">localization</span></a> : making your program translatable into many languages</li>
+					<li><a href="http://en.wikipedia.org/wiki/Search_engine_optimization"><span class="term">search engine optimization</span></a> : making site easier for Google to index</li>
+
+					<li>design sites and blogs:
+						<ul>
+							<li><a href="http://alistapart.com">A List Apart</a>, <a href="http://www.cssplay.co.uk">CSS Play</a>, <a href="http://meyerweb.com/eric/css/edge/">css/edge</a>, <a href="http://www.designbyfire.com">Design by Fire</a>, <a href="http://www.zeldman.com/">Zeldman Presents</a>, <a href="http://www.quirksmode.org/">QuirksMode</a></li>
+							<li><a href="http://bad.webpagesthatsuck.com/">webpagesthatsuck.com</a></ul>
+							<li>(see Marty's extra web design slides)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+-->
+
+<!--#include virtual="commonbottom.html" -->

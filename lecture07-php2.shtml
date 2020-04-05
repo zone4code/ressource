@@ -1,0 +1,735 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 7: PHP Syntax</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 7</h1>
+				<h2>PHP Syntax</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 7 <br /> PHP Syntax</h3>
+				<h4>Reading: 5.2 - 5.4</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>5.2: PHP Basic Syntax</h1>
+				
+				<ul>
+					<li>
+						5.1: Server-Side Basics
+					</li>
+					<li>
+						<strong>5.2: PHP Basic Syntax</strong>
+					</li>
+					<li>
+						5.3: Embedded PHP
+					</li>
+					<li>
+						5.4: Advanced PHP Syntax
+					</li>
+					<li>
+						6.1: Parameterized Pages
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					PHP syntax template
+				</h1>
+
+<pre class="syntaxtemplate php">
+<var>HTML content</var>
+
+	<em>&lt;?php</em>
+		<var>PHP code</var>
+	<em>?&gt;</em>
+
+<var>HTML content</var>
+
+	<em>&lt;?php</em>
+		<var>PHP code</var>
+	<em>?&gt;</em>
+
+<var>HTML content</var> ...
+</pre>
+
+
+				<ul>
+					<li>any contents of a <code>.php</code> file between <code>&lt;?php</code> and <code>?&gt;</code> are executed as PHP code</li>
+					<li>all other contents are output as pure HTML</li>
+					<li>can switch back and forth between HTML and PHP &quot;modes&quot;</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://us.php.net/math">Math operations</a></h1>
+
+<pre class="examplecode php">
+$a = 3;
+$b = 4;
+$c = <em>sqrt(pow($a, 2) + pow($b, 2))</em>;
+</pre>
+
+				<table class="standard">
+					<caption>math functions</caption>
+					<tr>
+						<td>	
+							<a href="http://www.php.net/abs"><code>abs</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/ceil"><code>ceil</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/cos"><code>cos</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/floor"><code>floor</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/log"><code>log</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/log10"><code>log10</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/max"><code>max</code></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="http://www.php.net/min"><code>min</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/pow"><code>pow</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/rand"><code>rand</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/round"><code>round</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/sin"><code>sin</code></a>
+						</td>
+						<td>
+							<a href="http://www.php.net/sqrt"><code>sqrt</code></a>
+						</td>
+						<!--
+						<td>
+							<a href="http://www.php.net/srand"><code>srand</code>
+						</td>
+						-->
+						<td>
+						<a href="http://www.php.net/tan"><code>tan</code></a>
+						</td>
+					</tr>
+				</table>
+
+				<table class="standard">
+					<caption>math constants</caption>
+					<tr>
+						<td>	
+							<code>M_PI</code>
+						</td>
+						<td>
+							<code>M_E</code>
+						</td>
+						<td>
+							<code>M_LN2</code>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>the syntax for method calls, parameters, returns is the same as Java</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>int</code> and <code>float</code> types</h1>
+
+<pre class="examplecode php">
+$a = 7 / 2;               <span class="comment"># float: 3.5</span>
+$b = (int) $a;            <span class="comment"># int: 3</span>
+$c = round($a);           <span class="comment"># float: 4.0</span>
+$d = &quot;123&quot;;               <span class="comment"># string: &quot;123&quot;</span>
+$e = (int) $d;            <span class="comment"># int: 123</span>
+</pre>
+
+				<ul>
+					<li><code>int</code> for integers and <code>float</code> for reals</li>
+					<li>division between two <code>int</code> values can produce a <code>float</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/strings"><code>String</code></a> type
+					<span class="readingsection">(5.2.6)</span>
+				</h1>
+
+<pre class="examplecode php">
+$favorite_food = &quot;Ethiopian&quot;;
+print $favorite_food[2];            <span class="comment"># h</span>
+
+$favorite_food = $favorite_food . &quot; cuisine&quot;;
+print $favorite_food;               <span class="comment"># Ethiopian cuisine</span>
+</pre>
+
+				<ul>
+					<li>zero-based indexing using bracket notation</li>
+					<li>
+						there is no <code>char</code> type; each letter is itself a <code>String</code>
+					</li>
+					<li>string concatenation operator is <code>.</code> (period), not <code>+</code>
+						<ul>
+							<li><code>5 + &quot;2 turtle doves&quot; === 7</code></li>
+							<li><code>5 . &quot;2 turtle doves&quot; === &quot;52 turtle doves&quot;</code></li>
+						</ul>
+					</li>
+					<li>can be specified with <code>&quot;&quot;</code> or <code>''</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>String</code> functions</h1>
+
+<pre class="examplecode php">
+<span class="comment"># index  0123456789012345</span>
+$name = &quot;Stefanie Hatcher&quot;;
+$length = <em>strlen</em>($name);              <span class="comment"># 16</span>
+$cmp = <em>strcmp</em>($name, &quot;Brian Le&quot;);     <span class="comment"># &gt; 0</span>
+$index = <em>strpos</em>($name, &quot;e&quot;);          <span class="comment"># 2</span>
+$first = <em>substr</em>($name, 9, 5);         <span class="comment"># &quot;Hatch&quot;</span>
+$name = <em>strtoupper</em>($name);            <span class="comment"># &quot;STEFANIE HATCHER&quot;</span>
+</pre>
+
+				<table class="standard" style="font-size: smaller">
+					<tr><th class="spaced">Name</th><th>Java Equivalent</th></tr>
+					<tr>
+						<td><a href="http://www.php.net/manual/en/function.strlen.php"><code>strlen</code></a></td>
+						<td><code>length</code></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://www.php.net/manual/en/function.strpos.php"><code>strpos</code></a></td>
+						<td><code>indexOf</code></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://www.php.net/manual/en/function.substr.php"><code>substr</code></a></td>
+						<td><code>substring</code></td>
+					</tr>
+
+					<tr>
+						<td class="spaced"><a href="http://www.php.net/manual/en/function.strtolower.php"><code>strtolower</code></a>, <a href="http://www.php.net/manual/en/function.strtoupper.php"><code>strtoupper</code></a></td>
+						<td><code>toLowerCase</code>, <code>toUpperCase</code></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://www.php.net/manual/en/function.trim.php"><code>trim</code></a></td>
+						<td><code>trim</code></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://www.php.net/manual/en/function.explode.php"><code>explode</code></a>, <a href="http://www.php.net/manual/en/function.implode.php"><code>implode</code></a></td>
+						<td><code>split</code>, <code>join</code></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://www.php.net/manual/en/function.strcmp.php"><code>strcmp</code></a></td>
+						<td><code>compareTo</code></td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://www.php.net/manual/en/control-structures.elseif.php"><code>if/else</code></a> statement</h1>
+
+<pre class="syntaxtemplate php">
+if (<var>condition</var>) {
+	<var>statements</var>;
+} <em>elseif</em> (<var>condition</var>) {
+	<var>statements</var>;
+} else {
+	<var>statements</var>;
+}
+</pre>
+
+				<ul>
+					<li>NOTE: although <code>elseif</code> keyword is much more common, <code>else if</code> is also supported</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/manual/en/control-structures.while.php"><code>while</code></a> loop
+					<span class="sameasjava">(same as Java)</span>
+				</h1>
+
+<pre class="syntaxtemplate php">
+while (<var>condition</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+<pre class="syntaxtemplate php">
+do {
+	<var>statements</var>;
+} while (<var>condition</var>);
+</pre>
+
+				<ul>
+					<li><code><a href="http://www.php.net/manual/en/control-structures.break.php">break</a></code> and <code><a href="http://www.php.net/manual/en/control-structures.continue.php">continue</a></code> keywords also behave as in Java</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/boolean">bool</a> (Boolean) type
+					<span class="readingsection">(5.2.8)</span>
+				</h1>
+
+<pre class="examplecode php">
+$feels_like_summer = FALSE;
+$php_is_rad = TRUE;
+
+$student_count = 217;
+$nonzero = (bool) $student_count;     <span class="comment"># TRUE</span>
+</pre>
+
+				<ul>
+					<li>the following values are considered to be <code>FALSE</code> (all others are <code>TRUE</code>):
+						<ul>
+							<li>
+								<code>0</code> and <code>0.0</code>
+							</li>
+							<li>
+								<code>&quot;&quot;</code>, <code>&quot;0&quot;</code>, and <code>NULL</code> (includes unset variables)</li>
+							<li>arrays with 0 elements</li>
+						</ul>
+					</li>
+					<li>can cast to boolean using <code>(bool)</code></li>
+					<li><code>FALSE</code> prints as an empty string (no output); <code>TRUE</code> prints as a <code>1</code></li>
+				</ul>
+				
+				<div class="handout">
+					<ul>
+						<li><code>TRUE</code> and <code>FALSE</code> keywords are case insensitive</li>
+					</ul>
+				</div>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1><code>NULL</code></h1>
+
+				<pre class="examplecode php">
+$name = &quot;Victoria&quot;;
+$name = <em>NULL</em>;
+if (<em>isset($name)</em>) {
+	print &quot;This line isn't going to be reached.\n&quot;;
+}
+</pre>
+
+				<ul>
+					<li>a variable is <code>NULL</code> if
+						<ul>
+							<li>it has not been set to any value (undefined variables)</li>
+							<li>it has been assigned the constant <code>NULL</code></li>
+							<li>it has been deleted using the <code><a href="http://www.php.net/unset">unset</a></code> function</li>
+						</ul>
+					</li>
+					<li>can test if a variable is <code>NULL</code> using the <a href="http://www.php.net/isset"><code>isset</code></a> function</li>
+					<li><code>NULL</code> prints as an empty string (no output)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/manual/en/language.types.array.php">Arrays</a>
+					<span class="readingsection">(5.4.3)</span>
+				</h1>
+
+<pre class="syntaxtemplate php">
+$<var>name</var> = array();                         <span class="comment"># create</span>
+$<var>name</var> = array(<var>value0</var>, <var>value1</var>, <var>...</var>, <var>valueN</var>);
+
+$<var>name</var>[<var>index</var>]                              <span class="comment"># get element value</span>
+$<var>name</var>[<var>index</var>] = <var>value</var>;                      <span class="comment"># set element value</span>
+$<var>name</var>[] = <var>value</var>;                          <span class="comment"># append</span>
+</pre>
+
+<pre class="examplecode php">
+$a = array();     <span class="comment"># empty array (length 0)</span>
+$a[0] = 23;       <span class="comment"># stores 23 at index 0 (length 1)</span>
+$a2 = array(&quot;some&quot;, &quot;strings&quot;, &quot;in&quot;, &quot;an&quot;, &quot;array&quot;);
+$a2[] = &quot;Ooh!&quot;;   <span class="comment"># add string to end (at index 5)</span>
+</pre>
+
+				<ul>
+					<li>to append, use bracket notation without specifying an index</li>
+					<li>element type is not specified; can mix types</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Array functions</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							function name(s)
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/count"><code>count</code></a>
+						</td>
+						<td>
+							number of elements in the array
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a class="underscorelink" href="http://www.php.net/print_r"><code>print_r</code></a>
+						</td>
+						<td>
+							print array's contents
+						</td>
+					</tr>
+					
+
+					<tr>
+						<td>
+							<a class="underscorelink" href="http://www.php.net/array-pop"><code>array_pop</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-push"><code>array_push</code></a>, <br />
+							<a class="underscorelink" href="http://www.php.net/array-shift"><code>array_shift</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-unshift"><code>array_unshift</code></a>
+						</td>
+						<td>
+							using array as a stack/queue
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a class="underscorelink" href="http://www.php.net/in-array"><code>in_array</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-search"><code>array_search</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-reverse"><code>array_reverse</code></a>, <br />
+							<a href="http://www.php.net/sort"><code>sort</code></a>,
+							<a href="http://www.php.net/rsort"><code>rsort</code></a>,
+							<a href="http://www.php.net/shuffle"><code>shuffle</code></a>
+						</td>
+						<td>
+							searching and reordering
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a class="underscorelink" href="http://www.php.net/array-fill"><code>array_fill</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-merge"><code>array_merge</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-intersect"><code>array_intersect</code></a>, <br />
+							<a class="underscorelink" href="http://www.php.net/array-diff"><code>array_diff</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-slice"><code>array_slice</code></a>,
+							<a href="http://www.php.net/range"><code>range</code></a>
+						</td>
+						<td>
+							creating, filling, filtering
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a class="underscorelink" href="http://www.php.net/array-sum"><code>array_sum</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-product"><code>array_product</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-unique"><code>array_unique</code></a>, <br />
+							<a class="underscorelink" href="http://www.php.net/array-unique"><code>array_filter</code></a>,
+							<a class="underscorelink" href="http://www.php.net/array-reduce"><code>array_reduce</code></a>
+						</td>
+						<td>
+							processing elements
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Array function example</h1>
+
+				<pre class="examplecode php">$tas = array(&quot;MD&quot;, &quot;BH&quot;, &quot;KK&quot;, &quot;HM&quot;, &quot;JP&quot;);
+for ($i = 0; $i &lt; <em>count</em>($tas); $i++) {
+	$tas[$i] = strtolower($tas[$i]);
+}                                 <span class="comment"># (&quot;md&quot;, &quot;bh&quot;, &quot;kk&quot;, &quot;hm&quot;, &quot;jp&quot;)</span>
+$morgan = <em>array_shift</em>($tas);      <span class="comment"># (&quot;bh&quot;, &quot;kk&quot;, &quot;hm&quot;, &quot;jp&quot;)</span>
+<em>array_pop</em>($tas);                  <span class="comment"># (&quot;bh&quot;, &quot;kk&quot;, &quot;hm&quot;)</span>
+<em>array_push</em>($tas, &quot;ms&quot;);           <span class="comment"># (&quot;bh&quot;, &quot;kk&quot;, &quot;hm&quot;, &quot;ms&quot;)</span>
+<em>array_reverse</em>($tas);              <span class="comment"># (&quot;ms&quot;, &quot;hm&quot;, &quot;kk&quot;, &quot;bh&quot;)</span>
+<em>sort</em>($tas);                       <span class="comment"># (&quot;bh&quot;, &quot;hm&quot;, &quot;kk&quot;, &quot;ms&quot;)</span>
+$best = <em>array_slice</em>($tas, 1, 2);  <span class="comment"># (&quot;hm&quot;, &quot;kk&quot;)</span>
+</pre>
+
+				<ul>
+					<li>
+						the array in PHP replaces many other collections in Java
+						<ul>
+							<li>
+								list, stack, queue, set, map, ...
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code>foreach</code> loop
+					<span class="readingsection">(5.4.4)</span>
+				</h1>
+
+				<pre class="syntaxtemplate php">foreach ($<var>array</var> as $<var>variableName</var>) {
+	<var>...</var>
+}
+</pre>
+
+<pre class="examplecode php">$stooges = array(&quot;Larry&quot;, &quot;Moe&quot;, &quot;Curly&quot;, &quot;Shemp&quot;);
+<span class="deleted">for ($i = 0; $i &lt; count($stooges); $i++) {
+	print &quot;Moe slaps {$stooges[$i]}\n&quot;;
+}</span>
+<em>foreach ($stooges as $stooge) {</em>
+	print &quot;Moe slaps $stooge\n&quot;;  <span class="comment"># even himself!</span>
+<em>}</em>
+</pre>
+
+				<ul>
+					<li>a convenient way to loop over each element of an array without indexes</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide titleslide">
+				<h1>5.3: Embedded PHP</h1>
+				
+				<ul>
+					<li>
+						5.1: Server-Side Basics
+					</li>
+					<li>
+						5.2: PHP Basic Syntax
+					</li>
+					<li>
+						<strong>5.3: Embedded PHP</strong>
+					</li>
+					<li>
+						5.4: Advanced PHP Syntax
+					</li>
+					<li>
+						6.1: Parameterized Pages
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Printing HTML tags in PHP = bad style</h1>
+				
+<pre class="examplecode">
+&lt;?php
+<em class="bad">print &quot;&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.1//EN\&quot;\n&quot;;
+print &quot; \&quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\&quot;&gt;\n&quot;;
+print &quot;&lt;html xmlns=\&quot;http://www.w3.org/1999/xhtml\&quot;&gt;\n&quot;;
+print &quot;  &lt;head&gt;\n&quot;;
+print &quot;    &lt;title&gt;Geneva's web page&lt;/title&gt;\n&quot;;</em>
+...
+for ($i = 1; $i &lt;= 10; $i++) {
+	<em class="bad">print &quot;&lt;p&gt; I can count to $i! &lt;/p&gt;\n&quot;;</em>
+}
+?&gt;
+</pre>
+				
+				<ul>
+					<li>printing HTML tags with <code>print</code> statements is bad style and error-prone:
+						<ul>
+							<li>must quote the HTML and escape special characters, e.g. <code>\&quot;</code></li>
+							<li>best PHP style is to minimize <code>print</code>/<code>echo</code> statements in embedded PHP code</li>
+						</ul>
+					</li>
+					<li>but without <code>print</code>, how do we insert dynamic content into the page?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					PHP expression blocks
+					<span class="readingsection">(5.3.2)</span>
+				</h1>
+
+<pre class="syntaxtemplate php">
+&lt;?= <var>expression</var> ?&gt;
+</pre>
+
+				<div class="example">
+<pre class="examplecode php">
+&lt;h2&gt; The answer is <em>&lt;?= 6 * 7 ?&gt;</em> &lt;/h2&gt;
+</pre>
+
+					<div class="exampleoutput">
+						<h2>The answer is 42</h2>
+					</div>
+				</div>
+
+				<ul>
+					<li><span class="term">PHP expression block</span>: a small piece of PHP that evaluates and embeds an expression's value into HTML
+						<ul>
+							<li>
+								<code>&lt;?= <var>expression</var> ?&gt;</code> is equivalent to:
+<pre class="examplecode php">
+&lt;?php print <var>expression</var>; ?&gt;
+</pre>
+							</li>
+							<li>useful for embedding a small amount of PHP (a variable's or expression's value) in a large block of HTML without having to switch to &quot;PHP-mode&quot;</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Expression block example</h1>
+				
+<pre class="examplecode php">
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot;
+ &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+	&lt;head&gt;&lt;title&gt;CSE 190 M: Embedded PHP&lt;/title&gt;&lt;/head&gt;	
+	&lt;body&gt;
+		<em>&lt;?php
+		for ($i = 99; $i &gt;= 1; $i--) {
+			?&gt;</em>
+			&lt;p&gt; <em>&lt;?= $i ?&gt;</em> bottles of beer on the wall, &lt;br /&gt;
+				  <em>&lt;?= $i ?&gt;</em> bottles of beer. &lt;br /&gt;
+				  Take one down, pass it around, &lt;br /&gt;
+				  <em>&lt;?= $i - 1 ?&gt;</em> bottles of beer on the wall. &lt;/p&gt;
+			<em>&lt;?php
+		}
+		?&gt;</em>
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common errors: unclosed braces, missing = sign</h1>
+				
+<pre class="examplecode php">
+...
+	&lt;body&gt;
+		&lt;p&gt;Watch how high I can count:
+			&lt;?php
+			for ($i = 1; $i &lt;= 10; $i++) {
+				?&gt;
+				<em class="bad">&lt;?</em> $i ?&gt;
+		<em class="bad">&lt;/p&gt;</em>
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+				<ul>
+					<li><code>&lt;/body&gt;</code> and <code>&lt;/html&gt;</code> above are inside the <code>for</code> loop, which is never closed</li>	
+					<li>if you forget to close your braces, <a href="http://webster.cs.washington.edu/examples/count_error.php">you'll see an error</a> about 'unexpected <code>$end</code>'</li>
+
+					<li>if you forget <code>=</code> in <code>&lt;?=</code>, the expression <a href="http://webster.cs.washington.edu/examples/count_error2.php">does not produce any output</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Complex expression blocks</h1>
+				
+				<div class="example">
+<pre class="examplecode php">
+...
+	&lt;body&gt;
+		&lt;?php
+		for ($i = 1; $i &lt;= 3; $i++) {
+			?&gt;
+			&lt;h<em>&lt;?= $i ?&gt;</em>&gt;This is a level <em>&lt;?= $i ?&gt;</em> heading.&lt;/h<em>&lt;?= $i ?&gt;</em>&gt;
+			&lt;?php
+		}
+		?&gt;
+	&lt;/body&gt;
+</pre>
+					
+					<div class="exampleoutput">
+						<h1>This is a level 1 heading.</h1>
+						<h2>This is a level 2 heading.</h2>
+						<h3>This is a level 3 heading.</h3>
+					</div>
+				</div>
+				
+				<ul>
+					<li>expression blocks can even go inside HTML tags and attributes</li>
+				</ul>
+			</div>
+			
+<!--#include virtual="commonbottom.html" -->

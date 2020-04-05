@@ -1,0 +1,316 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 12: Object-Oriented PHP</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 12</h1>
+				<h2>Object-Oriented PHP</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 12 <br /> Object-Oriented PHP</h3>
+
+				<h4>References: 
+					<a href="http://www.php.net/zend-engine-2.php">PHP.net</a>,
+					<a href="http://www.developer.com/lang/php/article.php/3302171">Developer.com</a>,
+					<a href="http://www.killerphp.com/videos/oop_php_build_objects/build_objects_php_oop.html">KillerPHP</a>,
+					<a href="http://www.devx.com/webdev/Article/10007">DevX</a>
+				</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Why use classes and objects?</h1>
+				
+				<ul>
+					<li>PHP is a primarily procedural language</li>
+					<li>small programs are easily written without adding any classes or objects</li>
+					<li>larger programs, however, become cluttered with so many disorganized functions</li>
+					<li>grouping <em>related data and behavior</em> into objects helps manage size and complexity</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Constructing and using objects</h1>
+
+<pre class="syntaxtemplate php">
+<span class="comment"># construct an object</span>
+$<var>name</var> = new <var>ClassName</var>(<var>parameters</var>);
+
+<span class="comment"># access an object's field (if the field is public)</span>
+$<var>name</var>-&gt;<var>fieldName</var>
+
+<span class="comment"># call an object's method</span>
+$<var>name</var>-&gt;<var>methodName</var>(<var>parameters</var>);
+</pre>
+
+<pre class="examplecode php">
+$zip = new ZipArchive();
+$zip-&gt;open(&quot;moviefiles.zip&quot;);
+$zip-&gt;extractTo(&quot;images/&quot;);
+$zip-&gt;close();
+</pre>
+
+				<ul>
+					<li>the above code <a href="http://www.php.net/zip">unzips a file</a></li>
+					<li>test whether a class is installed with <a class="underscorelink" href="http://www.php.net/class_exists"><code>class_exists</code></a></li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Object example: Fetch file from web</h1>
+
+<pre class="examplecode php">
+<span class="comment"># create an HTTP request to fetch student.php</span>
+$req = <em>new HttpRequest(&quot;student.php&quot;, HttpRequest::METH_GET);</em>
+$params = array(&quot;first_name&quot; =&gt; $fname, &quot;last_name&quot; =&gt; $lname);
+<em>$req-&gt;addPostFields($params);</em>
+
+<span class="comment"># send request and examine result</span>
+<em>$req-&gt;send();</em>
+$http_result_code = <em>$req-&gt;getResponseCode()</em>;   <span class="comment"># 200 means OK</span>
+print &quot;$http_result_code\n&quot;;
+print <em>$req-&gt;getResponseBody()</em>;
+</pre>
+
+				<ul>
+					<li>PHP's <a href="http://www.php.net/manual/en/class.httprequest.php"><code>HttpRequest</code></a> object can fetch a document from the web</li>
+				</ul>
+
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Class declaration syntax</h1>
+
+<pre class="syntaxtemplate php">
+class <var>ClassName</var> {
+	<span class="comment"># fields - data inside each object</span>
+	public $<var>name</var>;    <span class="comment"># public field</span>
+	private $<var>name</var>;   <span class="comment"># private field</span>
+	
+	<span class="comment"># constructor - initializes each object's state</span>
+	public function <em>__construct</em>(<var>parameters</var>) {
+		<var>statement(s)</var>;
+	}
+	
+	<span class="comment"># method - behavior of each object</span>
+	public function <var>name</var>(<var>parameters</var>) {
+		<var>statements</var>;
+	}
+}
+</pre>
+
+				<ul>
+					<li>inside a constructor or method, refer to the current object as <code>$this</code></li>
+				</ul>
+
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Class example</h1>
+
+<pre class="examplecode php">
+&lt;?php
+class Point {
+	public $x;
+	public $y;
+	
+	<span class="comment"># equivalent of a Java constructor</span>
+	public function __construct($x, $y) {
+		$this-&gt;x = $x;
+		$this-&gt;y = $y;
+	}
+	
+	public function distance($p) {
+		$dx = $this-&gt;x - $p-&gt;x;
+		$dy = $this-&gt;y - $p-&gt;y;
+		return sqrt($dx * $dx + $dy * $dy);
+	}
+	
+	<span class="comment"># equivalent of Java's toString method</span>
+	public function __toString() {
+		return &quot;(&quot; . $this-&gt;x . &quot;, &quot; . $this-&gt;y . &quot;)&quot;;
+	}
+}
+?&gt;
+</pre>
+
+			</div>
+			
+
+
+			<div class="slide">
+				<h1>Class usage example</h1>
+
+				<div class="example">
+					<pre class="examplecode php">
+&lt;?php
+<span class="comment"># this code could go into a file named use_point.php</span>
+include(&quot;Point.php&quot;);
+
+<em>$p1 = new Point(0, 0);</em>
+<em>$p2 = new Point(4, 3);</em>
+print &quot;Distance between <em>$p1</em> and <em>$p2</em> is &quot; . <em>$p1-&gt;distance($p2)</em> . &quot;\n\n&quot;;
+
+var_dump(<em>$p2</em>);   <span class="comment"># var_dump prints detailed state of an object</span>
+?&gt;
+</pre>
+
+					<pre class="exampleoutput php">
+Distance between (0, 0) and (4, 3) is 5
+
+object(Point)[2]
+  public 'x' => int 4
+  public 'y' => int 3
+</pre>
+				</div>
+				
+				<ul>
+					<li>
+						<code>$p1</code> and <code>$p2</code> are <a href="http://www.php.net/manual/en/language.oop5.references.php">references</a> to <code>Point</code> objects
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Basic <a href="http://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends">inheritance</a></h1>
+
+<pre class="syntaxtemplate php">
+class <var>ClassName</var> extends <var>ClassName</var> {
+	<var>...</var>
+}
+</pre>
+
+<pre class="examplecode php">
+class Point3D extends Point {
+	public $z;
+	
+	public function __construct($x, $y, $z) {
+		parent::__construct($x, $y);
+		$this->z = $z;
+	}
+	
+	...
+}
+</pre>
+
+				<ul>
+					<li>the given class will inherit all data and behavior from <var>ClassName</var></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://www.php.net/manual/en/language.oop5.static.php">Static</a> methods, fields, and <a href="http://www.php.net/manual/en/language.oop5.constants.php">constants</a></h1>
+
+				<pre class="syntaxtemplate php">
+<em>static</em> $name = <var>value</var>;    <span class="comment"># declaring a static field</span>
+<em>const</em> $name = <var>value</var>;     <span class="comment"># declaring a static constant</span>
+</pre>
+
+				<pre class="syntaxtemplate php">
+<span class="comment"># declaring a static method</span>
+public <em>static</em> function <var>name</var>(<var>parameters</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+				<pre class="syntaxtemplate php">
+<var>ClassName</var>::<var>methodName</var>(<var>parameters</var>);  <span class="comment"># calling a static method (outside class)</span>
+self::<var>methodName</var>(<var>parameters</var>);       <span class="comment"># calling a static method (within class)</span>
+</pre>
+
+				<ul>
+					<li>
+						static fields/methods are shared throughout a class rather than replicated in every object
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.php.net/manual/en/language.oop5.abstract.php">Abstract classes</a> and
+					<a href="http://www.php.net/manual/en/language.oop5.interfaces.php">interfaces</a>
+				</h1>
+
+				<pre class="syntaxtemplate php">
+<em>interface</em> <var>InterfaceName</var> {
+	public function <var>name</var>(<var>parameters</var>)<em>;</em>
+	public function <var>name</var>(<var>parameters</var>)<em>;</em>
+	...
+}
+
+class <var>ClassName</var> <em>implements</em> <var>InterfaceName</var> { ...
+</pre>
+
+				<pre class="syntaxtemplate php">
+<em>abstract</em> class <var>ClassName</var> {
+	<em>abstract</em> public function <var>name</var>(<var>parameters</var>)<em>;</em>
+	...
+}
+</pre>
+
+				<ul>
+					<li>
+						<span class="term">interfaces</span> are supertypes that specify method headers without implementations
+						<ul>
+							<li>
+								cannot be instantiated; cannot contain function bodies or fields
+							</li>
+							<li>
+								enables polymorphism between subtypes without sharing implementation code
+							</li>
+						</ul>
+					</li>
+					<li>
+						<span class="term">abstract classes</span> are like interfaces, but you can specify fields, constructors, methods
+						<ul>
+							<li>
+								also cannot be instantiated; enables polymorphism with sharing of implementation code
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+			<!--
+			Auto-loading classes (no need to include() )
+			http://us.php.net/manual/en/language.oop5.autoload.php
+
+			function __autoload($class_name) {
+				require_once $class_name . '.php';
+			}
+			-->
+
+<!--#include virtual="commonbottom.html" -->

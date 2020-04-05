@@ -1,0 +1,944 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 16: The DOM Tree</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 16</h1>
+				<h2>The DOM Tree and Prototype</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 16 <br /> The DOM Tree</h3>
+				<h4>Reading: 8.3, 9.1</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Complex DOM manipulation problems</h1>
+				
+				<p>
+					How would we do each of the following in JavaScript code?  Each involves modifying each one of a group of elements ...
+				</p>
+				
+				<ul>
+					<li>When the Go button is clicked, reposition all the <code>div</code>s of class <code>puzzle</code> to random x/y locations.</li>
+					<li>When the user hovers over the maze boundary, turn all maze walls red.</li>
+					<li>Change every other item in the <code>ul</code> list with <code>id</code> of <code>TAs</code> to have a gray background.</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The DOM tree
+					<span class="readingsection">(8.3)</span>
+				</h1>
+				
+				<div class="figure">
+					<img src="images/dom_tree.gif" alt="DOM tree" />
+				</div>
+				
+				<ul>
+					<li>
+						The elements of a page are nested into a tree-like structure of objects
+						<ul>
+							<li>
+								the DOM has properties and methods for traversing this tree
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Types of DOM nodes
+					<span class="readingsection">(8.3.1)</span>
+				</h1>
+
+<pre class="examplecode html">
+&lt;p&gt;
+	This is a paragraph of text with a 
+	&lt;a href=&quot;/path/page.html&quot;&gt;link in it&lt;/a&gt;.
+&lt;/p&gt;
+</pre>
+
+				<div class="rightfigure" style="width: 33%">
+					<img src="images/figure_4_dom_tree.png" alt="DOM Tree" style="width: 100%" />
+				</div>
+				
+				<ul>
+					<li><img src="images/element_node.png" alt="element node" />
+					<strong>element nodes</strong> (HTML tag)
+						<ul>
+							<li>can have children and/or attributes</li>
+						</ul>
+					</li>
+
+					<li><img src="images/text_node.png" alt="text node" />
+					<strong>text nodes</strong> (text in a block element)
+					</li>
+
+					<li><img src="images/attribute_node.png" alt="attribute node" />
+					<strong>attribute nodes</strong> (attribute/value pair)
+						<ul>
+							<li>text/attributes are children in an element node</li>
+							<li>cannot have children or attributes</li>
+							<li>not usually shown when drawing the DOM tree</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Traversing the DOM tree
+					<span class="readingsection">(8.3.2 - 8.3.3)</span>
+				</h1>
+
+				<p>
+					every node's DOM object has the following properties:
+				</p>
+
+				<table class="standard">
+					<tr>
+						<th>
+							name(s)
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>firstChild</code>, <code>lastChild</code>
+						</td>
+						<td>
+							start/end of this node's list of children
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>childNodes</code>
+						</td>
+						<td>
+							array of all this node's children
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>nextSibling</code>, <code>previousSibling</code>
+						</td>
+						<td>
+							neighboring nodes with the same parent
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>parentNode</code>
+						</td>
+						<td>
+							the element that contains this node
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li><a href="http://www.w3schools.com/dom/dom_node.asp">complete list of DOM node properties</a></li>
+					<li><a href="http://www.w3schools.com/dom/dom_mozilla_vs_ie.asp">browser incompatiblity information</a> (IE6 sucks)</li>
+
+					<!--
+					<li><a href="http://www.w3schools.com/dom/dom_nodes_info.asp">other properties</a>: <code>nodeName</code>, <code>nodeType</code>, <code>nodeValue</code></li>
+					-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>DOM tree traversal example</h1>
+
+<pre class="examplecode html">
+&lt;p id=&quot;foo&quot;&gt;This is a paragraph of text with a 
+	&lt;a href=&quot;/path/to/another/page.html&quot;&gt;link&lt;/a&gt;.&lt;/p&gt;
+</pre>
+
+				<div class="centerfigure">
+					<img src="images/figure_5_tree_structure.png" alt="navigate tree" style="width: 38%" />
+				</div>
+			</div>
+			
+			
+
+			<div class="slide">
+				<h1>Element vs. text nodes</h1>
+				
+<pre class="examplecode html">
+&lt;div&gt;
+	&lt;p&gt;
+		This is a paragraph of text with a 
+		&lt;a href=&quot;page.html&quot;&gt;link&lt;/a&gt;.
+	&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+				
+				<ul>
+					<li>Q: How many children does the <code>div</code> above have?</li>
+					<li class="incremental">A: 3
+						<ul>
+							<li>an element node representing the &lt;p&gt;</li>
+							<li>two <em>text nodes</em> representing <code>&quot;\n\t&quot;</code> (before/after the paragraph)</li>
+						</ul>
+					</li>
+					<li>
+						Q: How many children does the paragraph have?  The <code>a</code> tag?
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Prototype's <a href="http://prototypejs.org/api/element">DOM element</a> methods
+					<span class="readingsection">(9.1.3)</span>
+				</h1>
+
+				<table class="standard" style="font-size: smaller">
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/absolutize"><code>absolutize</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/addClassName"><code>addClassName</code></a></strong></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/addMethods"><code>addMethods</code></a></td>
+						-->
+						<td><strong><a href="http://prototypejs.org/api/element/classNames"><code>classNames</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/cleanwhitespace"><code>cleanWhitespace</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/cloneposition"><code>clonePosition</code></a></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/cumulativeoffset"><code>cumulativeOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/cumulativescrolloffset"><code>cumulativeScrollOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/empty"><code>empty</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/extend"><code>extend</code></a></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/fire"><code>fire</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/element/firstDescendant"><code>firstDescendant</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/getDimensions"><code>getDimensions</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/getheight"><code>getHeight</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/getoffsetparent"><code>getOffsetParent</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/getStyle"><code>getStyle</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/getWidth"><code>getWidth</code></a></td>
+					</tr>
+					<tr>
+						<td><strong><a href="http://prototypejs.org/api/element/hasClassName"><code>hasClassName</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/element/hide"><code>hide</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/identify"><code>identify</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/insert"><code>insert</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/inspect"><code>inspect</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/makeClipping"><code>makeClipping</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/makePositioned"><code>makePositioned</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/match"><code>match</code></a></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/observe"><code>observe</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/element/positionedoffset"><code>positionedOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/readAttribute"><code>readAttribute</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/recursivelyCollect"><code>recursivelyCollect</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/relativize"><code>relativize</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/remove"><code>remove</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/element/removeClassName"><code>removeClassName</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/replace"><code>replace</code></a></td>
+					</tr>
+					<tr>
+						<td><strong><a href="http://prototypejs.org/api/element/scrollto"><code>scrollTo</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/select"><code>select</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/setOpacity"><code>setOpacity</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/setStyle"><code>setStyle</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/show"><code>show</code></a></strong></td>
+					</tr>
+					<tr>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/stopobserving"><code>stopObserving</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/element/toggle"><code>toggle</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/toggleClassName"><code>toggleClassName</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/undoClipping"><code>undoClipping</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/undoPositioned"><code>undoPositioned</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/update"><code>update</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/viewportoffset"><code>viewportOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/visible"><code>visible</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/wrap"><code>wrap</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/writeAttribute"><code>writeAttribute</code></a></td>
+						<td></td>
+					</tr>
+				</table>
+
+				<!--
+						<td><strong><a href="http://prototypejs.org/api/element/getElementsByClassName"><code>getElementsByClassName</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/element/getelementsbyselector"><code>getElementsBySelector</code></a></strong></td>
+				-->
+				
+				<ul>
+					<li>
+						categories: CSS classes, DOM tree traversal/manipulation, events, styles
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+					<li>
+						Prototype methods for setting CSS classes:
+						<ul>
+							<li>
+								<a href="http://prototypejs.org/api/element/addClassName"><code>addClassName</code></a>, 
+								<a href="http://prototypejs.org/api/element/classNames"><code>classNames</code></a>, 
+								<a href="http://prototypejs.org/api/element/hasClassName"><code>hasClassName</code></a>, 
+								<a href="http://prototypejs.org/api/element/removeClassName"><code>removeClassName</code></a>
+							</li>
+						</ul>
+					</li>
+-->
+
+
+
+			<div class="slide">
+				<h1>
+					Prototype's DOM tree traversal methods
+					<span class="readingsection">(9.1.5)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							method(s)
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/ancestors"><code>ancestors</code></a>,
+							<a href="http://prototypejs.org/api/element/up"><code>up</code></a>
+						</td>
+						<td>
+							elements above this one
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/childElements"><code>childElements</code></a>,
+							<a href="http://prototypejs.org/api/element/descendants"><code>descendants</code></a></strong>,
+							<a href="http://prototypejs.org/api/element/down"><code>down</code></a>
+						</td>
+						<td>
+							elements below this one (not text nodes)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/siblings"><code>siblings</code></a>,
+							<a href="http://prototypejs.org/api/element/next"><code>next</code></a>,
+							<a href="http://prototypejs.org/api/element/nextSiblings"><code>nextSiblings</code></a>, <br />
+
+							<a href="http://prototypejs.org/api/element/previous"><code>previous</code></a>,
+							<a href="http://prototypejs.org/api/element/previousSiblings"><code>previousSiblings</code></a>,
+							<a href="http://prototypejs.org/api/element/adjacent"><code>adjacent</code></a>
+						</td>
+						<td>
+							elements with same parent <br />
+							as this one (not text nodes)
+						</td>
+					</tr>
+				</table>
+				
+				<div class="rightfigure" style="width: 33%">
+					<img src="images/figure_1_element.png" alt="DOM element" style="width: 100%" />
+				</div>
+				
+				<pre class="examplecode js">
+<span class="comment">// alter siblings of &quot;main&quot; that do not contain &quot;Sun&quot;</span>
+var sibs = <em>$(&quot;main&quot;).siblings()</em>;
+for (var i = 0; i &lt; sibs.length; i++) {
+	if (sibs[i].innerHTML.indexOf(&quot;Sun&quot;) &lt; 0) {
+		sibs[i].innerHTML += &quot; Sunshine&quot;;
+	}
+}
+</pre>
+				<ul>
+					<li>
+						Prototype strips out the unwanted text nodes
+					</li>
+					<li>
+						notice that these are methods, so you need <code>()</code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Selecting groups of DOM objects
+					<span class="readingsection">(8.3.5)</span>
+				</h1>
+
+				<ul>
+					<li>
+						methods in <code>document</code> and other DOM objects for accessing descendents:
+					</li>
+				</ul>
+
+				<table class="standard">
+					<tr>
+						<th>
+							name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.w3schools.com/htmldom/met_doc_getelementsbytagname.asp"><code>getElementsByTagName</code></a>
+						</td>
+						<td>
+							returns array of descendents with the given tag, such as <code>&quot;div&quot;</code>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.w3schools.com/htmldom/met_doc_getelementsbyname.asp"><code>getElementsByName</code></a>
+						</td>
+						<td>
+							returns array of descendents with the given <code>name</code> attribute (mostly useful for accessing form controls)
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Getting all elements of a certain type</h1>
+
+				<p>
+						highlight all paragraphs in the document:
+				</p>
+
+				<pre class="examplecode js">
+var allParas = document.<em>getElementsByTagName</em>(&quot;p&quot;);
+for (var i = 0; i &lt; allParas.length; i++) {
+	allParas[i].style.backgroundColor = &quot;yellow&quot;;
+}
+</pre>
+
+				<pre class="html">
+&lt;body&gt;
+	<em>&lt;p&gt;This is the first paragraph&lt;/p&gt;
+	&lt;p&gt;This is the second paragraph&lt;/p&gt;
+	&lt;p&gt;You get the idea...&lt;/p&gt;</em>
+&lt;/body&gt;
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Combining with <code>getElementById</code></h1>
+
+				<p>
+					highlight all paragraphs inside of the section with ID <code>&quot;address&quot;</code>:
+				</p>
+
+<pre class="examplecode js">
+var addrParas = <em>$(&quot;address&quot;)</em>.getElementsByTagName(&quot;p&quot;);
+for (var i = 0; i &lt; addrParas.length; i++) {
+	addrParas[i].style.backgroundColor = &quot;yellow&quot;;
+}
+</pre>
+
+<pre class="html"><code>&lt;p&gt;This won't be returned!&lt;/p&gt;
+&lt;div id=&quot;address&quot;&gt;
+	<em>&lt;p&gt;1234 Street&lt;/p&gt;
+	&lt;p&gt;Atlanta, GA&lt;/p&gt;</em>
+&lt;/div&gt;</code></pre>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Prototype's methods for selecting elements</h1>
+				
+				<p>
+					Prototype adds methods to the <code>document</code> object (and all DOM element objects) for selecting groups of elements:
+				</p>
+				
+				
+				<table class="standard">
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/utility/getElementsByClassName"><code>getElementsByClassName</code></a>
+						</td>
+						<td>
+							array of elements that use given <code>class</code> attribute
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/select"><code>select</code></a>
+						</td>
+						<td>
+							array of descendants that match given CSS selector, such as <code>&quot;div#sidebar ul.news > li&quot;</code>
+						</td>
+					</tr>
+				</table>
+
+				<pre class="examplecode js">
+var gameButtons = <em>$(&quot;game&quot;).select(&quot;button.control&quot;)</em>;
+for (var i = 0; i &lt; gameButtons.length; i++) {
+	gameButtons[i].style.color = &quot;yellow&quot;;
+}
+</pre>
+			</div>
+
+
+
+
+			<div class="slide">
+				<h1>
+					The <code>$$</code> function
+					<span class="readingsection">(9.1.5)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+var <var>arrayName</var> = $$(&quot;<var>CSS selector</var>&quot;);
+</pre>
+
+<pre class="examplecode js">
+<span class="comment">// hide all &quot;announcement&quot; paragraphs in the &quot;news&quot; section</span>
+var paragraphs = <em>$$(&quot;div#news p.announcement&quot;)</em>;
+for (var i = 0; i &lt; paragraphs.length; i++) {
+	paragraphs[i].hide();
+}
+</pre>
+
+				<ul>
+					<li>
+						<code>$$</code> returns an array of DOM elements that match the given CSS selector
+						<ul>
+							<li>
+								like <code>$</code> but returns an array instead of a single DOM object
+							</li>
+							<li>
+								a shorthand for <code>document.select</code>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						useful for applying an operation each one of a set of elements
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common <code>$$</code> issues</h1>
+				
+				<ul>
+					<li>
+						many students forget to write <code>.</code> or <code>#</code> in front of a <code>class</code> or <code>id</code>
+
+					<pre class="examplecode js">
+<span class="comment">// get all buttons with a class of &quot;control&quot;</span>
+var gameButtons = <del>$$(&quot;control&quot;);</del>
+var gameButtons = $$(&quot;<em>.</em>control&quot;);
+</pre>
+
+					</li>
+					
+					<li>
+						<code>$$</code> returns an array, not a single element; must loop over the results
+
+						<pre class="examplecode js">
+<span class="comment">// set all buttons with a class of &quot;control&quot; to have red text</span>
+<del>$$(&quot;.control&quot;).style.color = &quot;red&quot;;</del>
+var gameButtons = $$(&quot;<em>.</em>control&quot;);
+for (var i = 0; i &lt; gameButtons.length; i++) {
+	gameButtons[i].style.color = &quot;red&quot;;
+}
+</pre>
+
+					</li>
+					
+					<li>Q: Can I still select a group of elements using <code>$$</code> even if my CSS file doesn't have any style rule for that same group?  (A: Yes!)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Creating new nodes
+					<span class="readingsection">(8.3.5)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>document.createElement(&quot;<var>tag</var>&quot;)</code>
+						</td>
+						<td>
+							creates and returns a new empty DOM node representing an element of that type
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code>document.createTextNode(&quot;<var>text</var>&quot;)</code>
+						</td>
+						<td>
+							creates and returns a text node containing given text
+						</td>
+					</tr>
+				</table>
+
+				<pre class="examplecode js">
+<span class="comment">// create a new &lt;h2&gt; node</span>
+var newHeading = <em>document.createElement</em>(&quot;h2&quot;);
+newHeading.innerHTML = &quot;This is a heading&quot;;
+newHeading.style.color = &quot;green&quot;;
+</pre>
+
+				<ul>
+					<li>merely creating a node does not add it to the page</li>
+					<li>you must add the new node as a child of an existing element on the page...</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide" id="thisslide" onclick="var p = document.createElement('p'); p.innerHTML = 'A paragraph!';  this.appendChild(p);">
+				<h1>Modifying the DOM tree</h1>
+
+				<p>Every DOM element object has these methods:</p>
+
+				<table class="standard">
+					<tr>
+						<th>
+							name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/dom/met_node_appendchild.asp">appendChild</a>(<var>node</var>)</code>
+						</td>
+						<td>
+							places given node at end of this node's child list
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/dom/met_node_insertbefore.asp">insertBefore</a>(<var>new</var>,&nbsp;<var>old</var>)</code>
+						</td>
+						<td>
+							places the given new node in this node's child list just before <code>old</code> child
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/dom/met_node_removechild.asp">removeChild</a>(<var>node</var>)</code>
+						</td>
+						<td>
+							removes given node from this node's child list
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/dom/met_node_replacechild.asp">replaceChild</a>(<var>new</var>,&nbsp;<var>old</var>)</code>
+						</td>
+						<td>
+							replaces given child with new node
+						</td>
+					</tr>
+				</table>
+
+				<pre class="examplecode js">
+var p = <em>document.createElement(&quot;p&quot;)</em>;
+p.innerHTML = &quot;A paragraph!&quot;;
+<em>$(&quot;main&quot;).appendChild(p)</em>;
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Removing a node from the page</h1>
+
+<pre class="examplecode js" onclick="var li = document.getElementById('killme'); li.parentNode.removeChild(li);">
+function slideClick() {
+	var bullets = document.getElementsByTagName("li");
+	for (var i = 0; i < bullets.length; i++) {
+		if (bullets[i].innerHTML.indexOf("children") >= 0) {
+			<em>bullets[i].remove();</em>
+		}
+	}
+}
+</pre>
+				
+				<ul>
+					<li id="killme">
+						each DOM object has a <code>removeChild</code> method to remove its children from the page
+					</li>
+					<li>
+						Prototype adds a <code>remove</code> method for a node to remove itself
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>DOM versus <code>innerHTML</code> hacking</h1>
+
+				<p>Why not just code the previous example this way?</p>
+
+<pre class="examplecode js">
+function slideClick() {
+	$(&quot;thisslide&quot;).<em>innerHTML += &quot;&lt;p&gt;A paragraph!&lt;/p&gt;&quot;</em>;
+}
+</pre>
+
+				<div class="incremental">
+					<ul>
+						<li>Imagine that the new node is more complex:
+							<ul>
+								<li>ugly: bad style on many levels (e.g. JS code embedded within HTML)</li></li>
+								<li>error-prone: must carefully distinguish <code>&quot;</code> and <code>'</code></li>
+								<li>can only add at beginning or end, not in middle of child list</li>
+							</ul>
+						</li>
+					</ul>
+
+<pre class="examplecode js">
+function slideClick() {
+	this.innerHTML += <em>&quot;&lt;p style='color: red; " +
+			&quot;margin-left: 50px;' &quot; +
+			&quot;onclick='myOnClick();'&gt;&quot; +
+			&quot;A paragraph!&lt;/p&gt;&quot;</em>;
+}
+</pre>
+
+				</div>
+			</div>
+
+
+
+			<!--
+			<div class="slide">
+				<h1>Benefits of DOM over <code>innerHTML</code></h1>
+
+				<pre class="examplecode js">
+function slideClick() {
+	var p = document.createElement(&quot;p&quot;);
+	<em>p.className = &quot;special&quot;;
+	p.onclick = myOnClick;</em>
+	p.innerHTML = &quot;A paragraph!&quot;;
+	$(&quot;thisslide&quot;).appendChild(p);
+}
+</pre>
+
+				<pre class="examplecode css">
+.special {
+	color: red;
+	margin-left: 50px;
+}
+</pre>
+
+				<ul>
+					<li>cleaner to attach event handlers to DOM object</li>
+					<li>cleaner to set styles by attaching classes to DOM objects</li>
+				</ul>
+			</div>
+			-->
+
+
+
+			<div class="slide">
+				<h1>
+					Problems with reading/changing styles
+				</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;button id=&quot;clickme&quot;&gt;Click Me&lt;/button&gt;
+</pre>
+
+					<pre class="examplecode examplecode2 js">
+window.onload = function() {
+	$(&quot;clickme&quot;).onclick = biggerFont;
+};
+function biggerFont() {
+	<em class="bad">var size = parseInt($(&quot;clickme&quot;).style.fontSize);</em>
+	size += 4;
+	$(&quot;clickMe&quot;).style.fontSize = size + &quot;pt&quot;;
+}
+</pre>
+
+					<div class="exampleoutput">
+						<button>Click Me</button>
+					</div>
+				</div>
+
+				<ul>
+					<li><a class="popup" href="http://www.w3schools.com/HTMLDOM/dom_obj_style.asp"><code>style</code></a> property lets you set any CSS style for an element</li>
+					<li>
+						problem: you cannot (usually) read existing styles with it
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Accessing styles in Prototype
+					<span class="readingsection">(9.1.4)</span>
+				</h1>
+
+				<div class="example">
+					<pre class="examplecode js">
+function biggerFont() {
+	<span class="comment">// turn text yellow and make it bigger</span>
+	var size = parseInt($(&quot;clickme&quot;).<em>getStyle</em>(&quot;font-size&quot;));
+	$(&quot;clickme&quot;).style.fontSize = (size + 4) + &quot;pt&quot;;
+}
+</pre>
+
+					<div class="exampleoutput">
+						<button style="font-size: 20pt !important;" onclick="var s = parseInt(this.style.fontSize); this.style.setProperty('font-size', s + 4 + 'pt', 'important');">Click Me</button>
+					</div>
+				</div>
+
+				<ul>
+					<li><code>getStyle</code> function added to DOM object allows accessing existing styles</li>
+					<li><code>addClassName</code>, <code>removeClassName</code>, <code>hasClassName</code> manipulate CSS classes</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common bug: incorrect usage of existing styles</h1>
+
+				<pre class="examplecode js">
+<del>this.style.top = this.getStyle(&quot;top&quot;) + 100 + &quot;px&quot;;</del>            <span class="comment">// bad!</span>
+</pre>
+
+				<ul>
+					<li>the above example computes e.g. 
+						<code>&quot;200px&quot; + 100 + &quot;px&quot;</code> , <br />
+						which would evaluate to <code>&quot;200px100px&quot;</code>
+					</li>
+					<li>
+						a corrected version:
+					</li>
+				</ul>
+
+				<pre class="examplecode js">
+this.style.top = <em>parseInt(</em>this.getStyle(&quot;top&quot;)<em>)</em> + 100 + &quot;px&quot;;  <span class="comment">// correct</span>
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Setting CSS classes in Prototype
+					<span class="readingsection">(9.1.4)</span>
+				</h1>
+
+<pre class="examplecode js">
+function highlightField() {
+	<span class="comment">// turn text yellow and make it bigger</span>
+	if (!$(&quot;text&quot;).<em>hasClassName</em>(&quot;invalid&quot;)) {
+		$(&quot;text&quot;).<em>addClassName</em>(&quot;highlight&quot;);
+	}
+}
+</pre>
+
+				<ul>
+					<li><code>addClassName</code>, <code>removeClassName</code>, <code>hasClassName</code> manipulate CSS classes</li>
+					<li>
+						similar to existing <code>className</code> DOM property, but don't have to manually split by spaces
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

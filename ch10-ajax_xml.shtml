@@ -1,0 +1,1340 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Chapter 10: Ajax / XML</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Chapter 10</h1>
+				<h2>Ajax and XML for Accessing Data</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1>
+					<a href="http://www.webstepbook.com/">
+						Web Programming Step by Step
+					</a>
+				</h1>
+				
+				<h3>
+					Chapter 10 <br />
+					Ajax and XML for Accessing Data
+				</h3>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+			
+			
+			<!--
+			<h5>References: <a href="http://www.w3schools.com/ajax/default.asp">w3schools</a>, <a href="http://en.wikipedia.org/wiki/Ajax_%28programming%29">Wikipedia</a>, <a href="http://prototypejs.org/learn/introduction-to-ajax">Prototype Ajax</a>, <a href="http://prototypejs.org/api/ajax/options">Prototype Ajax options</a></h5>
+			-->
+
+
+
+			<div class="slide titleslide">
+				<h1>10.1: Ajax Concepts</h1>
+				
+				<ul>
+					<li>
+						<strong>10.1: Ajax Concepts</strong>
+					</li>
+					<li>
+						10.2: Using <code>XMLHttpRequest</code>
+					</li>
+					<li>
+						10.3: XML
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Synchronous web communication
+					<span class="readingsection">(10.1)</span>
+				</h1>
+
+				<div class="centerfigure">
+					<img src="images/figure_1_synchronous.png" alt="synchronous communication" style="width: 60%;" />
+				</div>
+
+				<ul>
+					<li><span class="term">synchronous</span>: user must wait while new pages load
+						<ul>
+							<li>
+								the typical communication pattern used in web pages (click, wait, refresh)
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://en.wikipedia.org/wiki/Web_application">Web applications</a></h1>
+
+				<ul>
+					<li>
+						<span class="term">web application</span>: a web site that mimics the look, feel, and overall user experience of a desktop application
+						<ul>
+							<li>a web app presents a continuous user experience rather than disjoint pages</li>
+							<li>as much as possible, &quot;feels&quot; like a normal program to the user</li>
+						</ul>
+					</li>
+
+					<li>
+						examples of web apps
+						<ul>
+							<li><a href="http://mail.google.com/">Gmail</a>, <a href="http://maps.google.com/">Google Maps</a>, <a href="http://docs.google.com/">Google Docs and Spreadsheets</a>,							
+							<a href="http://www.flickr.com/">Flickr</a>, <a href="http://www.a9.com/">A9</a>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						many web apps use Ajax to battle these problems of web pages:
+						<ul>
+							<li>slowness / lack of UI responsiveness</li>
+							<li>lack of user-friendliness</li>
+							<li>jarring nature of &quot;click-wait-refresh&quot; pattern</li>
+						<!--
+							<li>require a server and require user to be connected to internet</li>
+						-->
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>What is Ajax?</h1>
+
+				<div class="rightfigure">
+					<img src="images/ajax_bleach.gif" alt="Ajax bleach" />
+				</div>
+
+				<p>
+					<span class="term">Ajax</span>: Asynchronous JavaScript and XML
+				</p>
+
+				<ul>
+					<li>not a programming language; a particular way of using JavaScript</li>
+					<li>downloads data from a server in the background</li>
+					<li>allows dynamically updating a page without making the user wait</li>
+					<li>aids in the creation of rich, user-friendly web sites
+						<ul>
+							<li>
+								examples: UW's <a href="http://www.cs.washington.edu/education/courses/cse142/08wi/diff.html">CSE 14x Diff Tool</a>, <a href="http://webster.cs.washington.edu:8080/practiceit/">Practice-It</a>; 
+								<a href="http://suggest.google.com/">Google Suggest</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Asynchronous web communication</h1>
+
+				<div class="centerfigure">
+					<img src="images/figure_2_asynchronous.png" alt="synchronous communication" style="width: 60%;" />
+				</div>
+
+				<ul>
+					<li><span class="term">asynchronous</span>: user can keep interacting with page while data loads
+						<ul>
+							<li>
+								communication pattern made possible by Ajax
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide noprint">
+				<h1>Quick Ajax example</h1>
+
+				<div>
+					<script type="text/javascript">
+						function ajaxDump(sourceID, targetID) {
+							var url = document.getElementById(sourceID).value;
+							var ajax = new XMLHttpRequest();
+							ajax.onreadystatechange = function() {
+								if (ajax.readyState == 4) {
+									var dumpTarget = document.getElementById(targetID);
+									dumpTarget.innerHTML = ajax.responseText;
+								}
+							};
+							try {
+								ajax.open("get", url, true);
+								ajax.send(null);
+							} catch (e if ("" + e).match(/denied/)) {
+								alert("Ajax security error: cannot fetch " + url);
+							}
+						}
+					</script>
+
+					<input id="dumptext" type="text" size="50" value="examples/digg.html" />
+					<button onclick="ajaxDump('dumptext', 'dumpdiv');">Fetch</button>
+				</div>
+
+				<div id="dumpdiv"></div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Core Ajax concepts</h1>
+
+				<ul>
+					<li>JavaScript's <code>XMLHttpRequest</code> object can fetch files from a web server
+						<ul>
+							<li>supported in IE5+, Safari, Firefox, Opera (with minor compatibilities)</li>
+						</ul>
+					</li>
+					<!--
+					Internet Explorer uses an ActiveXObject, while other browsers uses the built-in JavaScript object called XMLHttpRequest.
+					-->
+
+					<li>it can do this <span class="term">asynchronously</span> (in the background, transparent to user)</li>
+					<li>contents of fetched file can be put into current web page using DOM</li>
+					<li>result: user's web page updates dynamically without a page reload</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>A typical Ajax request</h1>
+
+				<div class="rightfigure">
+					<img src="images/ajax_request.png" alt="request" style="width: 100%" />
+				</div>
+
+				<ol class="compressed">
+					<li>user clicks, invoking event handler</li>
+					<li class="incremental">that handler's JS code creates an <code>XMLHttpRequest</code> object</li>
+					<li class="incremental"><code>XMLHttpRequest</code> object requests a document from a web server</li>
+					<li class="incremental">server retrieves appropriate data, sends it back</li>
+					<li class="incremental"><code>XMLHttpRequest</code> fires event to say that the data has arrived
+						<ul>
+							<li>this is often called a <span class="term">callback</span></li>
+							<li>you can attach a handler to be notified when the data has arrived</li>
+						</ul>
+					</li>
+					<li class="incremental">your callback event handler processes the data and displays it</li>
+				</ol>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>10.2: Using XMLHttpRequest</h1>
+				
+				<ul>
+					<li>
+						10.1: Ajax Concepts
+					</li>
+					<li>
+						<strong>10.2: Using <code>XMLHttpRequest</code></strong>
+					</li>
+					<li>
+						10.3: XML
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/xml/xml_http.asp"><code>XMLHttpRequest</code></a> object</h1>
+				
+				<p class="description">
+					the core JavaScript object that makes Ajax possible
+				</p>
+
+				<ul>
+					<li>methods:
+						<code>abort</code>, <code>getAllResponseHeaders</code>, <code>getResponseHeader</code>, <strong><code>open</code></strong>, <strong><code>send</code></strong>, <code>setRequestHeader</code>
+					</li>
+
+					<li>properties:
+							<strong><code>onreadystatechange</code></strong>, <code>readyState</code>, <strong><code>responseText</code></strong>, <code>responseXML</code>, <code>status</code>, <code>statusText</code>
+					</li>
+
+					<li>IE6 doesn't follow standards and uses its own <a href="http://www.w3schools.com/xml/xml_http.asp"><code>ActiveXObject</code></a> instead</li>
+				
+					<li>
+						we'll learn to use Ajax in 4 steps:
+						<ol>
+							<li>synchronous, text-only (SJAT?)</li>
+							<li>asynchronous, text-only (AJAT?)</li>
+							<li>asynchronous w/ Prototype (AJAP?)</li>
+							<li>asynchronous w/ XML data (real Ajax)</li>
+						</ol>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					1. Synchronous requests
+					<span class="readingsection">(10.2.1)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+var ajax = new XMLHttpRequest();
+ajax.open(&quot;GET&quot;, <var>url</var>, false);
+ajax.send(null);
+
+<span class="comment">// at this point, the request will have returned with its data</span>
+<var>do something with ajax.responseText</var>;
+</pre>
+
+				<ul>
+					<li>create the request object, open a connection, send the request</li>
+					<li>when <code>send</code> returns, the fetched text will be stored in request's <code>responseText</code> property</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Why synchronous requests are bad</h1>
+				
+				<div class="rightfigure">
+					<img src="images/man_watch.jpg" alt="man looking at his watch" />
+				</div>
+				
+				<ul>
+					<li>your code waits for the request to completely finish before proceeding</li>
+					<li>easier for you to program, but ...</li>
+					<li>the user's <em>entire browser locks up</em> until the download is completed</li>
+					<li>a terrible user experience (especially if the file is very large)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					2. Asynchronous requests, basic idea
+					<span class="readingsection">(10.2.3)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+var ajax = new XMLHttpRequest();
+<em>ajax.onreadystatechange = <var>functionName</var>;</em>
+ajax.open(&quot;get&quot;, <var>url</var>, <em>true</em>);
+ajax.send(null);
+
+<span class="comment">// don't process ajax.responseText here, but in your function</span>
+...
+</pre>
+
+				<ul>
+					<li>attach an event handler to the request's <code>onreadystatechange</code> event</li>
+					<li>pass <code>true</code> as third parameter to <code>open</code></li>
+					<li>handler will be called when request state changes, e.g. finishes</li>
+					<li>function's code will be run when request is complete</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <code>readyState</code> property</h1>
+
+				<ul>
+					<li>holds the status of the <code>XMLHttpRequest</code></li>
+					<li>possible values for the <code>readyState</code> property:
+
+						<table class="standard">
+							<tr><th class="spaced">State</th><th>Description</th></tr>
+							<tr><td>0</td><td>not initialized</td></tr>
+							<tr><td>1</td><td>set up</td></tr>
+							<tr><td>2</td><td>sent</td></tr>
+							<tr><td>3</td><td>in progress</td></tr>
+							<tr><td>4</td><td>complete</td></tr>
+						</table>
+					</li>
+					<li><code>readyState</code> changes &rarr; <code>onreadystatechange</code> handler runs</li>
+					<li>usually we are only interested in <code>readyState</code> of 4 (complete)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Asynchronous <code>XMLHttpRequest</code> template</h1>
+
+				<pre class="syntaxtemplate js">
+var ajax = new XMLHttpRequest();
+ajax.onreadystatechange = <em>function() {</em>
+	if (ajax.readyState == 4) {   <span class="comment">// 4 means request is finished</span>
+		<var>do something with ajax.responseText</var>;
+	}
+<em>}</em>;
+ajax.open(&quot;get&quot;, <var>url</var>, true);
+ajax.send(null);
+</pre>
+
+				<ul>
+					<li>most Ajax code uses an <span class="term">anonymous function</span> as the event handler
+						<ul>
+							<li>useful to declare it as an inner anonymous function, because then it <a href="http://en.wikipedia.org/wiki/Closure_%28computer_science%29">can access surrounding local variables</a> (e.g. <code>ajax</code>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Checking for request errors
+					<span class="readingsection">(10.2.2)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+var ajax = new XMLHttpRequest();
+ajax.onreadystatechange = function() {
+	if (ajax.readyState == 4) {
+		<em>if (ajax.status == 200) {</em>   <span class="comment">// 200 means request succeeded</span>
+			<var>do something with ajax.responseText</var>;
+		<em>} else {</em>
+			<var>code to handle the error</var>;
+		<em>}</em>
+	}
+};
+ajax.open(&quot;get&quot;, <var>url</var>, true);
+ajax.send(null);
+</pre>
+
+				<ul>
+					<li>web servers return <a href="http://en.wikipedia.org/wiki/Http_error_codes">status codes</a> for requests (200 means Success)</li>
+					<li>you may wish to display a message or take action on a failed request</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Prototype's Ajax model
+					<span class="readingsection">(10.2.4)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+new Ajax.Request(
+	&quot;<var>url</var>&quot;,
+	{
+		<var>option</var> : <var>value</var>,
+		<var>option</var> : <var>value</var>,
+		...
+		<var>option</var> : <var>value</var>
+	}
+);
+</pre>
+
+				<ul>
+					<li>Prototype's <code>Ajax.Request</code> object constructor accepts 2 parameters:
+						<ol>
+							<li>the <strong>URL</strong> to fetch, as a String,</li>
+							<li>a set of <strong>options</strong>, as an array of <var>key</var>:<var>value</var> pairs in <code>{}</code> braces</li>
+						</ol>
+					</li>
+					<li>hides some of the icky details (<code>onreadystatechange</code>, etc.)</li>
+					<li>works in all browsers: IE, Firefox, etc.</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Prototype Ajax methods and properties</h1>
+				
+				<ul>
+					<li><a class="popup" href="http://prototypejs.org/api/ajax/options">options</a> that can be passed to the <code>Ajax.Request</code> constructor:
+
+						<ul>
+							<li>
+								<strong><code>method</code></strong> : how to fetch the request from the server (default <code>&quot;post&quot;</code>)
+							</li>
+
+							<li>
+								<strong><code>parameters</code></strong> : query parameters to pass to the server, if any
+							</li>
+
+							<li>
+								<code>asynchronous</code> (default <code>true</code>),
+								<code>contentType</code>,
+								<code>encoding</code>,
+								<code>requestHeaders</code>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						events in the <code>Ajax.Request</code> object that you can handle:
+				
+						<ul>
+							<li>
+								<strong><code>onSuccess</code></strong> : request completed successfully
+							</li>
+
+							<li>
+								<strong><code>onFailure</code></strong> : request was unsuccessful
+							</li>
+
+							<li>
+								<code>onCreate</code>,
+								<code>onComplete</code>,
+								<code>onException</code>,
+								<code>on###</code> (handler for HTTP error code ###)
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Prototype Ajax template</h1>
+
+				<pre class="syntaxtemplate js">
+	new Ajax.Request(
+		&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;,
+			onSuccess: <var>functionName</var>
+		}
+	);
+	...
+
+function <var>functionName</var>(ajax) {
+	<var>do something with ajax.responseText</var>;
+}
+</pre>
+
+				<ul>
+					<li>most Ajax requests we'll do in this course are GET requests</li>
+					<li>attach a handler to the request's <code>onSuccess</code> event</li>
+					<li>the handler accepts the <code>XMLHttpRequest</code> object, <code>ajax</code>, as a parameter</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Handling Ajax errors w/ Prototype</h1>
+
+				<pre class="syntaxtemplate js">
+	new Ajax.Request(
+		&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;,
+			onSuccess: <var>functionName</var>,
+			<em>onFailure: ajaxFailure</em>
+		}
+	);
+	...
+<em>function ajaxFailure(ajax) {
+	alert(&quot;Error making Ajax request:&quot; + 
+	      &quot;\n\nServer status:\n&quot; + ajax.status + &quot; &quot; + ajax.statusText + 
+	      &quot;\n\nServer response text:\n&quot; + ajax.responseText);
+}</em>
+</pre>
+
+				<ul>
+					<li>for user's (and developer's) benefit, show a message if a request fails</li>
+					<li>a good failure message shows the HTTP error code and status text</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Creating a <code>POST</code> request</h1>
+				
+<pre class="syntaxtemplate js">
+new Ajax.Request(
+	&quot;<var>url</var>&quot;,
+	{
+		<em>method: &quot;POST&quot;,</em>   <span class="comment">// optional</span>
+		<em>parameters: { <var>name</var>: <var>value</var>, <var>name</var>: <var>value</var>, ..., <var>name</var>: <var>value</var> },</em>
+		onSuccess: <var>functionName</var>,
+		onFailure: <var>functionName</var>
+	}
+);
+</pre>
+
+				<ul>
+					<li><code>Ajax.Request</code> can also be used to post data to a web server</li>
+					<li><code>method</code> should be changed to <code>&quot;post&quot;</code> (or omitted; <code>post</code> is default)</li>
+					<li>any query parameters should be passed as a <code>parameters</code> parameter, written between <code>{}</code> braces as <var>name</var>: <var>value</var> pairs
+						<ul>
+							<li><code>get</code> request parameters can also be passed this way, if you like</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Prototype's Ajax Updater</h1>
+
+				<pre class="syntaxtemplate js">
+	new Ajax.Updater(
+		&quot;<var>id</var>&quot;,
+		&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;
+		}
+	);
+</pre>
+
+				<hr />
+
+				<ul>
+					<li><a href="http://www.prototypejs.org/api/ajax/updater"><code>Ajax.Updater</code></a> can be used if you want to fetch a file via Ajax and inject its text/HTML contents into an onscreen element</li>
+					<li>additional (1st) parameter specifies the <code>id</code> of the element into which to inject the content</li>
+				</ul>
+			</div>
+
+
+
+<!--
+<div class="slide">
+<h1>The responseXML property</h1>
+
+<li>responseXML (Morgan)
+    http://www.w3schools.com/ajax/ajax_responsexml.asp</li>
+
+<li>While responseText returns the HTTP response as a string, responseXML returns the response as XML.</li>
+
+<li>The responseXML property returns an XML document object, which can be examined and parsed using W3C DOM node tree methods and properties.</li>
+
+</div>
+
+
+
+<div class="slide">
+<h1>Debugging Ajax code</h1>
+
+<pre>
+debugging ajax (look at HTML headers)
+   firebug?
+   livehttpheaders?
+
+usability
+	breaks back button
+	how do you notify them on a failure?  (user name taken, etc.)
+	
+	Ajax and Interface Design
+	http://www.lukew.com/resources/articles/ajax_design.asp
+
+security stuff
+	won't let you do it from a local file:/// page
+	won't let a page on one domain access data hosted on another (to avoid xss problems)
+
+
+query strings, building, understanding, using
+	program running on server
+	parameters
+
+what if the ajax request fails?
+	check status etc.
+	better feedback: say "loading..." while in progess, etc.
+
+</pre>
+</div>
+-->
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Ajax code bugs
+					<span class="readingsection">(10.2.5)</span>
+				</h1>
+				
+				<p>
+					When writing Ajax programs, there are new kinds of bugs that are likely to appear.
+				</p>
+				
+				<ul>
+					<li>Nothing happens!</li>
+					<li>The <code>responseText</code> or <code>responseXML</code> has no properties.</li>
+					<li>The data isn't what I expect.</li>
+				</ul>
+				
+				<p>
+					How do we find and fix such bugs?
+				</p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Debugging Ajax code</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_ajax.png" alt="Firebug Ajax" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li><strong>Net</strong> tab shows each request, its parameters, response, any errors</li>
+					<li>expand a request with <span class="term" style="border: 1px solid black;">+</span> and look at <span class="term">Response</span> tab to see Ajax result</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<code>XMLHttpRequest</code> security restrictions
+				</h1>
+
+				<div class="centerfigure">
+					<img src="images/ajax_security_error.png" alt="Ajax security error" />
+				</div>
+
+				<ul>
+					<li>cannot be run from a web page stored on your hard drive</li>
+					<li>can only be run on a web page stored on a web server</li>
+					<li>can only fetch files from the same site that the page is on
+						<ul>
+							<li><code>www.foo.com/a/b/c.html</code> can only fetch from <code>www.foo.com</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+<!-- ***
+DOM links:
+http://www.usg.edu/oiit/re/re06/proceedings/dom/
+http://javascriptkit.com/javatutors/dom.shtml
+http://slayeroffice.com/articles/DOM/
+
+XML parser (to walk the DOM tree of an XML file):
+http://www.w3schools.com/dom/dom_parser.asp
+-->
+
+
+
+			<div class="slide titleslide">
+				<h1>10.3: XML</h1>
+				
+				<ul>
+					<li>
+						10.1: Ajax Concepts
+					</li>
+					<li>
+						10.2: Using <code>XMLHttpRequest</code>
+					</li>
+					<li>
+						<strong>10.3: XML</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+Bad way to store text data
+	just a bunch of lines
+	with key=value pairings
+	show .ini file from old Windows?
+		idea of old days with lots of config files, etc.
+
+	why bad?
+		not standardized
+		error-prone
+		no common software to read/write them
+-->
+
+
+
+			<div class="slide">
+				<h1>What is XML?</h1>
+
+				<ul>
+					<li><strong>XML</strong>: a specification for creating languages to store data; used to share data between systems</li>
+					
+					<li>a basic syntax of tags &amp; attributes</li>
+					
+					<li>languages written in XML specify tag names, attribute names, and rules of use</li>
+					
+					<li>Example: XHTML is a "flavor" of XML
+						<ul>
+							<li>an adaptation of old HTML to fit XML's syntax requirements</li>
+							<li>XML specifies tag syntax: <code>&lt;... ...="..."&gt;&lt;/...&gt;</code></li>
+							<li>HTML contributes tag names (e.g. <code>h1</code>, <code>img</code>) and attributes (<code>id</code>/<code>class</code> on all elements, <code>src</code>/<code>alt</code> on <code>img</code> tag)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>An example XML file</h1>
+
+				<pre class="examplecode xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;note&gt;
+	&lt;to&gt;Tove&lt;/to&gt;
+	&lt;from&gt;Jani&lt;/from&gt;
+	&lt;subject&gt;Reminder&lt;/subject&gt;
+	&lt;message language=&quot;english&quot;&gt;
+		Don't forget me this weekend!
+	&lt;/message&gt;
+&lt;/note&gt;
+</pre>
+
+				<ul>
+					<li>begins with an xml header tag, then a single <span class="term">document tag</span> (in this case, <code>note</code>)</li>
+					<li>tag, attribute, and comment syntax is identical to XHTML's</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>What tags are legal in XML?</h1>
+
+				<ul>
+					<li><em>any tag you want</em>; the person storing the data can make up their own tag structure</li>
+					<li>example: a person storing data about email messages may want tags named <code>to</code>, <code>from</code>, <code>subject</code></li>
+					<li>example: a person storing data about books may want tags named <code>book</code>, <code>title</code>, <code>author</code></li>
+					<li>"<a href="http://en.wikipedia.org/wiki/Garden_State_(film)">Garden State</a>" XML: if you're feeling unoriginal, make up some XML nobody's ever done before
+						<ul>
+							<li><code>&lt;bloop bleep="flibbetygibbet"&gt;quirkleblat&lt;/bloop&gt;</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Schemas</h1>
+				
+				<ul>
+					<li><span class="term"><a href="http://en.wikipedia.org/wiki/XML_schema">schema</a></span>: an optional set of rules specifying which tags and attributes are valid, and how they can be used together</li>
+					
+					<li>used to <em>validate</em> XML files to make sure they follow the rules of that "flavor"
+						<ul>
+							<li>XHTML has a schema; W3C validator uses it to validate</li>
+							<li>doctype at top of XHTML file specifies schema</li>
+						</ul>
+					</li>
+
+					<li>two ways to define a schema:
+						<ul>
+							<li><a href="http://en.wikipedia.org/wiki/Document_Type_Definition">Document Type Definition (DTD)</a></li>
+							<li><a href="http://en.wikipedia.org/wiki/XML_Schema_%28W3C%29">W3C XML Schema</a></li>
+						</ul>
+					</li>
+					
+					<li>(we won't cover schemas any further here)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Uses of XML</h1>
+				
+				<ul>
+					<li>XML data comes from many sources on the web: 
+						<ul>
+							<li><span class="term">web servers</span> store data as XML files</li>
+							<li><span class="term">databases</span> sometimes return query results as XML</li>
+							<li><span class="term">web services</span> use XML to communicate</li>
+						</ul>
+					</li>
+					
+					<li>XML languages are used for <a href="http://en.wikipedia.org/wiki/MusicXML">music</a>, <a href="http://en.wikipedia.org/wiki/MathML">math</a>, <a href="http://en.wikipedia.org/wiki/SVG">vector graphics</a></li>
+					
+					<li>popular use: <a href="http://en.wikipedia.org/wiki/RSS">RSS</a> for news feeds &amp; podcasts</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Pros and cons of XML</h1>
+
+				<ul>
+					<li>pro:
+						<ul>
+							<li>easy to read (for humans and computers)</li>
+							<li>standard format makes automation easy</li>
+							<li>don't have to "reinvent the wheel" for storing new types of data</li>
+							<li>international, platform-independent, open/free standard</li>
+							<li>can represent almost any general kind of data (record, list, tree)</li>
+						</ul>
+					</li>
+					<li>con:
+						<ul>
+							<li>bulky syntax/structure makes files large; can decrease performance
+								<ul>
+									<li>example: <a href="http://en.wikipedia.org/wiki/MathML#Example">quadratic formula in MathML</a></li>
+								</ul>
+							</li>
+							<li>can be hard to "shoehorn" data into an intuitive XML format
+								<ul>
+									<li>won't need to know how for this class</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>Structure of an XML document</h1>
+				
+				<p>
+					XML's syntax looks much like XHTML's:
+				</p>
+				
+				<ul>
+					<li>a header, then a single document tag that can contain other tags
+<pre class="example xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<var>document tag</var>
+</pre>
+					</li>
+
+					<li>tag syntax:
+<pre class="example xml">
+&lt;<var>element</var> <var>attribute(s)</var>&gt;
+	<var>text or tags</var>
+&lt;/<var>element</var>&gt;
+</pre>
+
+						<ul>
+							<li>or a tag with no inner content can end with /&gt;</li>
+						</ul>
+					</li>
+
+					<li>attribute syntax:
+<pre class="example xml">
+<var>name</var>=&quot;<var>value</var>&quot;
+</pre>
+					</li>
+
+					<li>comments: <code>&lt;!- <var>comment</var> -&gt;</code></li>
+					<li>entities: <code>&amp;lt;</code></li>
+				</ul>
+			</div>
+-->
+
+
+
+			<div class="slide">
+				<h1>Fetching XML using AJAX (template)</h1>
+
+<pre class="syntaxtemplate js">
+	new Ajax.Request(
+		&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;,
+			onSuccess: <var>functionName</var>
+		}
+	);
+	...
+
+function <var>functionName</var>(ajax) {
+	<span class="syntaxtemplate">do something with ajax.response<em>XML</em></span>;
+}
+</pre>
+
+				<ul>
+					<li><code>ajax.response<em>Text</em></code> contains the XML data in plain text</li>
+					<li><code>ajax.<a href="http://www.w3schools.com/ajax/ajax_responsexml.asp">response<em>XML</em></a></code> is a pre-parsed DOM object representing the XML file as a tree (more useful)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Using XML data in a web page</h1>
+
+				<ul>
+					<li>custom flavor of XML needs to be converted to XHTML, then injected into page</li>
+					
+					<li>we will transform using Javascript XML DOM</li>
+					
+					<li>basic technique:
+						<ol>
+							<li>fetch XML data using Ajax</li>
+							<li>examine the <code>response<em>XML</em></code> object, using DOM methods and properties</li>
+							<li>extract data from XML elements and wrap them in HTML elements</li>
+							<li>inject HTML elements into web page</li>
+						</ol>
+					</li>
+					<li>other ways to transform XML (not covered): CSS, <a href="http://en.wikipedia.org/wiki/Extensible_Stylesheet_Language">XSLT</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Recall: Javascript XML (XHTML) DOM</h1>
+				
+				<p>
+					All of the DOM properties and methods we already know can be used on XML nodes:
+				</p>
+
+				<ul>
+					<li>properties:
+						<ul>
+							<li><code>firstChild</code>, <code>lastChild</code>, <code>childNodes</code>, <code>nextSibling</code>, <code>previousSibling</code>, <code>parentNode</code></li>
+							<li><code><strong>nodeName</strong></code>, <code><strong>nodeType</strong></code>, <code><strong>nodeValue</strong></code>, <code><strong>attributes</strong></code></li>
+						</ul>
+					</li>
+
+					<li>methods:
+						<ul>
+							<li><code>appendChild</code>, <code>insertBefore</code>, <code>removeChild</code>, <code>replaceChild</code></li>
+							<li><code><strong>getElementsByTagName</strong></code>, <strong><code>getAttribute</code></strong>, <code><strong>hasAttributes</strong></code>, <code><strong>hasChildNodes</strong></code></li>
+						</ul>
+					</li>
+					
+					<!--
+					<li>Prototype methods:
+						<ul>
+							<li>
+								<a href="http://prototypejs.org/api/element/ancestors"><code>ancestors</code></a>,
+								<a href="http://prototypejs.org/api/element/childElements"><code>childElements</code></a>,
+								<a href="http://prototypejs.org/api/element/descendants"><code>descendants</code></a>,
+								<a href="http://prototypejs.org/api/element/firstDescendant"><code>firstDescendant</code></a>,
+								<a href="http://prototypejs.org/api/element/descendantOf"><code>descendantOf</code></a>,
+								<a href="http://prototypejs.org/api/element/next"><code>next</code></a>,
+								<a href="http://prototypejs.org/api/element/previous"><code>previous</code></a>,
+								<a href="http://prototypejs.org/api/element/siblings"><code>siblings</code></a>,
+								<a href="http://prototypejs.org/api/element/previousSiblings"><code>previousSiblings</code></a>,
+								<a href="http://prototypejs.org/api/element/nextSiblings"><code>nextSiblings</code></a>,
+								<a href="http://prototypejs.org/api/element/adjacent"><code>adjacent</code></a>
+							</li>
+						</ul>
+					</li>
+					-->
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>XML DOM tree structure</h1>
+
+				<div class="rightfigure" style="width: 45%">
+					<img src="images/figure_6_textbook_cat.gif" alt="node tree" style="width: 100%" />
+				</div>
+
+				<pre class="examplecode xml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;categories&gt; 
+  &lt;category&gt;children&lt;/category&gt; 
+  &lt;category&gt;computers&lt;/category&gt; 
+  ... 
+&lt;/categories&gt;
+</pre>
+
+				<ul>
+					<li>the XML tags have a tree structure</li>
+					<li>DOM nodes have parents, children, and siblings</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Analyzing a fetched XML file using DOM</h1>
+				
+				<pre class="examplecode xml" style="font-size: smaller">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;foo bloop="bleep"&gt;
+	&lt;bar/&gt;
+	&lt;baz&gt;&lt;quux/&gt;&lt;/baz&gt;
+	&lt;baz&gt;&lt;xyzzy/&gt;&lt;/baz&gt;
+&lt;/foo&gt;
+</pre>
+				<p>We can use DOM properties and methods on <code>ajax.responseXML</code>:</p>
+				
+				<pre class="examplecode js" style="font-size: smaller">
+<span class="comment">// zeroth element of array of length 1</span>
+var foo = ajax.responseXML.getElementsByTagName("foo")[0];
+
+<span class="comment">// same</span>
+var bar = foo.getElementsByTagName("bar")[0];
+
+<span class="comment">// array of length 2</span>
+var all_bazzes = foo.getElementsByTagName("baz");
+
+<span class="comment">// string "bleep"</span>
+var bloop = foo.getAttribute("bloop");
+</pre>
+				
+			</div>
+
+
+			<div class="slide">
+				<h1>Recall: Pitfalls of the DOM</h1>
+
+				<pre class="examplecode xml" style="font-size: smaller">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;foo bloop="bleep"&gt;
+	&lt;bar/&gt;
+	&lt;baz&gt;&lt;quux/&gt;&lt;/baz&gt;
+	&lt;baz&gt;&lt;xyzzy/&gt;&lt;/baz&gt;
+&lt;/foo&gt;
+</pre>
+				<p>We are reminded of some pitfalls of the DOM:</p>
+
+				<pre class="examplecode js" style="font-size: smaller">
+<span class="comment">// works - XML prolog is removed from document tree</span>
+var foo = ajax.responseXML.firstChild;
+
+<span class="comment">// WRONG - just a text node with whitespace!</span>
+var bar = foo.firstChild;
+
+<span class="comment">// works</span>
+var first_baz = foo.getElementsByTagName("baz")[0];
+
+<span class="comment">// WRONG - just a text node with whitespace!</span>
+var second_baz = first_baz.nextSibling;
+
+<span class="comment">// works - why?</span>
+var xyzzy = second_baz.firstChild;
+</pre>
+
+			</div>
+
+
+			<div class="slide">
+				<h1>Larger XML file example</h1>
+
+				<pre class="examplecode xml" style="font-size: smaller">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;bookstore&gt;
+	&lt;book category=&quot;cooking&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;Everyday Italian&lt;/title&gt;
+		&lt;author&gt;Giada De Laurentiis&lt;/author&gt;
+		&lt;year&gt;2005&lt;/year&gt;&lt;price&gt;30.00&lt;/price&gt;
+	&lt;/book&gt;
+	&lt;book category=&quot;computers&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;XQuery Kick Start&lt;/title&gt;
+		&lt;author&gt;James McGovern&lt;/author&gt;
+		&lt;year&gt;2003&lt;/year&gt;&lt;price&gt;49.99&lt;/price&gt;
+	&lt;/book&gt;
+	&lt;book category=&quot;children&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;Harry Potter&lt;/title&gt;
+		&lt;author&gt;J K. Rowling&lt;/author&gt;
+		&lt;year&gt;2005&lt;/year&gt;&lt;price&gt;29.99&lt;/price&gt;
+	&lt;/book&gt;
+	&lt;book category=&quot;computers&quot;&gt;
+		&lt;title lang=&quot;en&quot;&gt;Learning XML&lt;/title&gt;
+		&lt;author&gt;Erik T. Ray&lt;/author&gt;
+		&lt;year&gt;2003&lt;/year&gt;&lt;price&gt;39.95&lt;/price&gt;
+	&lt;/book&gt;
+&lt;/bookstore&gt;
+</pre>
+			</div>
+
+
+<!--
+			<div class="slide">
+				<h1>Details about XML node <a href="http://www.w3schools.com/dom/dom_nodes_info.asp">properties</a></h1>
+
+				<ul>
+					<li><code>nodeType</code> : what kind of node it is
+						<table>
+							<tr><th class="spaced">Kind of node</th><th><code>nodeType</code> value</th></tr>
+							<tr><td>element</td><td>1</td></tr>
+							<tr><td>attribute</td><td>2</td></tr>
+							<tr><td>text</td><td>3</td></tr>
+							<tr><td>comment</td><td>8</td></tr>
+							<tr><td>document</td><td>9</td></tr>
+						</table>
+					</li>
+
+					<li><code>nodeName</code> : uppercase version of tag such as <code>&quot;DIV&quot;</code> or <code>&quot;ARTICLE&quot;</code>
+						<ul>
+							<li>an attribute node's name is the attribute's name</li>
+							<li>all text nodes have name <code>&quot;#text&quot;</code></li>
+							<li>document node has name <code>&quot;#document&quot;</code></li>
+						</ul>
+					</li>
+
+					<li><code>nodeValue</code> : text inside a text node, or value of an attribute node</li>
+				</ul>
+			</div>
+-->
+
+
+
+			<div class="slide">
+				<h1>Navigating the node tree</h1>
+				
+				<ul>
+					<li>don't have <code>id</code>s or <code>class</code>es to use to get specific nodes</li>
+					
+					<li><code>firstChild</code>/<code>nextSibling</code> properties are unreliable</li>
+					
+					<li>
+						best way to walk the tree is using <code>getElementsByTagName</code>:
+						<pre class="syntaxtemplate js">
+<var>node</var>.getElementsByTagName(&quot;<var>tagName</var>&quot;)
+</pre>
+
+						<ul>
+							<li>get an array of all <var>node</var>'s children that are of the given tag (<code>&quot;book&quot;</code>, <code>&quot;subject&quot;</code>, etc.)</li>
+							<li>can be called on the overall XML document or on a specific node</li>
+						</ul>
+					</li>
+					
+					<li>
+						<pre class="syntaxtemplate js">
+<var>node</var>.getAttribute(&quot;<var>attributeName</var>&quot;)
+</pre>
+
+						<ul>
+							<li>gets an attribute from a node (e.g., <code>category</code>, <code>lang</code>)</li>
+						</ul>
+					</li>
+					
+					<!--
+					<li>
+						Prototype methods also useful: <code>childElements</code>, <code>siblings</code>, <code>next</code>/<code>previous</code>, etc.
+					</li>
+					-->
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Navigating node tree example</h1>
+
+				<pre class="examplecode js narrow">
+<span class="comment">// make a paragraph for each book about computers</span>
+var books = ajax.responseXML.getElementsByTagName(&quot;book&quot;);
+for (var i = 0; i &lt; books.length; i++) {
+	var category = books[i].getAttribute(&quot;category&quot;);
+	if (category == &quot;computers&quot;) {
+		var title = books[i].getElementsByTagName(&quot;title&quot;)[0].firstChild.nodeValue;
+		var author = books[i].getElementsByTagName(&quot;author&quot;)[0].firstChild.nodeValue;
+		
+		<span class="comment">// make an XHTML &lt;p&gt; tag based on the book's XML data</span>
+		var p = document.createElement(&quot;p&quot;);
+		p.innerHTML = title + &quot;, by &quot; + author;
+		document.body.appendChild(p);
+	}
+}
+</pre>
+
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>A historical interlude: why XHTML?</h1>
+				
+				<ul>
+					<li>in XML, different "flavors" can be combined in single document</li>
+					<li>theoretical benefit of including other XML data in XHTML
+						<ul>
+							<li>nobody does this</li>
+						</ul>
+					</li>
+					
+					<li>most embedded data are in non-XML formats (e.g., Flash)
+						<ul>
+							<li>non-XML data must be embedded another way (we'll talk about this later on)</li>
+						</ul>
+					</li>
+					
+					<li>requires browser/plugin support for other "flavor" of XML
+						<ul>
+							<li>development slow to nonexistent</li>
+							<li>most XML flavors are specialized uses</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Why XML in AJAX?</h1>
+				
+				<ul>
+					<li>most data you want are provided in XML
+						<ul>
+							<li>the <em>de facto</em> universal format</li>
+						</ul>
+					</li>
+					
+					<li>the browser can already parse XML (i.e., XHTML) into DOM objects
+						<ul>
+							<li>DOM only defined for XML-based formats, may not map directly to another format</li>
+						</ul>
+					</li>
+					
+					<li>would have to manually parse a different format
+						<ul>
+							<li>simple formats can be parsed manually from <code>ajax.responseText</code></li>
+							<li>most data are easier to manipulate as DOM objects than to parse manually</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Debugging <code>responseXML</code> in Firebug</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_debug_ajax.png" alt="Firebug Debug Ajax" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li>can examine the entire XML document, its node/tree structure</li>
+				</ul>
+			</div>
+			
+<!--#include virtual="commonbottom.html" -->

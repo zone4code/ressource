@@ -1,0 +1,1667 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Chapter 9: Events and Prototype</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Chapter 9</h1>
+				<h2>Events and the Prototype Library</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1>
+					<a href="http://www.webstepbook.com/">
+						Web Programming Step by Step
+					</a>
+				</h1>
+				
+				<h3>
+					Chapter 9 <br />
+					Events and the Prototype Library
+				</h3>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>9.1: The Prototype JavaScript Library</h1>
+				
+				<ul>
+					<li>
+						<strong>9.1: The Prototype JavaScript Library</strong>
+					</li>
+					<li>
+						9.2: Event-Handling
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Problems with JavaScript</h1>
+
+				<p>
+					JavaScript is a powerful language, but it has many flaws:
+				</p>
+
+				<ul>
+					<li>The DOM can be clunky to use</li>
+					<li>The same code doesn't always work the same way in every browser
+						<ul>
+							<li>code that works great in Firefox, Safari, ... will fail in IE and vice versa</li>
+						</ul>
+					</li>
+					<li>Many web developers work around these problems with hacks:
+<pre class="examplecode js">
+<span class="comment">// check if browser is IE (bad style!)</span>
+if (navigator.appName === &quot;Microsoft Internet Explorer&quot;) { ...
+</pre>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://prototypejs.org/">Prototype</a>
+				</h1>
+
+<!-- *** update to latest version of prototype -->
+<pre class="examplecode js" style="font-size: smaller">
+&lt;script <em>src=&quot;http://www.cs.washington.edu/education/courses/cse190m/09sp/prototype.js&quot;</em> 
+ type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+
+<span class="comment">&lt;!-- or, --&gt;</span>
+&lt;script <em>src=&quot;http://prototypejs.org/assets/2008/9/29/prototype-1.6.0.3.js&quot;</em> 
+ type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+
+				<ul>
+					<li><a href="http://prototypejs.org/">Prototype</a> JavaScript library adds many useful features to JavaScript:
+						<ul>
+							<li>many useful <a class="popup" href="http://prototypejs.org/learn/extensions">extensions to the DOM</a></li>
+							<li>added methods to String, Array, Date, Number, Object</li>
+							<li>improves event-driven programming</li>
+							<li>many cross-browser compatibility fixes</li>
+							<li>makes <a class="popup" href="http://prototypejs.org/learn/introduction-to-ajax">Ajax programming</a> easier (seen later)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Prototype's new methods
+					<span class="readingsection">(9.1.2)</span>
+				</h1>
+				
+				<p>
+					Prototype adds new methods to many existing JavaScript types:
+				</p>
+
+				<table class="standard left" style="font-size: smaller">
+					<tr>
+						<td class="leftheader" rowspan="2">
+							<a href="http://prototypejs.org/api/array">Array</a>
+						</td>
+						<td><a href="http://prototypejs.org/api/array/clear"><code>clear</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/clone"><code>clone</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/compact"><code>compact</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/each"><code>each</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/first"><code>first</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/flatten"><code>flatten</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/from"><code>from</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/indexof"><strong><code>indexOf</code></strong></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/array/inspect"><code>inspect</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/last"><code>last</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/reduce"><code>reduce</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/reverse"><strong><code>reverse</code></strong></a></td>
+						<td><a href="http://prototypejs.org/api/array/size"><code>size</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/toarray"><code>toArray</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/uniq"><code>uniq</code></a></td>
+						<td><a href="http://prototypejs.org/api/array/without"><code>without</code></a></td>
+					</tr>
+				</table>
+
+				<table class="standard left" style="font-size: smaller">
+					<tr>
+						<td class="leftheader">
+							<a href="http://prototypejs.org/api/number">Number</a>
+						</td>
+						<td><a href="http://prototypejs.org/api/number/abs"><code>abs</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/ceil"><code>ceil</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/floor"><code>floor</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/round"><code>round</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/succ"><code>succ</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/times"><code>times</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/toColorPart"><code>toColorPart</code></a></td>
+						<td><a href="http://prototypejs.org/api/number/toPaddedString"><code>toPaddedString</code></a></td>
+					</tr>
+				</table>
+
+				<table class="standard left" style="font-size: smaller">
+					<tr>
+						<td class="leftheader" rowspan="2">
+							<a href="http://prototypejs.org/api/object">Object</a>
+						</td>
+						<td><a href="http://prototypejs.org/api/object/clone"><code>clone</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/extend"><code>extend</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/object/inspect"><code>inspect</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/object/isarray"><code>isArray</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/iselement"><code>isElement</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/isfunction"><code>isFunction</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/ishash"><code>isHash</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/object/isnumber"><code>isNumber</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/isstring"><code>isString</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/isundefined"><code>isUndefined</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/keys"><code>keys</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/tohtml"><code>toHTML</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/toquerystring"><code>toQueryString</code></a></td>
+						<td><a href="http://prototypejs.org/api/object/values"><code>values</code></a></td>
+					</tr>
+				</table>
+
+				<table class="standard left" style="font-size: smaller">
+					<tr>
+						<td class="leftheader" rowspan="3">
+							<a href="http://prototypejs.orghttp://prototypejs.org/api/string">String</a>
+						</td>
+						<td><a href="http://prototypejs.org/api/string/blank"><code>blank</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/camelize"><code>camelize</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/capitalize"><code>capitalize</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/dasherize"><code>dasherize</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/empty"><code>empty</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/string/endsWith"><code>endsWith</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/string/escapeHTML"><code>escapeHTML</code></a></strong></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/string/evalScripts"><code>evalScripts</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/extractScripts"><code>extractScripts</code></a></td>
+						-->
+					</tr>
+					<tr>
+						<!--
+						<td><a href="http://prototypejs.org/api/string/gsub"><code>gsub</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/string/include"><code>include</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/inspect"><code>inspect</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/interpolate"><code>interpolate</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/parseQuery"><code>parseQuery</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/scan"><code>scan</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/string/startsWith"><code>startsWith</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/string/strip"><code>strip</code></a></strong></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/string/stripScripts"><code>stripScripts</code></a></td>
+						-->
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/string/sub"><code>sub</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/string/stripTags"><code>stripTags</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/string/toQueryParams"><code>toQueryParams</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/times"><code>times</code></a></td>
+						<td><a href="http://prototypejs.org/api/string/toArray"><code>toArray</code></a></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/string/truncate"><code>truncate</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/string/underscore"><code>underscore</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/string/unescapeHTML"><code>unescapeHTML</code></a></strong></td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code>$</code> function
+					<span class="readingsection">(9.1.3)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+$(&quot;<var>id</var>&quot;)
+</pre>
+
+				<ul>
+					<li>
+						returns the DOM object representing the element with the given <code>id</code>
+					</li>
+					<li>
+						short for <code>document.getElementById(&quot;<var>id</var>&quot;)</code>
+					</li>
+					<li>
+						often used to write more concise DOM code:
+						
+						<pre class="examplecode js">
+$(&quot;footer&quot;).innerHTML = $(&quot;username&quot;).value.toUpperCase();
+</pre>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://prototypejs.org/api/element">DOM element</a> methods</h1>
+
+				<table class="standard" style="font-size: smaller">
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/absolutize"><code>absolutize</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/addClassName"><code>addClassName</code></a></strong></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/addMethods"><code>addMethods</code></a></td>
+						-->
+						<td><strong><a href="http://prototypejs.org/api/element/classNames"><code>classNames</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/cleanwhitespace"><code>cleanWhitespace</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/cloneposition"><code>clonePosition</code></a></td>
+					</tr>
+
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/cumulativeoffset"><code>cumulativeOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/cumulativescrolloffset"><code>cumulativeScrollOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/empty"><code>empty</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/extend"><code>extend</code></a></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/fire"><code>fire</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/element/firstDescendant"><code>firstDescendant</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/getDimensions"><code>getDimensions</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/getheight"><code>getHeight</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/getoffsetparent"><code>getOffsetParent</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/getStyle"><code>getStyle</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/getWidth"><code>getWidth</code></a></td>
+					</tr>
+					<tr>
+						<td><strong><a href="http://prototypejs.org/api/element/hasClassName"><code>hasClassName</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/element/hide"><code>hide</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/identify"><code>identify</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/insert"><code>insert</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/inspect"><code>inspect</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/makeClipping"><code>makeClipping</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/makePositioned"><code>makePositioned</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/match"><code>match</code></a></td>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/observe"><code>observe</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/element/positionedoffset"><code>positionedOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/readAttribute"><code>readAttribute</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/recursivelyCollect"><code>recursivelyCollect</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/relativize"><code>relativize</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/remove"><code>remove</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/element/removeClassName"><code>removeClassName</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/replace"><code>replace</code></a></td>
+					</tr>
+					<tr>
+						<td><strong><a href="http://prototypejs.org/api/element/scrollto"><code>scrollTo</code></a></strong></td>
+						<td><a href="http://prototypejs.org/api/element/select"><code>select</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/setOpacity"><code>setOpacity</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/setStyle"><code>setStyle</code></a></td>
+						<td><strong><a href="http://prototypejs.org/api/element/show"><code>show</code></a></strong></td>
+					</tr>
+					<tr>
+						<!--
+						<td><a href="http://prototypejs.org/api/element/stopobserving"><code>stopObserving</code></a></td>
+						-->
+						<td><a href="http://prototypejs.org/api/element/toggle"><code>toggle</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/toggleClassName"><code>toggleClassName</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/undoClipping"><code>undoClipping</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/undoPositioned"><code>undoPositioned</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/update"><code>update</code></a></td>
+					</tr>
+					<tr>
+						<td><a href="http://prototypejs.org/api/element/viewportoffset"><code>viewportOffset</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/visible"><code>visible</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/wrap"><code>wrap</code></a></td>
+						<td><a href="http://prototypejs.org/api/element/writeAttribute"><code>writeAttribute</code></a></td>
+						<td></td>
+					</tr>
+				</table>
+
+				<!--
+						<td><strong><a href="http://prototypejs.org/api/element/getElementsByClassName"><code>getElementsByClassName</code></a></strong></td>
+						<td><strong><a href="http://prototypejs.org/api/element/getelementsbyselector"><code>getElementsBySelector</code></a></strong></td>
+				-->
+				
+				<ul>
+					<li>
+						categories: CSS classes, DOM tree traversal/manipulation, events, styles
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+					<li>
+						Prototype methods for setting CSS classes:
+						<ul>
+							<li>
+								<a href="http://prototypejs.org/api/element/addClassName"><code>addClassName</code></a>, 
+								<a href="http://prototypejs.org/api/element/classNames"><code>classNames</code></a>, 
+								<a href="http://prototypejs.org/api/element/hasClassName"><code>hasClassName</code></a>, 
+								<a href="http://prototypejs.org/api/element/removeClassName"><code>removeClassName</code></a>
+							</li>
+						</ul>
+					</li>
+-->
+
+
+
+			<div class="slide">
+				<h1>
+					Styles and CSS classes
+					<span class="readingsection">(9.1.4)</span>
+				</h1>
+
+<pre class="examplecode js">
+function makeFontBigger() {
+	<span class="comment">// turn text yellow and make it bigger</span>
+	if (!$(&quot;text&quot;).<em>hasClassName</em>(&quot;highlight&quot;)) {
+		$(&quot;text&quot;).<em>addClassName</em>(&quot;highlight&quot;);
+	}
+	var size = parseInt($(&quot;text&quot;).<em>getStyle</em>(&quot;font-size&quot;));
+	$(&quot;text&quot;).style.fontSize = (size + 2) + &quot;pt&quot;;
+}
+</pre>
+
+				<ul>
+					<li><code>getStyle</code> function added to DOM object allows accessing existing styles</li>
+					<li><code>addClassName</code>, <code>removeClassName</code>, <code>hasClassName</code> manipulate CSS classes</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common bug: incorrect usage of existing styles</h1>
+
+				<pre class="examplecode js">
+<del>this.style.top = this.getStyle(&quot;top&quot;) + 100 + &quot;px&quot;;</del>            <span class="comment">// bad!</span>
+</pre>
+
+				<ul>
+					<li>the above example computes e.g. 
+						<code>&quot;200px&quot; + 100 + &quot;px&quot;</code> , <br />
+						which would evaluate to <code>&quot;200px100px&quot;</code>
+					</li>
+					<li>
+						a corrected version:
+					</li>
+				</ul>
+
+				<pre class="examplecode js">
+this.style.top = <em>parseInt(</em>this.getStyle(&quot;top&quot;)<em>)</em> + 100 + &quot;px&quot;;  <span class="comment">// correct</span>
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>DOM tree traversal methods</h1>
+
+				<table class="standard" style="font-size: smaller">
+					<tr>
+						<th>
+							method(s)
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/ancestors"><code>ancestors</code></a>,
+							<a href="http://prototypejs.org/api/element/up"><code>up</code></a>
+						</td>
+						<td>
+							elements above this one
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/childElements"><code>childElements</code></a>,
+							<a href="http://prototypejs.org/api/element/descendants"><code>descendants</code></a></strong>,
+							<a href="http://prototypejs.org/api/element/down"><code>down</code></a>
+						</td>
+						<td>
+							elements below this one (not text nodes)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/siblings"><code>siblings</code></a>,
+							<a href="http://prototypejs.org/api/element/next"><code>next</code></a>,
+							<a href="http://prototypejs.org/api/element/nextSiblings"><code>nextSiblings</code></a>, <br />
+
+							<a href="http://prototypejs.org/api/element/previous"><code>previous</code></a>,
+							<a href="http://prototypejs.org/api/element/previousSiblings"><code>previousSiblings</code></a>,
+							<a href="http://prototypejs.org/api/element/adjacent"><code>adjacent</code></a>
+						</td>
+						<td>
+							elements with same parent <br />
+							as this one (not text nodes)
+						</td>
+					</tr>
+				</table>
+				
+				<div class="rightfigure" style="width: 33%">
+					<img src="images/figure_1_element.png" alt="DOM element" style="width: 100%" />
+				</div>
+				
+				<pre class="examplecode js">
+<span class="comment">// remove elements in &quot;main&quot; that do not contain &quot;Sun&quot;</span>
+var sibs = $(&quot;main&quot;).siblings();
+for (var i = 0; i &lt; sibs.length; i++) {
+	if (sibs[i].innerHTML.indexOf(&quot;Sun&quot;) &lt; 0) {
+		sibs[i].remove();
+	}
+}
+</pre>
+				<ul>
+					<li>
+						notice that these are methods, so you need <code>()</code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Methods for selecting elements</h1>
+				
+				<p>
+					Prototype adds methods to the <code>document</code> object (and all DOM element objects) for selecting groups of elements:
+				</p>
+				
+				
+				<table class="standard">
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/utility/getElementsByClassName"><code>getElementsByClassName</code></a>
+						</td>
+						<td>
+							array of elements that use given <code>class</code> attribute
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/element/select"><code>select</code></a>
+						</td>
+						<td>
+							array of elements that match given CSS selector, such as <code>&quot;div#sidebar ul.news > li&quot;</code>
+						</td>
+					</tr>
+				</table>
+
+				<pre class="examplecode js">
+var gameButtons = <em>$(&quot;game&quot;).select(&quot;button.control&quot;)</em>;
+for (var i = 0; i &lt; gameButtons.length; i++) {
+	gameButtons[i].style.color = &quot;yellow&quot;;
+}
+</pre>
+			</div>
+
+
+
+
+			<div class="slide">
+				<h1>
+					The <code>$$</code> function
+					<span class="readingsection">(9.1.5)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+var <var>arrayName</var> = $$(&quot;<var>CSS selector</var>&quot;);
+</pre>
+
+<pre class="examplecode js">
+<span class="comment">// hide all &quot;announcement&quot; paragraphs in the &quot;news&quot; section</span>
+var paragraphs = $$(&quot;div#news p.announcement&quot;);
+for (var i = 0; i &lt; paragraphs.length; i++) {
+	paragraphs[i].hide();
+}
+</pre>
+
+				<ul>
+					<li>
+						<code>$$</code> returns an array of DOM elements that match the given CSS selector
+						<ul>
+							<li>
+								like <code>$</code> but returns an array instead of a single DOM object
+							</li>
+							<li>
+								a shorthand for <code>document.select</code>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						useful for applying an operation each one of a set of elements
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common <code>$$</code> issues</h1>
+				
+				<ul>
+					<li>
+						many students forget to write <code>.</code> or <code>#</code> in front of a <code>class</code> or <code>id</code>
+
+					<pre class="examplecode js">
+<span class="comment">// get all buttons with a class of &quot;control&quot;</span>
+var gameButtons = <del>$$(&quot;control&quot;);</del>
+var gameButtons = $$(&quot;<em>.</em>control&quot;);
+</pre>
+
+					</li>
+					
+					<li>
+						<code>$$</code> returns an array, not a single element; must loop over the results
+
+						<pre class="examplecode js">
+<span class="comment">// set all buttons with a class of &quot;control&quot; to have red text</span>
+<del>$$(&quot;.control&quot;).style.color = &quot;red&quot;;</del>
+var gameButtons = $$(&quot;<em>.</em>control&quot;);
+for (var i = 0; i &lt; gameButtons.length; i++) {
+	gameButtons[i].style.color = &quot;red&quot;;
+}
+</pre>
+
+					</li>
+					
+					<li>Q: Can I still select a group of elements using <code>$$</code> even if my CSS file doesn't have any style rule for that same group?  (A: Yes!)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!--
+			<div class="slide">
+				<h1>Combining with <code>$</code> : <code>Element.select</code></h1>
+
+				<p>
+					select all <code>button</code>s with class <code>control</code> directly inside of the section with ID <code>&quot;game&quot;</code>
+				</p>
+
+
+				<ul>
+					<li>the <code>select</code> method returns an array of DOM element objects matching a given CSS selector within a particular root element
+						<ul>
+							<li>much like <code>$$</code>, but only within part of the page</li>
+						</ul>
+					</li>
+					<li>the above code grabs all buttons with class of <code>&quot;control&quot;</code> that are inside the element with <code>id</code> of <code>&quot;game&quot;</code></li>
+				</ul>
+			</div>
+			-->
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Prototype and forms
+					<span class="readingsection">(9.1.6)</span>
+				</h1>
+				
+				<pre class="syntaxtemplate js">
+$F(&quot;<var>id</var>&quot;)
+</pre>
+
+				<ul>
+					<li>
+						<code>$F</code> returns the value of a form control with the given id
+					</li>
+				</ul>
+
+				<pre class="examplecode js">
+var name = <em>$F(&quot;username&quot;)</em>;
+if (name.length &lt; 4) {
+	$(&quot;username&quot;).<em>clear</em>();
+	$(&quot;login&quot;).<em>disable</em>();
+}
+</pre>
+				
+				<ul>
+					<li>
+						other form control methods:
+					</li>
+				</ul>
+
+				<table class="standard">
+					<tr>
+						<td><code>activate</code></td>
+						<td><code>clear</code></td>
+						<td><code>disable</code></td>
+						<td><code>enable</code></td>
+					</tr>
+					<tr>
+						<td><code>focus</code></td>
+						<td><code>getValue</code></td>
+						<td><code>present</code></td>
+						<td><code>select</code></td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>9.2: Event-Handling</h1>
+				
+				<ul>
+					<li>
+						9.1: The Prototype JavaScript Library
+					</li>
+					<li>
+						<strong>9.2: Event-Handling</strong>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>More about events</h1>
+				
+				<table class="standard">
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onabort.asp">abort</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onblur.asp">blur</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onchange.asp">change</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onclick.asp">click</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_ondblclick.asp">dblclick</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onerror.asp">error</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onfocus.asp">focus</a></code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeydown.asp">keydown</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeypress.asp">keypress</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeyup.asp">keyup</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onload.asp">load</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousedown.asp">mousedown</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousemove.asp">mousemove</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseout.asp">mouseout</a></code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseover.asp">mouseover</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseup.asp">mouseup</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onreset.asp">reset</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onresize.asp">resize</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onselect.asp">select</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onsubmit.asp">submit</a></code>
+						</td>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onunload.asp">unload</a></code>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						the <code>click</code> event (<code>onclick</code>) is just one of many events that can be handled
+					</li>
+					<li>
+						<strong>problem</strong>: events are tricky and have <a href="http://www.quirksmode.org/js/introevents.html">incompatibilities</a> across browsers
+						<ul>
+							<li>
+								reasons: fuzzy W3C event specs; IE disobeying web standards; etc.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<strong>solution</strong>: Prototype includes many event-related features and fixes
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Attaching event handlers the Prototype way</h1>
+				
+				<pre class="syntaxtemplate js">
+<del><var>element</var>.on<var>event</var> = <var>function</var></del>;
+<var>element</var>.observe(&quot;<var>event</var>&quot;, &quot;<var>function</var>&quot;);
+</pre>
+
+				<pre class="examplecode js">
+<span class="comment">// call the playNewGame function when the Play button is clicked</span>
+$(&quot;play&quot;).observe(&quot;click&quot;, playNewGame);
+</pre>
+
+				<ul>
+					<li>
+						to use Prototype's event features, you must attach the handler using the DOM element object's <code>observe</code> method (added by Prototype)
+					</li>
+					<li>
+						pass the event of interest and the function to use as the handler
+					</li>
+					<li>
+						handlers <em>must</em> be attached this way for Prototype's event features to work
+					</li>
+				</ul>
+				
+				<ul class="aside" style="margin-top: 2em">
+					<li>
+						<code>observe</code> substitutes for <a href="http://www.quirksmode.org/js/events_advanced.html"><code>addEventListener</code></a> (not supported by IE)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Attaching multiple event handlers with <code>$$</code></h1>
+
+<pre class="examplecode js">
+<span class="comment">// listen to clicks on all buttons with class &quot;control&quot; that
+// are directly inside the section with ID &quot;game&quot;</span>
+window.observe("load", function() {
+	var gameButtons = <em>$$(&quot;#game > button.control&quot;)</em>;
+	for (var i = 0; i &lt; gameButtons.length; i++) {
+		<em>gameButtons[i].observe(&quot;click&quot;, gameButtonClick);</em>
+	}
+});
+
+function gameButtonClick() { ... }
+</pre>
+
+				<ul>
+					<li>you can use <code>$$</code> and other DOM walking methods to unobtrusively attach event handlers to a group of related elements in your <code>window.onload</code> code</li>
+					<li>notice that the observe syntax can also be used for <code>window.onload</code></li>
+				</ul>
+
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>The <code>Event</code> object</h1>
+
+				<pre class="syntaxtemplate js">
+function <var>name</var>(<em>event</em>) {
+	<span class="comment">// an event handler function ...</span>
+}
+</pre>
+
+				<ul>
+					<li>
+						Event handlers can accept an optional parameter to represent the event that is occurring.  Event objects have the following properties / methods:
+					</li>
+				</ul>
+				
+				<table class="standard">
+					<tr>
+						<th>
+							method / property name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>type</code>
+						</td>
+						<td>
+							what kind of event, such as <code>&quot;click&quot;</code> or <code>&quot;mousedown&quot;</code>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/element"><code>element()</code></a> *
+						</td>
+						<td>
+							the element on which the event occurred
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/stop"><code>stop()</code></a> **
+						</td>
+						<td>
+							cancels an event
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/stopObserving"><code>stopObserving()</code></a>
+						</td>
+						<td>
+							removes an event handler
+						</td>
+					</tr>
+				</table>
+				
+				<ul class="aside" style="list-style-type: none">
+					<li>
+						* &nbsp; replaces non-standard <code>srcElement</code> and <code>which</code> properties
+					</li>
+					<li>
+						** replaces non-standard <code>return false;</code>, <code>stopPropagation</code>, etc.
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Mouse events
+					<span class="readingsection">(9.2.2)</span>
+				</h1>
+
+				<table class="standard">
+					<caption>clicking</caption>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onclick.asp">click</a></code>
+						</td>
+						<td>
+							user presses/releases mouse button on this element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_ondblclick.asp">dblclick</a></code>
+						</td>
+						<td>
+							user presses/releases mouse button twice on this element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousedown.asp">mousedown</a></code>
+						</td>
+						<td>
+							user presses down mouse button on this element
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseup.asp">mouseup</a></code>
+						</td>
+						<td>
+							user releases mouse button on this element
+						</td>
+					</tr>
+				</table>
+
+				<table class="standard">
+					<caption>movement</caption>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseover.asp">mouseover</a></code>
+						</td>
+						<td>
+							mouse cursor enters this element's box
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmouseout.asp">mouseout</a></code>
+						</td>
+						<td>
+							mouse cursor exits this element's box
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onmousemove.asp">mousemove</a></code>
+						</td>
+						<td>
+							mouse cursor moves around within this element's box
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Mouse event objects</h1>
+				
+				<p>
+					The <code>event</code> parameter passed to a mouse event handler has the following properties:
+				</p>
+				
+				<div class="rightfigure" style="width: 30%">
+					<img src="images/figure_2_mouse_events.png" alt="mouse event" style="width: 100%" />
+				</div>
+				
+				
+				<table class="standard">
+					<tr>
+						<th>
+							property/method
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>clientX</code>, <code>clientY</code>
+						</td>
+						<td>
+							coordinates in <em>browser window</em>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>screenX</code>, <code>screenY</code>
+						</td>
+						<td>
+							coordinates in <em>screen</em>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>offsetX</code>, <code>offsetY</code>
+						</td>
+						<td>
+							coordinates in <em>element</em>
+						</td>
+					</tr>
+					
+					<!--
+					<tr>
+						<td>
+							<code>pageX</code>, <code>pageY</code>
+						</td>
+						<td>
+							coordinates in <em>entire web page</em>
+						</td>
+					</tr>
+					-->
+					
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/pointerX"><code>pointerX()</code></a>, <br />
+							<a href="http://prototypejs.org/api/event/pointerY"><code>pointerY()</code></a> *
+						</td>
+						<td>
+							coordinates in <em>entire web page</em>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://prototypejs.org/api/event/isLeftClick"><code>isLeftClick()</code></a> **
+						</td>
+						<td>
+							<code>true</code> if left button was pressed
+						</td>
+					</tr>
+				</table>
+				
+				<ul class="aside" style="list-style-type: none">
+					<li>
+						* &nbsp; replaces non-standard properties <code>pageX</code> and <code>pageY</code>
+					</li>
+					<li>
+						** replaces non-standard properties <code>button</code> and <code>which</code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Mouse event example</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;pre id=&quot;target&quot;&gt;Move the mouse over me!&lt;/pre&gt;
+</pre>
+
+					<pre class="examplecode js">
+window.observe(&quot;load&quot;, function() {
+	$(&quot;target&quot;).observe(&quot;mousemove&quot;, showCoords);
+});
+
+function showCoords(<em>event</em>) {
+	this.innerHTML = 
+		  &quot;pointer: (&quot; + <em>event.pointerX()</em> + &quot;, &quot; + <em>event.pointerY()</em> + &quot;)\n&quot;
+		+ &quot;screen : (&quot; + <em>event.screenX</em> + &quot;, &quot; + <em>event.screenY</em> + &quot;)\n&quot;
+		+ &quot;client : (&quot; + <em>event.clientX</em> + &quot;, &quot; + <em>event.clientY</em> + &quot;)&quot;;
+}
+</pre>
+
+					<div class="exampleoutput">
+						<pre onmousemove="this.innerHTML = 'pointer: (' + event.pageX + ', ' + event.pageY + ')\n' + 'screen : (' + event.screenX + ', ' + event.screenY + ')\n' + 'client : (' + event.clientX + ', ' + event.clientY + ')';">
+Move the mouse over me!</pre>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Keyboard/text events
+					<span class="readingsection">(9.2.3)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>name</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeydown.asp">keydown</a></code>
+						</td>
+						<td>
+							user presses a key while this element has keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeyup.asp">keyup</a></code>
+						</td>
+						<td>
+							user releases a key while this element has keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onkeypress.asp">keypress</a></code>
+						</td>
+						<td>
+							user presses and releases a key while this element has keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onfocus.asp">focus</a></code>
+						</td>
+						<td>
+							this element gains keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onblur.asp">blur</a></code>
+						</td>
+						<td>
+							this element loses keyboard focus
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onselect.asp">select</a></code>
+						</td>
+						<td>
+							this element's text is selected or deselected)
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						<span class="term">focus</span>: the attention of the user's keyboard (given to one element at a time)</li>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Key event objects</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							property name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>keyCode</code>
+						</td>
+						<td>
+							ASCII integer value of key that was pressed <br />
+							(convert to char with <a href="http://www.quirksmode.org/js/keys.html"><code>String.fromCharCode</code></a>)
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>altKey</code>, <code>ctrlKey</code>, <code>shiftKey</code>
+						</td>
+						<td>
+							<code>true</code> if Shift key is being held
+						</td>
+					</tr>
+				</table>
+				
+				<table class="standard" style="font-size: smaller">
+					<caption>Prototype's key code constants</caption>
+				
+					<tr>
+						<td>
+							<code>Event.KEY_BACKSPACE</code>
+						</td>
+						<td>
+							<code>Event.KEY_DELETE</code>
+						</td>
+						<td>
+							<code>Event.KEY_DOWN</code>
+						</td>
+						<td>
+							<code>Event.KEY_END</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Event.KEY_ESC</code>
+						</td>
+						<td>
+							<code>Event.KEY_HOME</code>
+						</td>
+						<td>
+							<code>Event.KEY_LEFT</code>
+						</td>
+						<td>
+							<code>Event.KEY_PAGEDOWN</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Event.KEY_PAGEUP</code>
+						</td>
+						<td>
+							<code>Event.KEY_RETURN</code>
+						</td>
+						<td>
+							<code>Event.KEY_RIGHT</code>
+						</td>
+						<td>
+							<code>Event.KEY_TAB</code>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Event.KEY_UP</code>
+						</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Form events
+					<span class="readingsection">(9.2.4)</span>
+				</h1>
+
+				<table class="standard">
+					<tr>
+						<th>
+							event name
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onsubmit.asp">submit</a></code>
+						</td>
+						<td>
+							form is being submitted
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onreset.asp">reset</a></code>
+						</td>
+						<td>
+							form is being reset
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onchange.asp">change</a></code>
+						</td>
+						<td>
+							the text or state of a form control has changed
+						</td>
+					</tr>
+							
+					<!--
+					<li><code><a href="http://www.w3schools.com/jsref/jsref_onabort.asp">onabort</a></code> : the loading of an image is aborted</li>
+					-->
+				</table>
+				
+				<pre class="examplecode js">
+window.observe(&quot;load&quot;, function() {
+	$(&quot;orderform&quot;).observe(&quot;submit&quot;, verify);
+});
+
+function verify(event) {
+	if ($F(&quot;zipcode&quot;).length &lt; 5) {
+		event.stop();       <span class="comment">// cancel form submission unless</span>
+	}                     <span class="comment">// zip code is 5 chars long</span>
+}
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Page/window events
+					<span class="readingsection">(9.2.5)</span>
+				</h1>
+				
+				<table class="standard">
+					<tr>
+						<th>name</th><th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onload.asp">load</a></code>
+						</td>
+						<td>
+							the browser loads the page
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onunload.asp">unload</a></code>
+						</td>
+						<td>
+							the browser exits the page
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onresize.asp">resize</a></code>
+						</td>
+						<td>
+							the browser window is resized
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>contextmenu</code>
+						</td>
+						<td>
+							the user right-clicks to pop up a context menu
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/jsref/jsref_onerror.asp">error</a></code>
+						</td>
+						
+						<td>
+							an error occurs when loading a document or an image
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						The above events can be handled on the global <code>window</code> object.  Also:
+					</li>
+				</ul>
+
+				<pre class="examplecode js">
+<span class="comment">// best way to attach event handlers on page load</span>
+<del>window.observe(&quot;load&quot;, function() {</del>
+<em>document.observe(&quot;dom:loaded&quot;</em>, function() {
+	$(&quot;orderform&quot;).observe(&quot;submit&quot;, verify);
+});
+</pre>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Timer events
+					<span class="readingsection">(9.2.6)</span>
+				</h1>
+				
+				<div class="topfigure" style="width: 12%">
+					<img src="images/timer.gif" alt="timer" style="width: 100%" />
+				</div>
+				
+				<table class="standard">
+					<tr>
+						<th>
+							method
+						</th>
+						<th>
+							description
+						</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/met_win_settimeout.asp">setTimeout</a>(<var>function</var>,&nbsp;<var>delayMS</var>);</code>
+						</td>
+						<td>
+							arranges to call given function after given delay in ms
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/met_win_setinterval.asp">setInterval</a>(<var>function</var>,&nbsp;<var>delayMS</var>);</code>
+						</td>
+						<td>
+							arranges to call given function repeatedly, every <var>delayMS</var> ms
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/met_win_cleartimeout.asp">clearTimeout</a>(<var>timerID</var>);</code> <br />
+							<code><a href="http://www.w3schools.com/htmldom/met_win_clearinterval.asp">clearInterval</a>(<var>timerID</var>);</code>
+						</td>
+						<td>
+							stops the given timer object so it will not call its function any more
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>
+						both <code>setTimeout</code> and <code>setInterval</code> return an ID representing the timer
+						<ul>
+							<li>
+								this ID can be passed to <code>clearTimeout</code>/<code>Interval</code> later to stop the timer
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<code>setTimeout</code></a> example</a>
+				</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;button <em>id=&quot;clickme&quot;</em>&gt;Click me!&lt;/button&gt;
+&lt;span <em>id=&quot;output&quot;</em>&gt;&lt;/span&gt;
+</pre>
+
+					<pre class="examplecode examplecode2 js">
+document.observe(&quot;dom:loaded&quot;, function() {
+	$(&quot;clickme&quot;).observe(&quot;click&quot;, delayMsg);
+});
+
+function delayMsg() {
+	<em>setTimeout(booyah, 5000)</em>;
+	$(&quot;output&quot;).innerHTML = &quot;Wait for it...&quot;;
+}
+
+function booyah() {   <span class="comment">// called when the timer goes off</span>
+	$(&quot;output&quot;).innerHTML = &quot;BOOYAH!&quot;;
+}
+</pre>
+
+					<div class="exampleoutput">
+						<button onclick="document.getElementById('output').innerHTML = 'Wait for it...'; setTimeout(&quot;document.getElementById('output').innerHTML = 'BOOYAH!';&quot;, 5000)">Click me!</button>
+						<span id="output"></span>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<code>setInterval</code> example
+				</h1>
+
+				<div class="example">
+					<pre class="examplecode examplecode2 js">
+<em>var timer = null;</em>  <span class="comment">// stores ID of interval timer</span>
+
+document.observe(&quot;dom:loaded&quot;, function() {
+	$(&quot;clickme&quot;).observe(&quot;click&quot;, delayMsg2);
+});
+
+function delayMsg2() {
+	if (timer == null) {
+		timer = <em>setInterval(rudy, 1000)</em>;
+	} else {
+		<em>clearInterval(timer)</em>;
+		timer = null;
+	}
+}
+
+function rudy() {   <span class="comment">// called each time the timer goes off</span>
+	$(&quot;output&quot;).innerHTML += &quot; Rudy!&quot;;
+}
+</pre>
+
+					<div class="exampleoutput">
+						<script type="text/javascript">
+							window.timer = null;
+
+							window.delayMsg2 = function() {
+								if (timer == null) {
+									timer = setInterval(rudy, 1000);
+								} else {
+									clearInterval(timer);
+									timer = null;
+								}
+							};
+
+							window.rudy = function() {
+								document.getElementById("output2").innerHTML += " Rudy!";
+							};
+						</script>
+						
+						<button onclick="delayMsg2();">Click me!</button>
+						<span id="output2"></span>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Passing parameters to timers</a></h1>
+
+				<div class="example">
+					<pre class="examplecode js">
+function delayedMultiply() {
+	<span class="comment">// 6 and 7 are passed to multiply when timer goes off</span>
+	setTimeout(multiply, 2000<em>, 6, 7</em>);
+}
+function multiply(<em>a, b</em>) {
+	alert(a * b);
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<button onclick="delayedMultiply();">Click me</button>
+					</div>
+				</div>
+
+				<ul>
+					<li>any parameters after the delay are passed to the timer function
+						<ul>
+							<li>doesn't work in IE6; must create an intermediate function to pass the parameters</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Common timer errors</h1>
+				
+				<ul>
+					<li>
+						many students mistakenly write <code>()</code> when passing the function
+
+						<pre class="examplecode js">
+<del>setTimeout(booyah(), 2000);</del>
+setTimeout(<em>booyah</em>, 2000);
+
+<del>setTimeout(multiply(num1 * num2), 2000);</del>
+setTimeout(<em>multiply</em>, 2000<em>, num1, num2</em>);
+</pre>
+
+						<ul>
+							<li>what does it actually do if you have the <code>()</code> ?</li>
+							<li class="incremental">it calls the function immediately, rather than waiting the 2000ms!</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!--
+			<div class="slide">
+				<h1>Prototype's <code>new Element</code> syntax</h1>
+
+<pre class="examplecode js">
+<del>var p = document.createElement(&quot;p&quot;);
+p.className = &quot;special&quot;;
+p.onclick = myOnClick;
+p.textContent = &quot;A paragraph!&quot;;
+$(&quot;thisslide&quot;).appendChild(p);</del>
+
+var p = <em>new Element(&quot;p&quot;, {className: &quot;special&quot;, onclick: myOnClick});</em>
+p.textContent = &quot;A paragraph!&quot;;
+$(&quot;thisslide&quot;).appendChild(p);
+</pre>
+
+				<ul>
+					<li>Prototype offers a <code>new Element</code> syntax for adding to the DOM tree</li>
+					<li>HTML attributes of the element can be placed between <code>{}</code> to save lines
+						<ul>
+							<li>only works for attributes that could have been written in the HTML (e.g. not <code>textContent</code>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			-->
+
+
+
+<!--#include virtual="commonbottom.html" -->

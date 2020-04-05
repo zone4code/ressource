@@ -1,0 +1,1599 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Chapter 11: Relational Databases and SQL</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Chapter 11</h1>
+				<h2>Relational Databases and SQL</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1>
+					<a href="http://www.webstepbook.com/">
+						Web Programming Step by Step
+					</a>
+				</h1>
+				
+				<h3>
+					Chapter 11 <br />
+					Relational Databases and SQL
+				</h3>
+
+				<h5>
+					References:
+					<a href="http://www.w3schools.com/sql/sql_quickref.asp">SQL syntax reference</a>,
+					<a href="http://www.w3schools.com/sql/default.asp">w3schools tutorial</a>
+				</h5>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+
+
+			<div class="slide titleslide">
+				<h1>11.1: Database Basics</h1>
+				
+				<ul>
+					<li>
+						<strong>11.1: Database Basics</strong>
+					</li>
+					<li>
+						11.2: SQL
+					</li>
+					<li>
+						11.3: Databases and PHP
+					</li>
+					<li>
+						11.4: Multi-table Queries
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Relational databases</h1>
+
+				<ul>
+					<li><a href="http://en.wikipedia.org/wiki/Relational_database"><span class="term">relational database</span></a>: A method of structuring data as tables associated to each other by shared attributes.</li>
+					<li>a table row corresponds to a unit of data called a <span class="term">record</span>; a column corresponds to an attribute of that record</li>
+					<li>relational databases typically use <span class="term">Structured Query Language</span> (SQL) to define, manage, and search data</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Why use a database?
+					<span class="readingsection">(11.1.1)</span>
+				</h1>
+
+				<ul>
+					<li><span class="term">powerful</span>: can search it, filter data, combine data from multiple sources</li>
+					<li><span class="term">fast</span>: can search/filter a database very quickly compared to a file</li>
+					<li><span class="term">big</span>: scale well up to very large data sizes</li>
+					<li><span class="term">safe</span>: built-in mechanisms for failure recovery (e.g. <span class="term">transactions</span>)</li>
+					<li><span class="term">multi-user</span>: concurrency features let many users view/edit data at same time</li>
+					<li><span class="term">abstract</span>: provides layer of abstraction between stored data and app(s)
+						<ul>
+							<li>many database programs understand the same SQL commands</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+<!--
+can ask lots of good high-level questions about the data ...
+	Who has the highest GPA?
+	Give me the last 10 names in ABC order.
+	Show me all students who are taking at least 14 credits and also have GPAs below 2.0.
+...
+-->
+
+
+
+			<div class="slide">
+				<h1>Database software</h1>
+
+				<ul>
+					<li><a href="http://en.wikipedia.org/wiki/Oracle_database">Oracle</a></li>
+					<li><a href="http://www.microsoft.com/sql/">Microsoft SQL Server</a> (powerful) and <a href="http://en.wikipedia.org/wiki/Microsoft_Access">Microsoft Access</a> (simple)</li>
+<!--
+					<li>IBM <a href="http://en.wikipedia.org/wiki/IBM_DB2">DB2</a></li>
+-->
+					<li><a href="http://www.postgresql.org/">PostgreSQL</a> (powerful/complex free open-source database system)</li>
+					<li><a href="http://www.sqlite.org/">SQLite</a> (transportable, lightweight free open-source database system)</li>
+					<li><img style="float: right; width: 20%" src="images/mysql.gif" alt="MySQL" />
+					<a href="http://www.mysql.com/">MySQL</a> (simple free open-source database system)
+						<ul>
+							<li>many servers run &quot;<a href="http://en.wikipedia.org/wiki/LAMP_%28software_bundle%29">LAMP</a>&quot; (Linux, Apache, MySQL, and PHP)</li>
+							<li>Wikipedia is run on PHP and MySQL</li>
+							<li>we will use MySQL in this course</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Example <code>world</code> database
+					<span class="readingsection">(11.1.2)</span>
+				</h1>
+
+				<table>
+					<tr>
+						<td colspan="2" style="vertical-align: top">
+							<strong>Countries</strong>
+
+							<table class="sqltable">
+								<caption style="font-size: smaller;">Other columns:
+									<strong>region</strong>,
+									<strong>surface_area</strong>,
+									<strong>life_expectancy</strong>,
+									<strong>gnp_old</strong>,
+									<strong>local_name</strong>,
+									<strong>government_form</strong>,
+									<strong>capital</strong>,
+									<strong>code2</strong>
+								</caption>
+								<tr>
+									<th>code</th>
+									<th>name</th>
+									<th>continent</th>
+									<th>independance_year</th>
+									<th>population</th>
+									<th>gnp</th>
+									<th>head_of_state</th>
+									<th>...</th>
+								</tr>
+								<tr>
+									<td>AFG</td>
+									<td>Afghanistan</td>
+									<td>Asia</td>
+									<td>1919</td>
+									<td>22720000</td>
+									<td>5976.0</td>
+									<td>Mohammad Omar</td>
+									<td>...</td>
+								</tr>
+								<tr>
+									<td>NLD</td>
+									<td>Netherlands</td>
+									<td>Europe</td>
+									<td>1581</td>
+									<td>15864000</td>
+									<td>371362.0</td>
+									<td>Beatrix</td>
+									<td>...</td>
+								</tr>
+								<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td style="vertical-align: top; padding-top: 1em">
+							<strong>Cities</strong>
+							<table class="sqltable">
+								<tr>
+									<th>id</th>
+									<th>name</th>
+									<th>country_code</th>
+									<th>district</th>
+									<th>population</th>
+								</tr>
+								<tr><td>3793</td><td>New York</td><td>USA</td><td>New York</td><td>8008278</td></tr>
+								<tr><td>1</td><td>Los Angeles</td><td>USA</td><td>California</td><td>3694820</td></tr>
+								<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+							</table>
+						</td>
+						<td style="vertical-align: top; padding-top: 1em">
+							<strong>CountriesLanguages</strong>
+							<table class="sqltable">
+								<tr><th>country_code</th><th>language</th><th>official</th><th>percentage</th></tr>
+								<tr>
+								<td>AFG</td><td>Pashto</td><td>T</td><td>52.4</td></tr>
+								<td>NLD</td><td>Dutch</td><td>T</td><td>95.6</td></tr>
+								<tr><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>11.2: SQL</h1>
+				
+				<ul>
+					<li>
+						11.1: Database Basics
+					</li>
+					<li>
+						<strong>11.2: SQL</strong>
+					</li>
+					<li>
+						11.3: Databases and PHP
+					</li>
+					<li>
+						11.4: Multi-table Queries
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://en.wikipedia.org/wiki/Sql">SQL</a> basics</h1>
+
+				<pre class="examplecode sql">
+SELECT name FROM Cities WHERE id = 17;
+
+INSERT INTO Countries VALUES ('SLD', 'ENG', 'T', 100.0);
+</pre>
+
+				<ul>
+					<li><span class="term">Structured Query Language (SQL)</span>: a language for searching and updating a database</li>
+					<li>a standard syntax that is used by all database software (with minor incompatiblities)</li>
+					<li>a <span class="term">declarative</span> language: describes what data you are seeking, not exactly how to find it</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Issuing SQL commands directly in MySQL
+					<span class="readingsection">(11.2.1 - 11.2.2)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+SHOW DATABASES;
+USE <var>database</var>;
+SHOW TABLES;
+</pre>
+
+				<ul>
+					<li>SSH to a web server, then type:</li>
+				</ul>
+
+				<pre class="examplecode ssh" style="font-size: smaller">
+$ <em>mysql -u <var>yourusername</var> -p</em>
+Password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+
+mysql> <em>USE world;</em>
+Database changed
+
+mysql> <em>SHOW TABLES;</em>
++--------------------+
+| Cities             | 
+| Countries          | 
+| CountriesLanguages | 
++--------------------+
+3 rows in set (0.00 sec)
+</pre>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The SQL <a href="http://en.wikipedia.org/wiki/Select_%28SQL%29"><code>SELECT</code></a> statement
+					<span class="readingsection">(11.2.3)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+SELECT <var>column(s)</var> FROM <var>table</var>;
+</pre>
+
+				<pre class="examplecode sql">
+SELECT name, code FROM Countries;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>code</th></tr>
+					<tr><td>China</td><td>CHN</td></tr>
+					<tr><td>United States</td><td>IND</td></tr>
+					<tr><td>Indonesia</td><td>USA</td></tr>
+					<tr><td>Brazil</td><td>BRA</td></tr>
+					<tr><td>Pakistan</td><td>PAK</td></tr>
+					<tr><td>...</td><td>...</td></tr>
+				</table>
+
+				<ul>
+					<li>the <a href="http://dev.mysql.com/doc/refman/5.0/en/select.html"><code>SELECT</code></a> statement searches a database and returns a set of results
+						<ul>
+							<li>the column name(s) written after <code>SELECT</code> filter which parts of the rows are returned</li>
+							<li>table and column names are case-sensitive</li>
+							<li><code>SELECT * FROM <var>table</var>;</code> keeps all columns</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <code>DISTINCT</code> modifier</h1>
+
+				<pre class="syntaxtemplate sql">
+SELECT <em>DISTINCT</em> <var>column(s)</var> FROM <var>table</var>;
+</pre>
+
+				<table>
+					<tr style="vertical-align: top">
+						<td style="width: 45%">
+
+				<pre class="examplecode sql">
+SELECT language
+FROM CountriesLanguages;
+</pre>
+
+							<table class="sqltable">
+								<tr><th>language</th></tr>
+								<tr><td>Dutch</td></tr>
+								<tr><td>English</td></tr>
+								<tr><td>English</td></tr>
+								<tr><td>Papiamento</td></tr>
+								<tr><td>Spanish</td></tr>
+								<tr><td>Spanish</td></tr>
+								<tr><td>Spanish</td></tr>
+								<tr><td>...</td></tr>
+							</table>
+						</td>
+						<td style="width: 45%; padding-left: 5%">
+
+				<pre class="examplecode sql">
+SELECT <em>DISTINCT</em> language
+FROM CountriesLanguages;
+</pre>
+
+							<table class="sqltable">
+								<tr><th>language</th></tr>
+								<tr><td>Dutch</td></tr>
+								<tr><td>English</td></tr>
+								<tr><td>Papiamento</td></tr>
+								<tr><td>Spanish</td></tr>
+								<tr><td>...</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li>eliminates duplicates from the result set</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code>WHERE</code> clause
+					<span class="readingsection">(11.2.4)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+SELECT <var>column(s)</var> FROM <var>table</var> <em>WHERE <var>condition(s)</var></em>;
+</pre>
+
+				<pre class="examplecode sql">
+SELECT name, population FROM Cities <em>WHERE country_code = &quot;FSM&quot;</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>population</th></tr>
+					<tr><td>Weno</td><td>22000</td></tr>
+					<tr><td>Palikir</td><td>8600</td></tr>
+				</table>
+
+				<ul>
+					<li><code>WHERE</code> clause filters out rows based on their columns' data values</li>
+					<li>in large databases, it's critical to use a <code>WHERE</code> clause to reduce the result set size</li>
+					<li>suggestion: when trying to write a query, think of the <code>FROM</code> part first, then the <code>WHERE</code> part, and lastly the <code>SELECT</code> part</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More about the <code>WHERE</code> clause</h1>
+
+				<pre class="syntaxtemplate sql">
+WHERE <var>column</var> <var>operator</var> <var>value(s)</var>
+</pre>
+
+				<pre class="examplecode sql">
+SELECT name, gnp FROM Countries <em>WHERE gnp &gt; 2000000</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>code</th><th>name</th><th>gnp</th></tr>
+					<tr><td>JPN</td><td>Japan</td><td>3787042.00</td></tr>
+					<tr><td>DEU</td><td>Germany</td><td>2133367.00</td></tr>
+					<tr><td>USA</td><td>United States</td><td>8510700.00</td></tr>
+					<tr><td>...</td><td>...</td><td>...</td></tr>
+				</table>
+
+				<ul>
+					<li>the <code>WHERE</code> portion of a SELECT statement can use the following operators:
+						<ul>
+							<li><code>=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code></li>
+							<li><code>&lt;&gt;</code> : not equal</li>
+							<li><code>BETWEEN</code> <var>min</var> <code>AND</code> <var>max</var></li>
+							<li><code>LIKE</code> <a href="http://dev.mysql.com/doc/refman/5.0/en/pattern-matching.html"><var>pattern</var></a></li>
+							<li><code>IN</code> (<var>value</var>, <var>value</var>, ..., <var>value</var>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Multiple <code>WHERE</code> clauses: AND, OR</h1>
+
+				<pre class="examplecode sql">
+SELECT * FROM Cities WHERE code = 'USA' <em>AND population &gt;= 2000000</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>id</th><th>name</th><th>country_code</th><th>district</th><th>population</th></tr>
+					<tr><td>3793</td><td>New York</td><td>USA</td><td>New York</td><td>8008278</td></tr>
+					<tr><td>3794</td><td>Los Angeles</td><td>USA</td><td>California</td><td>3694820</td></tr>
+					<tr><td>3795</td><td>Chicago</td><td>USA</td><td>Illinois</td><td>2896016</td></tr>
+					<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+				</table>
+
+				<ul>
+					<li>multiple <code>WHERE</code> conditions can be combined using <code>AND</code> and <code>OR</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Approximate matches: <code>LIKE</code></h1>
+
+				<pre class="syntaxtemplate sql">
+WHERE <var>column</var> LIKE <var>pattern</var>
+</pre>
+
+				<pre class="examplecode sql">
+SELECT code, name, population FROM Countries WHERE name <em>LIKE 'United%'</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>code</th><th>name</th><th>population</th></tr>
+					<tr><td>ARE</td><td>United Arab Emirates</td><td>2441000</td></tr>
+					<tr><td>GBR</td><td>United Kingdom</td><td>59623400</td></tr>
+					<tr><td>USA</td><td>United States</td><td>278357000</td></tr>
+					<tr><td>UMI</td><td>United States Minor Outlying Islands</td><td>0</td></tr>
+				</table>
+
+				<ul>
+					<li><code>LIKE '<var>text</var>%'</code> searches for text that starts with a given prefix</li>
+					<li><code>LIKE '%<var>text</var>'</code> searches for text that ends with a given suffix</li>
+					<li><code>LIKE '%<var>text</var>%'</code> searches for text that contains a given substring</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Sorting by a column: <code>ORDER BY</code>
+					<span class="readingsection">(11.2.5)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+ORDER BY <var>column(s)</var>
+</pre>
+
+				<pre class="examplecode sql">
+SELECT code, name, population FROM Countries
+WHERE name LIKE 'United%' <em>ORDER BY population</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>code</th><th>name</th><th>population</th></tr>
+					<tr><td>UMI</td><td>United States Minor Outlying Islands</td><td>0</td></tr>
+					<tr><td>ARE</td><td>United Arab Emirates</td><td>2441000</td></tr>
+					<tr><td>GBR</td><td>United Kingdom</td><td>59623400</td></tr>
+					<tr><td>USA</td><td>United States</td><td>278357000</td></tr>
+				</table>
+
+				<ul>
+					<li>can write <code>ASC</code> or <code>DESC</code> to sort in ascending (default) or descending order:
+
+					<pre class="examplecode sql">
+SELECT * FROM Countries <em>ORDER BY population DESC</em>;
+</pre>
+
+					</li>
+					<li>can specify multiple orderings in decreasing order of significance:
+
+					<pre class="examplecode sql">
+SELECT * FROM Countries <em>ORDER BY population DESC, gnp</em>;
+</pre>
+
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The SQL <code>INSERT</code> statement
+					<span class="readingsection">(11.2.6)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+INSERT INTO <var>table</var>
+VALUES (<var>value</var>, <var>value</var>, ..., <var>value</var>);
+</pre>
+
+				<pre class="examplecode sql">
+INSERT INTO student 
+VALUES (789, &quot;Nelson&quot;, &quot;muntz@fox.com&quot;);
+</pre>
+
+				<ul>
+					<li>adds a new row to the given table</li>
+					<!--
+					<li>How would we record that Nelson took CSE 190M and got a D+ in it?</li>
+					-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The SQL <code>UPDATE</code> and <code>DELETE</code> statements</h1>
+
+				<pre class="syntaxtemplate sql">
+UPDATE <var>table</var>
+SET <var>column</var> = <var>value</var>,
+    ...,
+    <var>column</var> = <var>value</var>
+WHERE <var>condition</var>;
+
+DELETE FROM <var>table</var>
+WHERE <var>condition</var>;
+</pre>
+
+				<pre class="examplecode sql">
+UPDATE student
+SET email = &quot;lisasimpson@gmail.com&quot;
+WHERE SID = 888;
+
+DELETE FROM student WHERE SID &lt; 800;
+</pre>
+
+				<ul>
+					<li>modifies or deletes an existing row(s) in a table</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>11.3: Databases and PHP</h1>
+				
+				<ul>
+					<li>
+						11.1: Database Basics
+					</li>
+					<li>
+						11.2: SQL
+					</li>
+					<li>
+						<strong>11.3: Databases and PHP</strong>
+					</li>
+					<li>
+						11.4: Multi-table Queries
+					</li>
+				</ul>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1>PHP MySQL functions</h1>
+
+				<table class="standard">
+					<tr>
+						<th>name</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_connect"><code>mysql_connect</code></a>
+						</td>
+						<td>
+							connects to a database server
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_select_db"><code>mysql_select_db</code></a>
+						</td>
+						<td>
+							chooses which database on server to use (similar to SQL <code>USE <var>database</var>;</code> command)
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_query"><code>mysql_query</code></a>
+						</td>
+						<td>
+							performs a SQL query on the database
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_real_escape_string"><code>mysql_real_escape_string</code></a>
+						</td>
+						<td>
+							encodes a value to make it safe for use in a query
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_fetch_array"><code>mysql_fetch_array</code></a>, ...
+						</td>
+						<td>
+							returns the query's next result row as an associative array
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_close"><code>mysql_close</code></a>
+						</td>
+						<td>
+							closes a connection to a database
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1>Complete PHP MySQL example</h1>
+
+				<pre class="examplecode php">
+<span class="comment"># connect to world database on local computer</span>
+$db = <em>mysql_connect</em>(&quot;localhost&quot;, &quot;traveler&quot;, &quot;packmybags&quot;);
+<em>mysql_select_db</em>(&quot;world&quot;);
+
+<span class="comment"># execute a SQL query on the database</span>
+$results = <em>mysql_query</em>(&quot;SELECT * FROM Countries WHERE population &gt; 100000000;&quot;);
+
+<span class="comment"># loop through each country</span>
+while ($row = <em>mysql_fetch_array</em>($results)) {
+	?&gt;
+
+	&lt;li&gt; &lt;?= <em>$row[&quot;name&quot;]</em> ?&gt;, ruled by &lt;?= <em>$row[&quot;head_of_state&quot;]</em> ?&gt; &lt;/li&gt;
+
+	&lt;?php
+}
+?&gt;
+</pre>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Connecting to MySQL: <code>mysql_connect</code>
+					<span class="readingsection">(11.3.1)</span>
+				</h1>
+
+				<pre class="syntaxtemplate php">
+<em>mysql_connect</em>(&quot;<var>host</var>&quot;, &quot;<var>username</var>&quot;, &quot;<var>password</var>&quot;);
+<em>mysql_select_db</em>(&quot;<var>database name</var>&quot;);
+</pre>
+
+				<pre class="examplecode php">
+<span class="comment"># connect to world database on local computer</span>
+mysql_connect(&quot;localhost&quot;, &quot;traveler&quot;, &quot;packmybags&quot;);
+mysql_select_db(&quot;world&quot;);
+</pre>
+
+				<ul>
+					<li><a href="http://www.php.net/mysql_connect"><code>mysql_connect</code></a> opens connection to database on its server
+						<ul>
+							<li>any/all of the 3 parameters can be omitted (default: <code>localhost</code>, anonymous)</li>
+						</ul>
+					</li>
+					<li><a href="http://www.php.net/mysql_select_db"><code>mysql_select_db</code></a> sets which database to examine</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Performing queries: <code>mysql_query</code>
+					<span class="readingsection">(11.3.2)</span>
+				</h1>
+
+				<pre class="syntaxtemplate php">
+<span class="deemphasizedcode">mysql_connect(&quot;<var>host</var>&quot;, &quot;<var>username</var>&quot;, &quot;<var>password</var>&quot;);
+mysql_select_db(&quot;<var>database name</var>&quot;);</span>
+
+$results = <em>mysql_query</em>(&quot;<var>SQL query</var>&quot;);
+...
+</pre>
+
+				<pre class="examplecode php">
+$results = mysql_query(&quot;SELECT * FROM Cities WHERE code = 'USA'
+                        AND population &gt;= 2000000;&quot;);
+</pre>
+
+				<ul>
+					<li><a href="http://www.php.net/mysql_query"><code>mysql_query</code></a> sends a SQL query to the database</li>
+					<li>returns a special result-set object that you don't interact with directly, but instead pass to later functions</li>
+					<li>SQL queries are in <code>&quot;</code> <code>&quot;</code>, end with <code>;</code>, and nested quotes can be <code>'</code> or <code>\"</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Result rows: <code>mysql_fetch_array</code></h1>
+
+				<pre class="syntaxtemplate php">
+<span class="deemphasizedcode">mysql_connect(&quot;<var>host</var>&quot;, &quot;<var>username</var>&quot;, &quot;<var>password</var>&quot;);
+mysql_select_db(&quot;<var>database name</var>&quot;);
+$results = mysql_query(&quot;<var>SQL query</var>&quot;);</span>
+
+while ($row = <em>mysql_fetch_array</em>($results)) {
+	<var>do something with $row;</var>
+}
+</pre>
+
+				<ul>
+					<li><a href="http://www.php.net/mysql_fetch_array"><code>mysql_fetch_array</code></a> returns one result row as an associative array
+						<ul>
+							<li>the column names are its keys, and each column's values are its values</li>
+							<li>example: <code>$row[&quot;population&quot;]</code> gives the population from that row of the results</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Error-checking: <code>mysql_error</code>
+					<span class="readingsection">(11.3.3)</span>
+				</h1>
+
+				<pre class="examplecode php">
+if (!mysql_connect(&quot;localhost&quot;, &quot;traveler&quot;, &quot;packmybags&quot;)) {
+	<em>die(&quot;SQL error occurred on connect: &quot; . mysql_error());</em>
+}
+if (!mysql_select_db(&quot;world&quot;)) {
+	<em>die(&quot;SQL error occurred selecting DB: &quot; . mysql_error());</em>
+}
+$query = &quot;SELECT * FROM Countries WHERE population &gt; 100000000;&quot;;
+$results = mysql_query($query);
+if (!$results) {
+	<em>die(&quot;SQL query failed:\n$query\n&quot; . mysql_error());</em>
+}
+</pre>
+
+				<ul>
+					<li>SQL commands can fail: database down, bad password, bad query, ...</li>
+					<li>for debugging, always test the results of PHP's <code>mysql</code> functions
+						<ul>
+							<li>if they fail, stop script with <code>die</code> function, and print <code>mysql_error</code> result to see what failed</li>
+							<li>give a descriptive error message and also print the query, if any</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+
+
+			<div class="slide">
+				<h1>Complete example w/ error checking</h1>
+
+				<pre class="examplecode php" style="font-size: smaller">
+<span class="comment"># connect to world database on local computer</span>
+<em>check(</em>mysql_connect(&quot;localhost&quot;, &quot;traveler&quot;, &quot;packmybags&quot;)<em>, &quot;connect&quot;);</em>
+<em>check(</em>mysql_select_db(&quot;world&quot;)<em>, &quot;selecting db&quot;);</em>
+
+<span class="comment"># execute a SQL query on the database</span>
+$query = &quot;SELECT * FROM Countries WHERE population &gt; 100000000;&quot;;
+$results = mysql_query($query);
+<em>check(</em>$results<em>, &quot;query of $query&quot;);</em>
+
+<span class="comment"># loop through each country</span>
+while ($row = mysql_fetch_array($results)) {
+	?&gt;
+	&lt;li&gt; &lt;?= $row[&quot;name&quot;] ?&gt;, ruled by &lt;?= $row[&quot;head_of_state&quot;] ?&gt; &lt;/li&gt;
+	&lt;?php
+}
+
+<span class="comment"># makes sure result is not false/null; else prints error</span>
+<em>function check($result, $message) {
+	if (!$result) {
+		die(&quot;SQL error during $message: &quot; . mysql_error());
+	}
+}</em>
+?&gt;
+</pre>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Other MySQL PHP functions</h1>
+
+				<table class="standard">
+					<tr>
+						<th>name</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_num_rows"><code>mysql_num_rows</code></a>
+						</td>
+						<td>
+							returns number of rows matched by the query
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_num_fields"><code>mysql_num_fields</code></a>
+						</td>
+						<td>
+							returns number of columns per result in the query
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_list_dbs"><code>mysql_list_dbs</code></a>
+						</td>
+						<td>
+							returns a list of databases on this server
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_list_tables"><code>mysql_list_tables</code></a>
+						</td>
+						<td>
+							returns a list of tables in current database
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<a href="http://www.php.net/mysql_list_fields"><code>mysql_list_fields</code></a>
+						</td>
+						<td>
+							returns a list of fields in the current data
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" class="completelist">
+							<a href="http://www.php.net/manual/en/ref.mysql.php">complete list</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>11.4: Multi-table Queries</h1>
+				
+				<ul>
+					<li>
+						11.1: Database Basics
+					</li>
+					<li>
+						11.2: SQL
+					</li>
+					<li>
+						11.3: Databases and PHP
+					</li>
+					<li>
+						<strong>11.4: Multi-table Queries</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Example <code>simpsons</code> database</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>teachers</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>1234</td><td>Krabappel</td></tr>
+								<tr><td>5678</td><td>Hoover</td></tr>
+								<tr><td>9012</td><td>Stepp</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th><th>teacher_id</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td><td>1234</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td><td>5678</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td><td>9012</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td><td>1234</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Querying multi-table databases</h1>
+				
+				<p>
+					When we have larger datasets spread across multiple tables, we need queries that can answer high-level questions such as:
+				</p>
+				
+				<ul>
+					<li>What courses has Bart taken and gotten a B- or better?</li>
+					<li>What courses have been taken by both Bart and Lisa?</li>
+					<li>Who are all the teachers Bart has had?</li>
+					<li>How many total students has Ms. Krabappel taught, and what are their names?</li>
+				</ul>
+				
+				<p style="margin-top: 1em;">
+					To do this, we'll have to <strong>join</strong> data from several tables in our SQL queries.
+				</p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Cross product with <code>JOIN</code>
+					<span class="readingsection">(11.4.1)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+SELECT <var>column(s)</var> FROM <var>table1</var> JOIN <var>table2</var>;
+</pre>
+
+				<pre class="examplecode sql">
+SELECT * FROM students JOIN grades;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>id</th><th>name</th><th>email</th><th>student_id</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td colspan="6" style="text-align: center">... (24 rows returned)</td></tr>
+				</table>
+
+				<ul>
+					<li><span class="term">cross product</span> or <span class="term">Cartesian product</span>: combines each row of first table with each row of second
+						<ul>
+							<li>produces <em>M * N</em> rows, where table 1 has <em>M</em> rows and table 2 has <em>N</em></li>
+							<li>problem: produces too much irrelevant/meaningless data</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Joining with <code>ON</code> clauses
+					<span class="readingsection">(11.4.2)</span>
+				</h1>
+
+				<pre class="example sql">
+SELECT <var>column(s)</var>
+FROM <var>table1</var>
+     JOIN <var>table2</var> ON <var>condition(s)</var>
+     ...
+     JOIN <var>tableN</var> ON <var>condition(s)</var>;
+</pre>
+
+<!--
+<pre class="example sql">
+SELECT <var>column(s)</var> FROM <var>table1</var>, <var>table2</var>, ..., <var>tableN</var> WHERE <var>condition(s)</var>;
+</pre>
+-->
+
+				<pre class="examplecode sql">
+SELECT *
+FROM students
+     <em>JOIN grades ON id = student_id</em>;
+</pre>
+
+				<ul>
+					<li><span class="term">join</span>: a relational database operation that combines records from two or more tables if they satisfy certain conditions</li>
+					<li>the <code>ON</code> clause specifies which records from each table are matched</li>
+					<li>often the rows are linked by their <span class="term">key</span> columns</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Join example</h1>
+
+				<pre class="examplecode sql">
+SELECT *
+FROM students
+     <em>JOIN grades ON id = student_id</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>id</th><th>name</th><th>email</th><th>student_id</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>404</td><td>10004</td><td>D+</td></tr>
+					<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td><td>456</td><td>10001</td><td>B+</td></tr>
+					<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>888</td><td>10002</td><td>A+</td></tr>
+					<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>888</td><td>10003</td><td>A+</td></tr>
+				</table>
+
+				<ul>
+					<li><code><var>table</var>.<var>column</var></code> can be used to disambiguate column names:
+
+						<pre class="examplecode sql">
+SELECT *
+FROM students
+     JOIN grades ON <em>students.</em>id = <em>grades.</em>student_id;
+</pre>					
+
+					</li>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Filtering columns in a join</h1>
+
+				<pre class="examplecode sql">
+SELECT <em>name, course_id, grade</em>
+FROM students
+     JOIN grades ON <em>students.id</em> = student_id;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>10001</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>10002</td><td>C</td></tr>
+					<tr><td>Ralph</td><td>10004</td><td>D+</td></tr>
+					<tr><td>Milhouse</td><td>10001</td><td>B+</td></tr>
+					<tr><td>Lisa</td><td>10002</td><td>A+</td></tr>
+					<tr><td>Lisa</td><td>10003</td><td>A+</td></tr>
+				</table>
+
+				<ul>
+					<li>if a column exists in multiple tables, it may be written as <code><var>table</var>.<var>column</var></code> </li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Giving names to tables</h1>
+
+				<pre class="examplecode sql">
+SELECT name, <em>g.*</em>
+FROM students <em>s</em>
+     JOIN grades <em>g</em> ON <em>s</em>.id = <em>g</em>.student_id;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>student_id</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td>Ralph</td><td>404</td><td>10004</td><td>D+</td></tr>
+					<tr><td>Milhouse</td><td>456</td><td>10001</td><td>B+</td></tr>
+					<tr><td>Lisa</td><td>888</td><td>10002</td><td>A+</td></tr>
+					<tr><td>Lisa</td><td>888</td><td>10003</td><td>A+</td></tr>
+				</table>
+
+				<ul>
+					<li>can give names to tables, like a variable name in Java</li>
+					<li>to specify all columns from a table, write <code><var>table</var>.*</code></li>
+<!--
+					<li>optional <code>AS</code> keyword: <code>SELECT * FROM Student <em>AS s</em></code> ...</li>
+-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Filtered join (<code>JOIN</code> with <code>WHERE</code>)
+					<span class="readingsection">(11.4.3)</span>
+				</h1>
+
+				<pre class="examplecode sql">
+SELECT name, course_id, grade
+FROM students s
+     JOIN grades g ON s.id = g.student_id
+<em>WHERE s.id = 123</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>10001</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>10002</td><td>C</td></tr>
+				</table>
+
+				<ul>
+<!--
+					<li>the above query lists all courses Bart has taken and their grades</li>
+-->
+					<li><code>FROM</code> / <code>JOIN</code> glue the proper tables together, and <code>WHERE</code> filters the results</li>
+					<li>what goes in the <code>ON</code> clause, and what goes in <code>WHERE</code>?
+						<ul>
+							<li><code>ON</code> directly links columns of the joined tables</li>
+							<li><code>WHERE</code> sets additional constraints such as particular values (<code>123</code>, <code>'Bart'</code>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Multi-way join</h1>
+
+				<pre class="examplecode sql">
+SELECT c.name
+FROM courses c
+     JOIN grades g ON g.course_id = c.id
+     <em>JOIN students bart ON g.student_id = bart.id</em>
+WHERE bart.name = 'Bart' AND g.grade &lt;= 'B-';
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th></tr>
+					<tr><td>Computer Science 142</td></tr>
+				</table>
+
+				<ul>
+					<li><code>grade</code> column sorts alphabetically, so grades better than B- are ones <code>&lt;=</code> it</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>A suboptimal query</h1>
+				
+				<ul>
+					<li>What courses have been taken by both Bart and Lisa?
+
+					<pre class="examplecode sql">
+SELECT bart.course_id
+FROM grades bart
+     JOIN grades lisa ON lisa.course_id = bart.course_id
+WHERE bart.student_id = 123
+      AND lisa.student_id = 888;
+</pre>
+
+					</li>
+					
+					<li>problem: requires us to know Bart/Lisa's Student IDs, and only spits back course IDs, not names.</li>
+					
+					<li>Write a version of this query that gets us the course <em>names</em>, and only requires us to know Bart/Lisa's names, not their IDs.</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Improved query</h1>
+				
+				<ul>
+					<li>What courses have been taken by both Bart and Lisa?
+
+						<pre class="examplecode sql">
+SELECT DISTINCT <em>c.name
+FROM courses c
+     JOIN grades g1 ON g1.course_id = c.id</em>
+     JOIN students bart ON g1.student_id = bart.id
+     JOIN grades g2 ON g2.course_id = c.id
+     JOIN students lisa ON g2.student_id = lisa.id
+WHERE <em>bart.name = 'Bart'
+      AND lisa.name = 'Lisa'</em>;
+</pre>
+
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Practice queries</h1>
+				
+				<ul>
+					<li>What are the names of all teachers Bart has had?
+
+<pre class="sql incremental">
+SELECT DISTINCT t.name
+FROM teachers t
+     JOIN courses c ON c.teacher_id = t.id
+     JOIN grades g ON g.course_id = c.id 
+     JOIN students s ON s.id = g.student_id
+WHERE s.name = 'Bart';
+</pre>
+
+					</li>
+					<li>How many total students has Ms. Krabappel taught, and what are their names?
+					
+<pre class="sql incremental">
+SELECT DISTINCT s.name
+FROM students s
+     JOIN grades g ON s.id = g.student_id
+     JOIN courses c ON g.course_id = c.id
+     <em>JOIN teachers t ON t.id = c.teacher_id
+WHERE t.name = 'Krabappel'</em>;
+</pre>
+					</li>
+				</ul>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Example <code>imdb</code> database
+					<span class="readingsection">(11.1.2)</span>
+				</h1>
+
+				<div style="font-size: smaller; overflow: hidden;">
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>actors</caption>
+						<tr><th>id</th><th>first_name</th><th>last_name</th><th>gender</th></tr>
+						<tr><td>433259</td><td>William</td><td>Shatner</td><td>M</td></tr>
+						<tr><td>797926</td><td>Britney</td><td>Spears</td><td>F</td></tr>
+						<tr><td>831289</td><td>Sigourney</td><td>Weaver</td><td>F</td></tr>
+						<tr><td colspan="4" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>movies</caption>
+						<tr><th>id</th><th>name</th><th>year</th><th>rank</th></tr>
+						<tr><td>112290</td><td>Fight Club</td><td>1999</td><td>8.5</td></tr>
+						<tr><td>209658</td><td>Meet the Parents</td><td>2000</td><td>7</td></tr>
+						<tr><td>210511</td><td>Memento</td><td>2000</td><td>8.7</td></tr>
+						<tr><td colspan="4" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>roles</caption>
+						<tr><th>actor_id</th><th>movie_id</th><th>role</th></tr>
+						<tr><td>433259</td><td>313398</td><td>Capt. James T. Kirk</td></tr>
+						<tr><td>433259</td><td>407323</td><td>Sgt. T.J. Hooker</td></tr>
+						<tr><td>797926</td><td>342189</td><td>Herself</td></tr>
+						<tr><td colspan="3" style="text-align: center">...</td></tr>
+					</table>
+				</div>
+
+				<ul style="clear: both; margin-top: 30px;">
+					<li>also available, <code>imdb_small</code> with fewer records (for testing queries)</li>
+					<li>other tables:
+						<ul>
+							<li>directors (id, first_name, last_name)</li>
+							<li>movies_directors (director_id, movie_id)</li>
+							<li>movies_genres (movie_id, genre)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>IMDb query example</h1>
+				
+				<pre class="examplecode ssh">
+[stepp@webster ~]$ <em>mysql -u <var>myusername</var> -p</em>
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+
+mysql> <em>use imdb_small;</em>
+Database changed
+
+mysql> <em>select * from actors where first_name like '%mick%';</em>
++--------+------------+-----------+--------+
+| id     | first_name | last_name | gender |
++--------+------------+-----------+--------+
+|  71699 | Mickey     | Cantwell  | M      | 
+| 115652 | Mickey     | Dee       | M      | 
+| 470693 | Mick       | Theo      | M      | 
+| 716748 | Mickie     | McGowan   | F      | 
++--------+------------+-----------+--------+
+4 rows in set (0.01 sec)
+</pre>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					IMDb table relationships / ids
+					<span class="readingsection">(11.4.3)</span>
+				</h1>
+				
+				<div class="figure">
+					<img src="images/figure_4_table_tree.png" alt="IMDb tables tree" />
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Designing a query
+					<span class="readingsection">(11.4.4)</span>
+				</h1>
+				
+				<ul>
+					<li>Figure out the proper SQL queries in the following way:
+						<ul>
+							<li>Which table(s) contain the critical data? (<code>FROM</code>)</li>
+							<li>Which columns do I need in the result set? (<code>SELECT</code>)</li>
+							<li>How are tables connected (<code>JOIN</code>) and values filtered (<code>WHERE</code>)?</li>
+						</ul>
+					</li>
+					<li>Test on a small data set (<code>imdb_small</code>).</li>
+					<li>Confirm on the real data set (<code>imdb</code>).</li>
+					<li>Try out the queries first in the MySQL console.</li>
+					<li>Write the PHP code to run those same queries.
+						<ul>
+							<li>Make sure to check for SQL errors at every step!!</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+import and export a database:
+# mysqldump -u username -ppassword database_name > FILE.sql
+# mysql -u username -ppassword database_name < FILE.sql
+
+    ALTER TABLE table_name
+     RENAME TO new_table_name;
+
+For example:
+
+    ALTER TABLE suppliers
+     RENAME TO vendors;
+
+
+
+
+
+
+    ALTER TABLE table_name
+     ADD column_name column-definition;
+
+For example:
+
+    ALTER TABLE supplier
+     ADD supplier_name  varchar2(50);
+
+
+
+    ALTER TABLE table_name
+    ADD ( 	column_1 	column-definition,
+      	column_2 	column-definition,
+      	... 	
+      	column_n 	column_definition );
+
+For example:
+
+    ALTER TABLE supplier
+    ADD ( 	supplier_name 	varchar2(50),
+      	city 	varchar2(45) );
+      	
+      	
+      	
+
+
+    ALTER TABLE table_name
+     MODIFY column_name column_type;
+
+For example:
+
+    ALTER TABLE supplier
+     MODIFY supplier_name   varchar2(100)     not null;
+
+
+
+
+
+    ALTER TABLE table_name
+    MODIFY ( 	column_1 	column_type,
+      	column_2 	column_type,
+      	... 	
+      	column_n 	column_type );
+
+For example:
+
+    ALTER TABLE supplier
+    MODIFY ( 	supplier_name 	varchar2(100) 	not null,
+    	city 	varchar2(75) 	  	);
+    	
+    	
+    	
+
+
+
+    ALTER TABLE table_name
+     DROP COLUMN column_name;
+
+For example:
+
+    ALTER TABLE supplier
+     DROP COLUMN supplier_name;
+
+
+
+
+
+
+    ALTER TABLE table_name
+     RENAME COLUMN old_name to new_name;
+
+For example:
+
+    ALTER TABLE supplier
+     RENAME COLUMN supplier_name to sname;
+
+
+
+DROP DATABASE [IF EXISTS] name
+-->
+
+<!--
+LIMIT 1 to speed up query
+
+
+GROUP BY, HAVING
+SELECT age FROM Student GROUP BY age;
+	one row per group
+
+MySQL download
+http://dev.mysql.com/downloads/
+
+MySQL tutorial
+http://dev.mysql.com/doc/#Tutorial
+
+w3schools
+http://www.w3schools.com/sql/default.asp
+
+idea of joins
+http://www.w3schools.com/sql/sql_join.asp
+	inner join, left join, right join
+
+functions (AVG, COUNT, FIRST, LAST, MAX, MIN, STDEV, SUM, ...
+http://www.w3schools.com/sql/sql_functions.asp
+
+quick reference chart
+http://www.w3schools.com/sql/sql_quickref.asp
+
+notion of indexes?
+
+
+transactions
+    * BEGIN WORK (or START TRANSACTION, depending on SQL dialect) can be used to mark the start of a database transaction, which either completes completely or not at all.
+    * COMMIT causes all data changes in a transaction to be made permanent.
+    * ROLLBACK causes all data changes since the last COMMIT or ROLLBACK to be discarded, so that the state of the data is "rolled back" to the way it was prior to those changes being requested.
+
+
+subqueries
+SELECT *
+FROM   students
+WHERE  age IN (SELECT age
+               FROM   students
+               WHERE  name = 'Bart');
+
+SELECT *
+FROM   students s
+WHERE EXISTS (SELECT * FROM Student
+              WHERE NAME = 'Bart'
+              AND age = s.age);
+
+who has the highest GPA?
+SELECT *
+FROM   students
+WHERE  GPA >= ALL (SELECT GPA FROM Student);
+
+SELECT *
+FROM   students
+WHERE NOT (GPA < ANY (SELECT GPA FROM Student));
+
+-->
+
+
+<!--#include virtual="commonbottom.html" -->

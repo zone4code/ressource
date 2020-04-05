@@ -1,0 +1,1143 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Chapter 2: HTML Basics</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Chapter 2</h1>
+				<h2>HTML Basics</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Chapter 2 <br /> HTML Basics</h3>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>2.1: Basic HTML</h1>
+				
+				<ul>
+					<li>
+						<strong>2.1: Basic HTML</strong>
+					</li>
+					<li>
+						2.2: More HTML Elements
+					</li>
+					<li>
+						2.3: Web Standards
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Hypertext Markup Language (<a href="http://www.w3schools.com/html/default.asp">HTML</a>)
+					<span class="readingsection">(2.1.1)</span>
+				</h1>
+
+				<ul>
+					<li>describes the <em>content</em> and structure of information on a web page
+						<ul>
+							<li>not the same as the <em>presentation</em> (appearance on screen)</li>
+						</ul>
+					</li>
+					<li>surrounds text content with opening and closing <span class="term">tags</span></li>
+					<li>each tag's name is called an <span class="term">element</span>
+						<ul>
+							<li>syntax: <code>&lt;</code><var>element</var><code>&gt;</code> <var>content</var> <code>&lt;/</code><var>element</var><code>&gt;</code></li>
+							<li>example: <code><em>&lt;p&gt;</em>This is a paragraph<em>&lt;/p&gt;</em></code></li>
+						</ul>
+					</li>
+					<li>most whitespace is insignificant in HTML<br />(it gets ignored or collapsed into a single space)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://www.w3.org/TR/xhtml1/">XHTML</a></h1>
+
+				<ul>
+					<li>a newer version of HTML, standardized in 2000</li>
+					<li>uses a markup format called <span class="term">XML</span> (XML + HTML = XHTML)</li>
+					<li>though the browser will accept some malformed HTML, we'll write &quot;strict&quot; XHTML that complies to the official web standards</li>
+					<li>a strict XHTML page uses some <a href="http://www.w3schools.com/xhtml/xhtml_html.asp">different syntax</a> and tags</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Structure of an XHTML page
+					<span class="readingsection">(2.1.2)</span>
+				</h1>
+
+<pre class="syntaxtemplate html">
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot;
+&quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;>
+
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+	&lt;head&gt;
+		<var>information about the page</var>
+	&lt;/head&gt;
+
+	&lt;body&gt;
+		<var>page contents</var>
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+				<ul>
+					<li>the <span class="term">header</span> describes the page and the <span class="term">body</span> contains the page's contents</li>
+					<li>an HTML page is saved into a file ending with extension <code>.html</code></li>
+<!--
+					<li><a href="resources/example2a.html">Example page</a></li>
+-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Page title: <a href="http://www.w3schools.com/tags/tag_title.asp"><code>&lt;title&gt;</code></a></h1>
+
+				<p class="description">describes the title of the web page</p>
+
+<pre class="examplecode html">
+<em>&lt;title&gt;</em>Chapter 2: HTML Basics<em>&lt;/title&gt;</em>
+</pre>
+
+				<ul>
+					<li>placed within the <code>head</code> of the page</li>
+					<li>displayed in the web browser's title bar and when bookmarking the page</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Paragraph: 
+					<a href="http://www.w3schools.com/tags/tag_p.asp"><code>&lt;p&gt;</code></a>
+					<span class="readingsection">(2.1.3)</span>
+				</h1>
+
+				<p class="description">paragraphs of text (block)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;p&gt;</em>You're not your job.
+You're not how much money you have in the bank.
+You're not the car you drive.   You're not the contents 
+of your wallet. You're not your         khakis.  You're 
+   the all-singing, all-dancing crap of the world.<em>&lt;/p&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+					<!--
+					<p>
+						You're not your job. You're not how much money you have in the bank.  You're not the car you drive. You're not the contents of your wallet. You're not your khakis. You're the all-singing, all-dancing crap of the world.
+					</p>
+					-->
+
+				<ul>
+					<li>placed within the <code>body</code> of the page</li>
+					<li><a href="http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_paragraphs2">more paragraph examples</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Headings: 
+					<a href="http://www.w3schools.com/tags/tag_h1.asp"><code>&lt;h1&gt;</code></a>, 
+					<a href="http://www.w3schools.com/tags/tag_h2.asp"><code>&lt;h2&gt;</code></a>, ..., 
+					<a href="http://www.w3schools.com/tags/tag_h2.asp"><code>&lt;h6&gt;</code></a>
+				</h1>
+
+				<p class="description">headings to separate major areas of the page (block)</p>
+				
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;h1&gt;</em>University of Whoville<em>&lt;/h1&gt;</em>
+<em>&lt;h2&gt;</em>Department of Computer Science<em>&lt;/h2&gt;</em>
+<em>&lt;h3&gt;</em>Sponsored by Micro$oft<em>&lt;/h3&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li><a href="http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_headers">More heading examples</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Horizontal rule: 
+					<a href="http://www.w3schools.com/tags/tag_p.asp"><code>&lt;hr&gt;</code></a>
+				</h1>
+
+				<p class="description">a horizontal line to visually separate sections of a page (block)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;First paragraph&lt;/p&gt;
+<em>&lt;hr /&gt;</em>
+&lt;p&gt;Second paragraph&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>should be immediately closed with <code> /&gt;</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Block and inline elements (<a href="http://www.autisticcuckoo.net/archive.php?id=2005/01/11/block-vs-inline-1">explanation</a>)</h1>
+				
+				<div class="centerfigure">
+					<img src="images/layout2.png" alt="elements" />
+				</div>
+
+				<ul>
+					<li><span class="term"><a href="http://htmlhelp.com/reference/html40/block.html">block</a></span> elements contain an entire large region of content
+						<ul>
+							<li>examples: paragraphs, lists, table cells</li>
+							<li>the browser places a margin of whitespace between block elements for separation</li>
+						</ul>
+					</li>
+					<li><span class="term"><a href="http://www.cs.sfu.ca/CC/165/sbrown1/wdgxhtml10/inline.html">inline</a></span> elements affect a small amount of content
+						<ul>
+							<li>examples: bold text, code fragments, images</li>
+							<li>the browser allows many inline elements to appear on the same line</li>
+							<li>must be nested inside a block element</li>
+						</ul>
+					</li>
+				</ul>
+
+<!-- *** 
+a picture would be nice here 
+
+some block elements can contain only other block elements
+	body, form
+
+some can contain only inline elements and plain text
+	p
+
+some can contain either
+	div
+	li
+
+-->
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More about HTML tags</h1>
+
+				<ul>
+					<li>some tags can contain additional information called <span class="term">attributes</span>
+						<ul>
+							<li>syntax: <code>&lt;</code><var>element</var> <var>attribute</var><code>=&quot;</code><var>value</var><code>"</code> <var>attribute</var><code>=&quot;</code><var>value</var><code>"&gt;</code> <var>content</var> <code>&lt;/</code><var>element</var><code>&gt;</code></li>
+							<li>example: <code>&lt;a <em>href="page2.html"</em>&gt;Next page&lt;/a&gt;</code></li>
+						</ul>
+					</li>
+
+					<li>some tags don't contain content; can be opened and closed in one tag
+						<ul>
+							<li>syntax: <code>&lt;</code><var>element</var> <var>attribute</var><code>=&quot;</code><var>value</var><code>"</code> <var>attribute</var><code>=&quot;</code><var>value</var><code>" /&gt;</code></li>
+							<li>example: <code>&lt;hr <em>/&gt;</em></code></li>
+							<li>example: <code>&lt;img src="bunny.jpg" alt="pic from Easter" <em>/&gt;</em></code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Links: 
+					<a href="http://www.w3schools.com/tags/tag_h1.asp"><code>&lt;a&gt;</code></a>
+					<span class="readingsection">(2.1.4)</span>
+				</h1>
+
+				<p class="description">links, or &quot;anchors&quot;, to other pages (inline)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;
+	Search <em>
+	&lt;a href=&quot;http://www.google.com/&quot;&gt;</em>Google<em>&lt;/a&gt;</em>
+	now!
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>uses the <code>href</code> attribute to specify the destination URL</li>
+					<li>anchors are inline elements, so they must be placed inside a block element such as a <code>p</code> or <code>h1</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More about anchors</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;&lt;a href=<em>&quot;1-internet.html&quot;</em>&gt;Lecture Notes 1<em>&lt;/a&gt;</em>&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.google.com/&quot; 
+<em>title=&quot;Search&quot;</em>&gt;Google&lt;/a&gt;&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>types of URLs that can appear in anchors:
+						<ul>
+							<li><span class="term">absolute</span> (to another web site)</li>
+							<li><span class="term">relative</span> (to another page on this web site)</li>
+						</ul>
+					</li>
+					<li>specify a tooltip with the <code>title</code> attribute</li>
+					<li><a href="http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_link">more anchor examples</a></li>
+
+					<!--
+					<li>make a link open in a new window by setting the <code>target</code> attribute to <code>&quot;_blank&quot;</code></li>
+					-->
+				</ul>
+
+				<div class="handout">
+					<ul>
+						<li>to make links that open in new windows, we'll need to learn Javascript (later)</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Nesting tags</h1>
+
+				<p>Bad:</p>
+
+<pre class="examplecode html">
+&lt;p&gt;
+	&lt;a href=&quot;1-internet.html&quot;&gt;Lecture Notes 1
+<em class="bad">&lt;/p&gt;</em>
+&lt;p&gt;
+	This text also links to Lecture Notes 1<em class="bad">&lt;/a&gt;</em>
+&lt;/p&gt;
+</pre>
+
+				<ul>
+					<li>tags must be correctly nested</li>
+					<li>(a closing tag must match the most recently opened tag)</li>
+					<li>the browser may render it correctly anyway, but it is invalid XHTML</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Images:
+					<a href="http://www.w3schools.com/tags/tag_h1.asp"><code>&lt;img&gt;</code></a>
+				</h1>
+
+				<p class="description">inserts a graphical image into the page (inline)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;img src=&quot;images/gollum.jpg&quot; alt=&quot;Gollum from LOTR&quot; /&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+				<li>the <code>src</code> attribute specifies the image URL</li>
+				<li>XHTML also requires an <code>alt</code> attribute describing the image</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More about images</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;a href=&quot;http://theonering.net/&quot;&gt;</em>
+	&lt;img src=&quot;images/gandalf.jpg&quot; alt=&quot;Gandalf from LOTR&quot;
+	     <em>title=&quot;You shall not pass!&quot;</em> /&gt;
+<em>&lt;/a&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>if placed inside an <code>a</code> anchor, the image will become a link</li>
+					<li>the <code>title</code> attribute specifies an optional tooltip</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Line break:
+					<a href="http://www.w3schools.com/tags/tag_p.asp"><code>&lt;br&gt;</code></a>
+				</h1>
+
+				<p class="description">forces a line break in the middle of a block element (inline)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;Teddy said it was a hat, <em>&lt;br /&gt;</em> So I put it on.&lt;/p&gt;
+&lt;p&gt;Now Daddy's sayin', <em>&lt;br /&gt;</em> Where
+the heck's the toilet plunger gone?&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li><code>br</code> should be immediately closed with <code> /&gt;</code></li>
+				</ul>
+
+				<div class="handout">
+					<ul>
+						<li><code>br</code> should not be used to separate paragraphs or used multiple times in a row to create spacing</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Comments: <a href="http://www.w3schools.com/tags/tag_comment.asp"><code>&lt;!--</code> ... <code>--&gt;</code></a></h1>
+
+				<p class="description">comments to document your HTML file or "comment out" text</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<span class="comment">&lt;!-- My web page, by Suzy Student 
+CSE 190 D, Spring 2048 --&gt;</span>
+&lt;p&gt;CSE courses are <span class="comment">&lt;!-- NOT --&gt;</span> a lot of fun!&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+				
+				<ul>
+					<li>many web pages are not thoroughly commented (or at all)</li>
+					<li>comments are still useful for disabling sections of a page</li>
+					<li>comments cannot be nested and cannot contain a <code>--</code></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<a href="http://www.w3schools.com/tags/tag_phrase_elements.asp">
+						Phrase elements
+					</a>: 
+					<code>&lt;em&gt;</code>, <code>&lt;strong&gt;</code>
+				</h1>
+
+				<p class="description">
+					<code>em</code>: emphasized text (usually rendered in italic) <br />
+					<code>strong</code>: strongly emphasized text (usually rendered in bold) <br />
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;
+	HTML is <em>&lt;em&gt;</em>really<em>&lt;/em&gt;</em>,
+	<em>&lt;strong&gt;</em>REALLY<em>&lt;/strong&gt;</em> fun!
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+				
+				<ul>
+					<li>as usual, the tags must be properly nested for a valid page</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>2.2: More HTML Elements</h1>
+				
+				<ul>
+					<li>
+						2.1: Basic HTML
+					</li>
+					<li>
+						<strong>2.2: More HTML Elements</strong>
+					</li>
+					<li>
+						2.3: Web Standards
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Unordered list:
+					<a href="http://www.w3schools.com/tags/tag_ul.asp"><code>&lt;ul&gt;</code></a>,
+					<a href="http://www.w3schools.com/tags/tag_li.asp"><code>&lt;li&gt;</code></a>
+					<span class="readingsection">(2.2.1)</span>
+				</h1>
+
+				<p class="description">
+					<code>ul</code> represents a bulleted list of items (block)<br />
+					<code>li</code> represents a single item within the list (block)
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;ul&gt;</em>
+	<em>&lt;li&gt;</em>No shoes<em>&lt;/li&gt;</em>
+	<em>&lt;li&gt;</em>No shirt<em>&lt;/li&gt;</em>
+	<em>&lt;li&gt;</em>No problem!<em>&lt;/li&gt;</em>
+<em>&lt;/ul&gt;</em>
+</pre>
+				
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>More about unordered lists</h1>
+
+				<ul>
+					<li>a list can contain other lists:</li>
+				</ul>
+
+				<div class="example">
+<pre class="examplecode exampleleftcolumn html">
+&lt;ul&gt;
+	&lt;li&gt;Simpsons:
+		<em>&lt;ul&gt;</em>
+			<em>&lt;li&gt;</em>Homer<em>&lt;/li&gt;</em>
+			<em>&lt;li&gt;</em>Marge<em>&lt;/li&gt;</em>
+		<em>&lt;/ul&gt;</em>
+	&lt;/li&gt;
+	&lt;li&gt;Family Guy:
+		<em>&lt;ul&gt;</em>
+			<em>&lt;li&gt;</em>Peter<em>&lt;/li&gt;</em>
+			<em>&lt;li&gt;</em>Lois<em>&lt;/li&gt;</em>
+		<em>&lt;/ul&gt;</em>
+	&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+					<div class="exampleoutput examplerightcolumn insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Ordered list: <a href="http://www.w3schools.com/tags/tag_ul.asp"><code>&lt;ol&gt;</code></a></h1>
+
+				<p class="description">
+					<code>ol</code> represents a numbered list of items (block)
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;RIAA business model:&lt;/p&gt;
+<em>&lt;ol&gt;</em>
+	<em>&lt;li&gt;</em>Sue customers for copying music<em>&lt;/li&gt;</em>
+	<em>&lt;li&gt;</em>???<em>&lt;/li&gt;</em>
+	<em>&lt;li&gt;</em>Profit!<em>&lt;/li&gt;</em>
+<em>&lt;/ol&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<div class="handout">
+					<ul>
+						<li>we can make lists with letters or Roman numerals using CSS (later)</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common error: Not closing a list</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;ul&gt;
+	&lt;li&gt;No shoes&lt;/li&gt;
+	&lt;li&gt;No shirt&lt;/li&gt;
+	&lt;li&gt;No problem!&lt;/li&gt;
+
+<em class="bad">&lt;p&gt;</em>Paragraph after list...&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>if you leave a list open, subsequent contents will be indented</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common Error: Improper nested list placement</h1>
+
+<pre class="examplecode html">
+&lt;ul&gt;
+	&lt;li&gt;Simpsons:<em class="bad">&lt;/li&gt;</em>
+		<em>&lt;ul&gt;</em>
+		<em>&lt;li&gt;</em>Bart<em>&lt;/li&gt;</em>
+		<em>&lt;li&gt;</em>Lisa<em>&lt;/li&gt;</em>
+		<em>&lt;/ul&gt;</em>
+	&lt;/li&gt;
+	&lt;li&gt;Family Guy:
+		<em>&lt;ul&gt;</em>
+		<em>&lt;li&gt;</em>Peter<em>&lt;/li&gt;</em>
+		<em>&lt;li&gt;</em>Lois<em>&lt;/li&gt;</em>
+		<em>&lt;/ul&gt;</em>
+<em class="bad">&lt;/ul&gt;</em>
+</pre>
+
+				<ul>
+					<li>closing the outer <code>li</code> too early (or not at all) will render correctly in most browsers, but it is incorrect XHTML</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Definition list:
+					<a href="http://www.w3schools.com/tags/tag_dl.asp"><code>&lt;dl&gt;</code></a>, <a href="http://www.w3schools.com/tags/tag_dt.asp"><code>&lt;dt&gt;</code></a>, <a href="http://www.w3schools.com/tags/tag_dd.asp"><code>&lt;dd&gt;</code></a>
+				</h1>
+
+				<p class="description">
+					<code>dl</code> represents a list of definitions of terms (block) <br />
+					<code>dt</code> represents each term, and <code>dd</code> its definition
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;dl&gt;</em>
+	<em>&lt;dt&gt;</em>newbie<em>&lt;/dt&gt; &lt;dd&gt;</em>one who does not have mad skills<em>&lt;/dd&gt;</em>
+	<em>&lt;dt&gt;</em>own<em>&lt;/dt&gt; &lt;dd&gt;</em>to soundly defeat
+		(e.g. I owned that newbie!)<em>&lt;/dd&gt;</em>
+	<em>&lt;dt&gt;</em>frag<em>&lt;/dt&gt; &lt;dd&gt;</em>a kill in a shooting game<em>&lt;/dd&gt;</em>
+<em>&lt;/dl&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput" style="font-size: smaller;"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Tables: 
+					<a href="http://www.w3schools.com/tags/tag_table.asp"><code>&lt;table&gt;</code></a>, 
+					<a href="http://www.w3schools.com/tags/tag_tr.asp"><code>&lt;tr&gt;</code></a>, 
+					<a href="http://www.w3schools.com/tags/tag_td.asp"><code>&lt;td&gt;</code></a>
+					<span class="readingsection">(2.2.2)</span>
+				</h1>
+				
+				<p class="description">
+					A 2D table of rows and columns of data (block element)
+				</p>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;table&gt;
+	&lt;tr&gt;&lt;td&gt;1,1&lt;/td&gt;&lt;td&gt;1,2 okay&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;2,1 real wide&lt;/td&gt;&lt;td&gt;2,2&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+					<div class="exampleoutput">
+						<table>
+							<tr><td>1,1</td><td>1,2 okay</td></tr>
+							<tr><td>2,1 real wide</td><td>2,2</td></tr>
+						</table>
+					</div>
+				</div>
+
+				<ul>
+					<li><code>table</code> defines the overall table, <code>tr</code> each row, and <code>td</code> each cell's data</li>
+					<li>tables are useful for displaying large row/column data sets</li>
+					<li>
+						NOTE: tables are sometimes used by novices for web page layout, but this is not proper semantic HTML and should be avoided
+					</li>
+				</ul>
+			</div>
+
+
+
+<!--
+tbody?
+nested tables within tables?
+examples of when to use tables
+	tables with database data
+	tables of ajax response data
+-->
+			
+			
+			
+			<div class="slide">
+				<h1>Table headers, captions: 
+					<a href="http://www.w3schools.com/tags/tag_th.asp"><code>&lt;th&gt;</code></a>, 
+					<a href="http://www.w3schools.com/tags/tag_caption.asp"><code>&lt;caption&gt;</code></a>
+				</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;table&gt;
+	<em>&lt;caption&gt;</em>My important data<em>&lt;/caption&gt;</em>
+	&lt;tr&gt;<em>&lt;th&gt;</em>Column 1<em>&lt;/th&gt;</em><em>&lt;th&gt;</em>Column 2<em>&lt;/th&gt;</em>&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;1,1&lt;/td&gt;&lt;td&gt;1,2 okay&lt;/td&gt;&lt;/tr&gt;
+	&lt;tr&gt;&lt;td&gt;2,1 real wide&lt;/td&gt;&lt;td&gt;2,2&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+					<div class="exampleoutput">
+						<table>
+							<caption>My important data</caption>
+							<tr><th>Column 1</th><th>Column 2</th></tr>
+							<tr><td>1,1</td><td>1,2 okay</td></tr>
+							<tr><td>2,1 real wide</td><td>2,2</td></tr>
+						</table>
+					</div>
+				</div>
+
+				<ul>
+					<li><code>th</code> cells in a row are considered headers; by default, they appear bold</li>
+					<li>a <code>caption</code> at the start of the table labels its meaning</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Quotations: <a href="http://www.w3schools.com/tags/tag_blockquote.asp"><code>&lt;blockquote&gt;</code></a>
+					<span class="readingsection">(2.2.3)</span>
+				</h1>
+
+				<p class="description">
+					a lengthy quotation (block)
+				</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;As Lincoln said in his famous Gettysburg Address:&lt;/p&gt;
+<em>&lt;blockquote&gt;</em>
+	&lt;p&gt;Fourscore and seven years ago, our fathers brought forth
+		on this continent a new nation, conceived in liberty, and 
+		dedicated to the proposition that all men are created equal.&lt;/p&gt;
+<em>&lt;/blockquote&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Inline quotations: <a href="http://www.w3schools.com/tags/tag_q.asp"><code>&lt;q&gt;</code></a></h1>
+
+				<p class="description">a short quotation (inline)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;Quoth the Raven, <em>&lt;q&gt;</em>Nevermore.<em>&lt;/q&gt;</em>&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>
+						Why not just write the following?<br />
+						<code>&lt;p&gt;Quoth the Raven, "Nevermore."&lt;/p&gt;</code>
+					</li>
+				</ul>
+
+				<div class="handout">
+					<p>We don't use &quot; marks for two reasons:</p>
+					<ol>
+						<li>XHTML shouldn't contain literal quotation mark characters; they should be written as <code>&amp;quot;</code></li>
+						<li>using <code>&lt;q&gt;</code> allows us to apply CSS styles to quotations (seen later)</li>
+					</ol>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					HTML Character Entities
+					<span class="readingsection">(2.2.4)</span>
+				</h1>
+
+				<p class="description">
+					a way of representing any <a href="http://en.wikipedia.org/wiki/Unicode">Unicode</a> character within a web page
+				</p>
+
+				<table class="standard">
+					<tr><th class="spaced slidetable">character(s)</th><th class="slidetable">entity</th></tr>
+					<tr class="code"><td>&lt; &gt;</td><td>&amp;lt; &amp;gt;</td></tr>
+					<tr class="code"><td>&eacute; &egrave; &ntilde;</td><td>&amp;eacute; &amp;egrave; &amp;ntilde;</td></tr>
+					<tr class="code"><td>&trade; &copy;</td><td>&amp;trade; &amp;copy;</td></tr>
+					<tr class="code"><td>&pi; &delta; &Delta;</td><td>&amp;pi; &amp;delta; &amp;Delta;</td></tr>
+					<tr class="code"><td>&#1048;</td><td>&amp;#1048;</td></tr>
+					<tr class="code"><td>&quot; &amp;</td><td>&amp;quot; &amp;amp;</td></tr>
+				</table>
+
+				<ul>
+					<li><a href="http://www.w3schools.com/tags/ref_entities.asp">Complete list of HTML entities</a></li>
+					<li>How would you display the text <code>&amp;amp;</code> on a web page?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>HTML-encoding text</h1>
+
+				<div class="example">
+<pre class="examplecode html" style="font-size: smaller;">
+<em>&amp;lt;</em>p<em>&amp;gt;
+	&amp;lt;</em>a href=<em>&amp;quot;</em>http://google.com/search?q=marty<em>&amp;amp;</em>ie=utf-8<em>&amp;amp;</em>aq=t<em>&amp;quot;&amp;gt;</em>
+		Search Google for Marty
+	<em>&amp;lt;</em>/a<em>&amp;gt;
+&amp;lt;</em>/p<em>&amp;gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>To display the link text in a web page, its special characters must be encoded as shown above</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Computer code:
+					<a href="http://www.w3schools.com/tags/tag_phrase_elements.asp"><code>&lt;code&gt;</code></a>
+				</h1>
+
+			<p class="description">
+				<code>code</code>: a short section of computer code (usually rendered in a fixed-width font)
+			</p>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;
+	The <em>&lt;code&gt;</em>ul<em>&lt;/code&gt;</em> and <em>&lt;code&gt;</em>ol<em>&lt;/code&gt;</em>
+	tags make lists.
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Preformatted text:
+					<a href="http://www.w3schools.com/tags/tag_pre.asp"><code>&lt;pre&gt;</code></a>
+				</h1>
+
+				<p class="description">a large section of pre-formatted text (block)</p>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;pre&gt;</em>
+         Steve Jobs speaks loudly
+            reality distortion
+           Apple fans bow down
+<em>&lt;/pre&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>displayed with exactly the whitespace / line breaks given in the text</li>
+					<li>shown in a fixed-width font by default</li>
+					<li>how would it look if we had instead enclosed it in <code>code</code> tags?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Using <code>pre</code> and <code>code</code> together</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+<em>&lt;pre&gt;&lt;code&gt;</em>
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+<em>&lt;/code&gt;&lt;/pre&gt;</em>
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>When showing a large section of computer code, enclose it in a <code>pre</code> to preserve whitespace and a <code>code</code> to describe the semantics of the content</li>
+				</ul>
+			</div>
+
+
+
+			<!--
+			<div class="slide practiceproblem">
+			<h1>Practice Problem</h1>
+
+			<ul>
+			<li>Combine the earlier HTML code from the hobbit example with the kitten example into a larger complete web page called <code>hobbitten.html</code>.</li>
+			<li>Upload the page to a web server.</li>
+			<li>Validate the page using the W3C XHTML validator and fix any validation errors that occur.</li>
+			</ul>
+
+			</div>
+			-->
+
+
+
+			<div class="slide titleslide">
+				<h1>2.3: Web Standards</h1>
+				
+				<ul>
+					<li>
+						2.1: Basic HTML
+					</li>
+					<li>
+						2.2: More HTML Elements
+					</li>
+					<li>
+						<strong>2.3: Web Standards</strong>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Web Standards
+					<span class="readingsection">(2.3.1)</span>
+				</h1>
+				
+				<ul>
+					<li>
+						It is important to write proper XHTML code and follow proper syntax.
+					</li>
+					
+					<li>Why use XHTML and web standards?
+						<ul>
+							<li>more rigid and structured language</li>
+							<li>more interoperable across different web browsers</li>
+							<li>more likely that our pages will display correctly in the future</li>
+							<li>can be interchanged with other XML data: <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> (graphics), <a href="http://en.wikipedia.org/wiki/MathML">MathML</a>, <a href="http://en.wikipedia.org/wiki/MusicXML">MusicML</a>, <a href="http://en.wikipedia.org/wiki/List_of_XML_markup_languages">etc.</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					W3C XHTML Validator
+					<span class="readingsection">(2.3.2)</span>
+				</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+&lt;p&gt;
+	<em>&lt;a href=&quot;http://validator.w3.org/check/referer&quot;&gt;
+		&lt;img src=&quot;http://www.w3.org/Icons/valid-xhtml11&quot; 
+		alt=&quot;Validate&quot; /&gt;
+	&lt;/a&gt;</em>
+&lt;/p&gt;
+</pre>
+
+					<div class="exampleoutput">
+						<p>
+							<a href="http://validator.w3.org/check/referer">
+								<img src="images/w3c-xhtml11.png" alt="Validate" />
+							</a>
+						</p>
+					</div>
+				</div>
+
+				<ul>
+					<li><a href="http://validator.w3.org/">validator.w3.org</a></li>
+					<li>checks your HTML code to make sure it meets the official strict XHTML specifications</li>
+					<li>more picky than the web browser, which may render malformed XHTML correctly</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Web page metadata:
+					<a href="http://www.w3schools.com/tags/tag_meta.asp"><code>&lt;meta&gt;</code></a>
+					<span class="readingsection">(2.3.3)</span>
+				</h1>
+
+				<p class="description">
+					information about your page (for a browser, search engine, etc.)
+				</p>
+
+<pre class="examplecode html">
+&lt;<em>meta</em> name=&quot;description&quot; 
+ content=&quot;Authors' web site for Building Java Programs.&quot; /&gt;
+&lt;<em>meta</em> name=&quot;keywords&quot; content=&quot;java, textbook&quot; /&gt;
+&lt;<em>meta</em> http-equiv=&quot;Content-Type&quot;
+ content=&quot;text/html; charset=iso-8859-1&quot; /&gt;
+</pre>
+
+				<ul>
+					<li>placed in the <code>head</code> of your XHTML page</li>
+					<li><code>meta</code> tags often have both the <code>name</code> and <code>content</code> attributes
+						<ul>
+							<li>some <code>meta</code> tags use the <code>http-equiv</code> attribute instead of <code>name</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>meta</code> element to aid browser / web server</h1>
+
+<pre class="syntaxtemplate html">
+&lt;meta <em>http-equiv=&quot;Content-Type&quot;</em> 
+ content=&quot;<var>type of document (character encoding)</var>&quot; /&gt;
+&lt;meta <em>http-equiv=&quot;refresh&quot;</em>
+ content=&quot;<var>how often to refresh the page (seconds)</var>&quot; /&gt;
+&lt;/head&gt;
+</pre>
+
+				<ul>
+					<li>using the <code>Content-Type</code> gets rid of the W3C &quot;tentatively valid&quot; warning<br />
+					<code style="font-size: 70%;">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot; /&gt;</code>
+					</li>
+					<li>the <code>meta</code> <code>refresh</code> tag can also redirect from one page to another:<br />
+					<code style="font-size: smaller">&lt;meta http-equiv=&quot;refresh&quot; content=&quot;5<em>;url=http://www.bjp.com</em>&quot; /&gt;</code>
+						<ul>
+							<li>why would we want to do this? (<a href="examples/refresh.html">example</a>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>meta</code> element to describe the page</h1>
+
+<pre class="syntaxtemplate html">
+&lt;head&gt;
+&lt;meta <em>name=&quot;author&quot;</em>
+ content=&quot;<var>web page's author</var>&quot; /&gt;
+&lt;meta <em>name=&quot;revised&quot;</em>
+ content=&quot;<var>web page version and/or last modification date</var>&quot; /&gt;
+&lt;meta <em>name=&quot;generator&quot;</em>
+ content=&quot;<var>the software used to create the page</var>&quot; /&gt;
+&lt;/head&gt;
+</pre>
+
+				<ul>
+					<li>many <a href="http://en.wikipedia.org/wiki/Wysiwyg">WYSIWYG</a> HTML editors (FrontPage, PageMaker, etc.) place their names in the <code>meta</code> <code>generator</code> tag (why?)</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><code>meta</code> element to aid search engines</h1>
+
+<pre class="syntaxtemplate html">
+&lt;head&gt;
+&lt;meta <em>name=&quot;description&quot;</em>
+ content=&quot;<var>how you want search engines to display your page</var>&quot; /&gt;
+&lt;meta <em>name=&quot;keywords&quot;</em>
+ content=&quot;<var>words to associate with your page (comma-separated)</var>&quot; /&gt;
+&lt;/head&gt;
+</pre>
+
+				<ul>
+					<li>these are suggestions to search engines about how to index your page</li>
+					<li>the search engine may choose to ignore them (why?)</li>
+				</ul>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->

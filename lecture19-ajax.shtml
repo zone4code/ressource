@@ -1,0 +1,489 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 19: Ajax</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 19</h1>
+				<h2>Ajax</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 19 <br /> Ajax</h3>
+				<h4>Reading: 10.1 - 10.2</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Synchronous web communication
+					<span class="readingsection">(10.1)</span>
+				</h1>
+
+				<div class="centerfigure">
+					<img src="images/figure_1_synchronous.png" alt="synchronous communication" style="width: 60%;" />
+				</div>
+
+				<ul>
+					<li><span class="term">synchronous</span>: user must wait while new pages load
+						<ul>
+							<li>
+								the typical communication pattern used in web pages (click, wait, refresh)
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://en.wikipedia.org/wiki/Web_application">Web applications</a> and Ajax</h1>
+
+				<div class="rightfigure">
+					<img src="images/ajax_bleach.gif" alt="Ajax bleach" />
+				</div>
+
+				<ul>
+					<li>
+						<span class="term">web application</span>: a dynamic web site that mimics the feel of a desktop app
+						<ul>
+							<li>
+								presents a continuous user experience rather than disjoint pages
+							</li>
+							<li>
+								examples: 
+								<a href="http://mail.google.com/">Gmail</a>,
+								<a href="http://maps.google.com/">Google Maps</a>,
+								<a href="http://docs.google.com/">Google Docs and Spreadsheets</a>,
+								<a href="http://www.flickr.com/">Flickr</a>,
+								<a href="http://www.a9.com/">A9</a>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						<span class="term">Ajax</span>: Asynchronous JavaScript and XML
+						<ul>
+							<li>not a programming language; a particular way of using JavaScript</li>
+							<li>downloads data from a server in the background</li>
+							<li>allows dynamically updating a page without making the user wait</li>
+							<li>avoids the &quot;click-wait-refresh&quot; pattern</li>
+							<li>
+								examples: UW's <a href="http://www.cs.washington.edu/education/courses/cse143/09wi/diff.html">CSE 14x Diff Tool</a>, <a href="http://webster.cs.washington.edu:8080/practiceit/">Practice-It</a>; 
+								<a href="http://suggest.google.com/">Google Suggest</a>
+							</li>
+						</ul>
+					</li>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Asynchronous web communication</h1>
+
+				<div class="centerfigure">
+					<img src="images/figure_2_asynchronous.png" alt="synchronous communication" style="width: 60%;" />
+				</div>
+
+				<ul>
+					<li><span class="term">asynchronous</span>: user can keep interacting with page while data loads
+						<ul>
+							<li>
+								communication pattern made possible by Ajax
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://www.w3schools.com/XML/xml_http.asp"><code>XMLHttpRequest</code></a> (and why we won't use it)</h1>
+
+				<ul>
+					<li>JavaScript includes an <code>XMLHttpRequest</code> object that can fetch files from a web server
+						<ul>
+							<li>supported in IE5+, Safari, Firefox, Opera, Chrome, etc. (with minor compatibilities)</li>
+						</ul>
+					</li>
+					<!--
+					Internet Explorer uses an ActiveXObject, while other browsers uses the built-in JavaScript object called XMLHttpRequest.
+					-->
+
+					<li>it can do this <span class="term">asynchronously</span> (in the background, transparent to user)</li>
+					<li>the contents of the fetched file can be put into current web page using the DOM</li>
+					
+					<li style="margin-top: 2em">sounds great!...</li>
+					<li class="incremental">... but it is clunky to use, and has various browser incompatibilities</li>
+					<li class="incremental">Prototype provides a better wrapper for Ajax, so we will use that instead</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>A typical Ajax request</h1>
+
+				<div class="rightfigure">
+					<img src="images/ajax_request.png" alt="request" style="width: 100%" />
+				</div>
+
+				<ol class="compressed">
+					<li>user clicks, invoking an event handler</li>
+					<li class="incremental">handler's code creates an <code>XMLHttpRequest</code> object</li>
+					<li class="incremental"><code>XMLHttpRequest</code> object requests page from server</li>
+					<li class="incremental">server retrieves appropriate data, sends it back</li>
+					<li class="incremental"><code>XMLHttpRequest</code> fires an event when data arrives
+						<ul>
+							<li>this is often called a <span class="term">callback</span></li>
+							<li>you can attach a handler function to this event</li>
+						</ul>
+					</li>
+					<li class="incremental">your callback event handler processes the data and displays it</li>
+				</ol>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Prototype's Ajax model
+					<span class="readingsection">(10.2.4)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+new Ajax.Request(&quot;<var>url</var>&quot;,
+	{
+		<var>option</var> : <var>value</var>,
+		<var>option</var> : <var>value</var>,
+		...
+		<var>option</var> : <var>value</var>
+	}
+);
+</pre>
+
+				<ul>
+					<li>construct a Prototype <code>Ajax.Request</code> object to request a page from a server using Ajax</li>
+					
+					<li>constructor accepts 2 parameters:
+						<ol>
+							<li>the <strong>URL</strong> to fetch, as a String,</li>
+							<li>
+								a set of <strong>options</strong>, as an array of <var>key</var> : <var>value</var> pairs in <code>{}</code> braces
+								<span class="aside">(an anonymous JS object)</span>
+							</li>
+						</ol>
+					</li>
+					<li>hides icky details from the raw <code>XMLHttpRequest</code>; works well in all browsers</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Prototype Ajax methods and properties</h1>
+				
+				<table class="standard">
+					<caption><a class="popup" href="http://prototypejs.org/api/ajax/options">options</a> that can be passed to the <code>Ajax.Request</code> constructor</caption>
+				
+					<tr>
+						<th>option</th>
+						<th>description</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>method</code>
+						</td>
+						<td>
+							how to fetch the request from the server (default <code>&quot;post&quot;</code>)
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code>parameters</code>
+						</td>
+						<td>
+							query parameters to pass to the server, if any
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2" style="font-size: smaller;">
+							<code>asynchronous</code> (default <code>true</code>),
+							<code>contentType</code>, <code>encoding</code>,
+							<code>requestHeaders</code>
+						</td>
+					</tr>
+				</table>
+
+				<table class="standard">
+					<caption>events in the <code>Ajax.Request</code> object that you can handle</caption>
+				
+					<tr>
+						<th>event</th>
+						<th>description</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>onSuccess</code></strong>
+						</td>
+						<td>
+							request completed successfully
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code>onFailure</code></strong>
+						</td>
+						<td>
+							request was unsuccessful
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code>onException</code></strong>
+						</td>
+						<td>
+							request has a syntax error, security error, etc.
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2" style="font-size: smaller;">
+							<code>onCreate</code>, <code>onComplete</code>,
+							<code>on###</code> (for HTTP error code ###)
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Basic Prototype Ajax template</h1>
+
+				<pre class="syntaxtemplate js">
+	new Ajax.Request(&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;,
+			onSuccess: <var>functionName</var>
+		}
+	);
+	...
+
+function <var>functionName</var>(<em>ajax</em>) {
+	<var>do something with <em>ajax.responseText</em></var>;
+}
+</pre>
+
+				<ul>
+					<li>most Ajax requests we'll do in this course are GET requests</li>
+					<li>attach a handler to the request's <code>onSuccess</code> event</li>
+					<li>the handler takes an <a href="http://www.prototypejs.org/api/ajax/response">Ajax response</a> object, which we'll name <code>ajax</code>, as a parameter</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.prototypejs.org/api/ajax/response">Ajax response</a> object</h1>
+				
+				<table class="standard">
+					<tr>
+						<th>property</th>
+						<th>description</th>
+					</tr>
+
+					<tr>
+						<td>
+							<code>status</code>
+						</td>
+						<td>
+							the request's HTTP error code (200 = OK, etc.)
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code>statusText</code>
+						</td>
+						<td>
+							HTTP error code text
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code>responseText</code>
+						</td>
+						<td>
+							the entire text of the fetched page, as a <code>String</code>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code>responseXML</code>
+						</td>
+						<td>
+							the entire contents of the fetched page, as an XML DOM tree (seen later)
+						</td>
+					</tr>
+				</table>
+				
+				<pre class="examplecode js">
+function handleRequest(ajax) {
+	alert(ajax.responseText);
+}
+</pre>
+
+				<ul>
+					<li>most commonly property is <code>responseText</code>, to access the fetched page</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					<code>XMLHttpRequest</code> security restrictions
+				</h1>
+
+				<div class="centerfigure">
+					<img src="images/ajax_security_error.png" alt="Ajax security error" />
+				</div>
+
+				<ul>
+					<li>cannot be run from a web page stored on your hard drive</li>
+					<li>can only be run on a web page stored on a web server</li>
+					<li>can only fetch files from the same site that the page is on
+						<ul>
+							<li><code>www.foo.com/a/b/c.html</code> can only fetch from <code>www.foo.com</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+
+			<div class="slide">
+				<h1>Handling Ajax errors</h1>
+
+				<pre class="syntaxtemplate js">
+	new Ajax.Request(&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;,
+			onSuccess: <var>functionName</var>,
+			<em>onFailure: ajaxFailure</em>,
+			<em>onException: ajaxFailure</em>
+		}
+	);
+	...
+<em>function ajaxFailure(ajax, exception) {</em>
+	alert(&quot;Error making Ajax request:&quot; + 
+	      &quot;\n\nServer status:\n&quot; + ajax.status + &quot; &quot; + ajax.statusText + 
+	      &quot;\n\nServer response text:\n&quot; + ajax.responseText);
+	if (exception) {
+		throw exception;
+	}
+}
+</pre>
+
+				<ul>
+					<li>for user's (and developer's) benefit, show an error message if a request fails</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Debugging Ajax code</h1>
+
+				<div class="centerfigure">
+					<img src="images/firebug_ajax.png" alt="Firebug Ajax" style="max-width: 70%;" />
+				</div>
+
+				<ul>
+					<li><strong>Net</strong> tab shows each request, its parameters, response, any errors</li>
+					<li>expand a request with <span class="term" style="border: 1px solid black;">+</span> and look at <span class="term">Response</span> tab to see Ajax result</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Creating a <code>POST</code> request</h1>
+				
+<pre class="syntaxtemplate js">
+new Ajax.Request(&quot;<var>url</var>&quot;,
+	{
+		<em>method: &quot;post&quot;,</em>   <span class="comment">// optional</span>
+		<em>parameters: { <var>name</var>: <var>value</var>, <var>name</var>: <var>value</var>, ..., <var>name</var>: <var>value</var> },</em>
+		onSuccess: <var>functionName</var>,
+		onFailure: <var>functionName</var>,
+		onException: <var>functionName</var>
+	}
+);
+</pre>
+
+				<ul>
+					<li><code>Ajax.Request</code> can also be used to post data to a web server</li>
+					<li><code>method</code> should be changed to <code>&quot;post&quot;</code> (or omitted; <code>post</code> is default)</li>
+					<li>any query parameters should be passed as a <code>parameters</code> parameter
+						<ul>
+							<li>written between <code>{}</code> braces as a set of <var>name</var> : <var>value</var> pairs <span class="aside">(another anonymous object)</span></li>
+							<li><code>get</code> request parameters can also be passed this way, if you like</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Prototype's Ajax Updater</h1>
+
+				<pre class="syntaxtemplate js">
+	new Ajax.Updater(
+		&quot;<var>id</var>&quot;,
+		&quot;<var>url</var>&quot;,
+		{
+			method: &quot;get&quot;
+		}
+	);
+</pre>
+
+				<hr />
+
+				<ul>
+					<li><a href="http://www.prototypejs.org/api/ajax/updater"><code>Ajax.Updater</code></a> fetches a file and injects its content into an element as <code>innerHTML</code></li>
+					<li>additional (1st) parameter specifies the <code>id</code> of element to inject into</li>
+					<li><code>onSuccess</code> handler not needed (but <code>onFailure</code>, <code>onException</code> handlers may still be useful)</li>
+				</ul>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->

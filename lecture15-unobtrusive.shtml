@@ -1,0 +1,806 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 15: Unobtrusive JavaScript</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 15</h1>
+				<h2>Unobtrusive JavaScript</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 15 <br /> Unobtrusive JavaScript</h3>
+				<h4>Reading: 8.1</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide titleslide">
+				<h1>8.1: Global DOM Objects</h1>
+				
+				<ul>
+					<li>
+						<strong>8.1: Global DOM Objects</strong>
+					</li>
+					<li>
+						8.2: DOM Element Objects
+					</li>
+					<li>
+						8.3: The DOM Tree
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The six global DOM objects</h1>
+
+				<p>Every Javascript program can refer to the following global objects:</p>
+
+				<table class="standard">
+					<tr>
+						<th>name</th><th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/dom_obj_document.asp">document</a></code>
+						</td>
+						<td>
+							current HTML page and its content
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/dom_obj_history.asp">history</a></code>
+						</td>
+						<td>
+							list of pages the user has visited
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/dom_obj_location.asp">location</a></code>
+						</td>
+						<td>
+							URL of the current HTML page
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/dom_obj_navigator.asp">navigator</a></code>
+						</td>
+						<td>
+							info about the web browser you are using
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/dom_obj_screen.asp">screen</a></code>
+						</td>
+						<td>
+							info about the screen area occupied by the browser
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.w3schools.com/htmldom/dom_obj_window.asp">window</a></code>
+						</td>
+						<td>
+							the browser window
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/htmldom/dom_obj_window.asp"><code>window</code></a> object</h1>
+
+				<p class="description">
+					the entire browser window; the top-level object in DOM hierarchy
+				</p>
+
+				<ul>
+					<li>technically, all global code and variables become part of the <code>window</code> object</li>
+
+					<li>properties:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/dom_obj_document.asp"><code>document</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/dom_obj_history.asp"><code>history</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/dom_obj_location.asp"><code>location</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_win_name.asp"><code>name</code></a>
+							</li>
+						</ul>
+					</li>
+
+					<li>methods:
+						<ul>
+							<li>
+								<a href="http://www.w3schools.com/htmldom/met_win_alert.asp"><code>alert</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_confirm.asp"><code>confirm</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_prompt.asp"><code>prompt</code></a> (popup boxes)
+							</li>
+
+							<li>
+								<a href="http://www.w3schools.com/htmldom/met_win_setInterval.asp"><code>setInterval</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_setTimeout.asp"><code>setTimeout</code></a>
+								<a href="http://www.w3schools.com/htmldom/met_win_clearInterval.asp"><code>clearInterval</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_clearTimeout.asp"><code>clearTimeout</code></a> (timers)
+							</li>
+
+							<li>
+								<a href="http://www.w3schools.com/htmldom/met_win_open.asp"><code>open</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_close.asp"><code>close</code></a> (popping up new browser windows)
+							</li>
+
+							<li>
+								<a href="http://www.w3schools.com/htmldom/met_win_blur.asp"><code>blur</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_focus.asp"><code>focus</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_moveBy.asp"><code>moveBy</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_moveTo.asp"><code>moveTo</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_print.asp"><code>print</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_resizeBy.asp"><code>resizeBy</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_resizeTo.asp"><code>resizeTo</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_scrollBy.asp"><code>scrollBy</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_win_scrollTo.asp"><code>scrollTo</code></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!--
+			<div class="slide">
+				<h1>Popup windows with <code>window.open</code></h1>
+	
+<pre class="examplecode js">
+<em>window.open</em>(&quot;http://foo.com/bar.html&quot;, &quot;My Foo Window&quot;,
+            &quot;width=900,height=600,scrollbars=1&quot;);
+</pre>
+
+				<hr class="spacedrule" />
+
+				<ul>
+					<li><a href="http://www.w3schools.com/htmldom/met_win_open.asp"><code>window.open</code></a> pops up a new browser window</li>
+					<li>THIS method is the cause of all the terrible popups on the web!</li>
+					<li>some popup blocker software will prevent this method from running</li>
+				</ul>
+			</div>
+			-->
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/htmldom/dom_obj_document.asp"><code>document</code></a> object</h1>
+
+				<p class="description">
+					the current web page and the elements inside it
+				</p>
+
+				<ul>
+					<li>properties:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/coll_doc_anchors.asp"><code>anchors</code></a>, 
+							<code>body</code>, 
+							<a href="http://www.w3schools.com/htmldom/prop_doc_cookie.asp"><code>cookie</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_doc_domain.asp"><code>domain</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/coll_doc_forms.asp"><code>forms</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/coll_doc_images.asp"><code>images</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/coll_doc_links.asp"><code>links</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_doc_referrer.asp"><code>referrer</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_doc_title.asp"><code>title</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_doc_url.asp"><code>URL</code></a>
+							</li>
+						</ul>
+					</li>
+
+					<li>methods:
+						<ul>
+							<li><a href="http://www.w3schools.com/htmldom/met_doc_getelementbyid.asp"><code>getElementById</code></a></li>
+							<li><a href="http://www.w3schools.com/htmldom/met_doc_getelementsbyname.asp"><code>getElementsByName</code></a></li>
+							<li><a href="http://www.w3schools.com/htmldom/met_doc_getelementsbytagname.asp"><code>getElementsByTagName</code></a></li>
+							<li>
+								<a href="http://www.w3schools.com/htmldom/met_doc_close.asp"><code>close</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_doc_open.asp"><code>open</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_doc_write.asp"><code>write</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/met_doc_writeln.asp"><code>writeln</code></a>
+							</li>
+						</ul>
+					</li>
+					<li><a href="http://www.w3schools.com/htmldom/dom_obj_document.asp">complete list</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/htmldom/dom_obj_location.asp"><code>location</code></a> object</h1>
+
+				<p class="description">
+					the URL of the current web page
+				</p>
+
+				<ul>
+					<li>properties:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/prop_loc_host.asp"><code>host</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_loc_hostname.asp"><code>hostname</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_loc_href.asp"><code>href</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_loc_pathname.asp"><code>pathname</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_loc_port.asp"><code>port</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_loc_protocol.asp"><code>protocol</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_loc_search.asp"><code>search</code></a>
+							</li>
+						</ul>
+					</li>
+
+					<li>methods:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/met_loc_assign.asp"><code>assign</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/met_loc_reload.asp"><code>reload</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/met_loc_replace.asp"><code>replace</code></a>
+							</li>
+						</ul>
+					</li>
+					<li><a href="http://www.w3schools.com/htmldom/dom_obj_location.asp">complete list</a></li>
+				</ul>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/htmldom/dom_obj_navigator.asp"><code>navigator</code></a> object</h1>
+
+				<p class="description">
+					information about the web browser application
+				</p>
+
+				<ul>
+					<li>properties:
+						<ul>
+							<li>
+								<a href="http://www.w3schools.com/htmldom/prop_nav_appname.asp"><code>appName</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/prop_nav_appversion.asp"><code>appVersion</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/prop_nav_browserlanguage.asp"><code>browserLanguage</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/prop_nav_cookieenabled.asp"><code>cookieEnabled</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/prop_nav_platform.asp"><code>platform</code></a>, 
+								<a href="http://www.w3schools.com/htmldom/prop_nav_useragent.asp"><code>userAgent</code></a>
+							</li>
+							<li><a href="http://www.w3schools.com/htmldom/dom_obj_navigator.asp">complete list</a></li>
+						</ul>
+					</li>
+
+					<li>
+						Some web programmers examine the <code>navigator</code> object to see what browser is being used, and write browser-specific scripts and hacks:
+
+						<pre class="examplecode js">
+if (navigator.appName === &quot;Microsoft Internet Explorer&quot;) { ...
+</pre>
+
+						<ul>
+							<li>(this is poor style; you should not need to do this)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/htmldom/dom_obj_screen.asp"><code>screen</code></a> object</h1>
+
+				<p class="description">
+					information about the client's display screen
+				</p>
+
+				<ul>
+					<li>properties:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/prop_screen_availheight.asp"><code>availHeight</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_screen_availwidth.asp"><code>availWidth</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_screen_colordepth.asp"><code>colorDepth</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_screen_height.asp"><code>height</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_screen_pixeldepth.asp"><code>pixelDepth</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/prop_screen_width.asp"><code>width</code></a>
+							</li>
+							<li><a href="http://www.w3schools.com/htmldom/dom_obj_screen.asp">complete list</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>The <a href="http://www.w3schools.com/htmldom/dom_obj_history.asp"><code>history</code></a> object</h1>
+
+				<p class="description">
+					the list of sites the browser has visited in this window
+				</p>
+				
+				<ul>
+					<li>properties:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/prop_his_length.asp"><code>length</code></a>
+							</li>
+						</ul>
+					</li>
+
+					<li>methods:
+						<ul>
+							<li>
+							<a href="http://www.w3schools.com/htmldom/met_his_back.asp"><code>back</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/met_his_forward.asp"><code>forward</code></a>, 
+							<a href="http://www.w3schools.com/htmldom/met_his_go.asp"><code>go</code></a>
+							</li>
+						</ul>
+					</li>
+					<li><a href="http://www.w3schools.com/htmldom/dom_obj_history.asp">complete list</a></li>
+					<li>sometimes the browser won't let scripts view <code>history</code> properties, for security</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Unobtrusive JavaScript
+					<span class="readingsection">(8.1.1)</span>
+				</h1>
+
+				<ul>
+					<li>JavaScript event code seen previously was <em>obtrusive</em>, in the HTML; this is bad style</li>
+					<li>now we'll see how to write <a href="http://en.wikipedia.org/wiki/Unobtrusive_JavaScript"><em>unobtrusive</em> JavaScript</a> code
+						<ul>
+							<li>HTML with minimal JavaScript inside</li>
+							<li>uses the DOM to attach and execute all JavaScript functions</li>
+						</ul>
+					</li>
+					<li>allows <a href="http://alistapart.com/articles/behavioralseparation">separation</a> of web site into 3 major categories:
+						<ul>
+							<li><span class="term">content</span> (HTML) - what is it?</li>
+							<li><span class="term">presentation</span> (CSS) - how does it look?</li>
+							<li><span class="term">behavior</span> (JavaScript) - how does it respond to user interaction?</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Obtrusive event handlers (bad)</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;button id=&quot;ok&quot; <em class="bad">onclick=&quot;okayClick();&quot;</em>&gt;OK&lt;/button&gt;
+</pre>
+
+					<pre class="examplecode js">
+<span class="comment">// called when OK button is clicked</span>
+function okayClick() {
+	alert(&quot;booyah&quot;);
+}
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>this is bad style (HTML is cluttered with JS code)</li>
+					<li>goal: remove all JavaScript code from the HTML body</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Attaching an event handler in JavaScript code</h1>
+
+				<pre class="syntaxtemplate js">
+<span class="comment">// where <var>element</var> is a DOM element object</span>
+<var>element</var>.<var>event</var> = <var>function</var>;
+</pre>
+
+				<div class="example">
+					<pre class="examplecode js">
+$(&quot;ok&quot;).<em>onclick</em> = <em>okayClick</em>;
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<button id="ok">OK</button>
+					</div>
+				</div>
+				
+				<ul>
+					<li>it is legal to attach event handlers to elements' DOM objects in your JavaScript code
+						<ul>
+							<li>
+								notice that you do <strong>not</strong> put parentheses after the function's name
+							</li>
+						</ul>
+					</li>
+					<li>this is better style than attaching them in the HTML</li>
+					<li>Where should we put the above code?</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>When does my code run?</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+	&lt;head&gt;
+		<em>&lt;script src=&quot;myfile.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</em>
+	&lt;/head&gt;
+
+	&lt;body&gt; ... &lt;/body&gt;
+</pre>
+
+<pre class="examplecode examplecode2 examplecodelast js">
+<span class="comment">// global code</span>
+var x = 3;
+function f(n) { return n + 1; }
+function g(n) { return n - 1; }
+x = f(x);
+</pre>
+				</div>
+				
+				<ul>
+					<li>your file's JS code runs the moment the browser loads the <code>script</code> tag
+						<ul>
+							<li>
+								any variables are declared immediately
+							</li>
+							<li>
+								any functions are declared but not called, unless your global code explicitly calls them
+							</li>
+						</ul>
+					</li>
+					<li class="incremental">at this point in time, the browser has not yet read your page's <code>body</code>
+						<ul>
+							<li>
+								none of the DOM objects for tags on the page have been created yet
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>A failed attempt at being unobtrusive</h1>
+
+				<div class="example">
+<pre class="examplecode html">
+	&lt;head&gt;
+		<em>&lt;script src=&quot;myfile.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</em>
+	&lt;/head&gt;
+
+	&lt;body&gt;
+		&lt;div&gt;&lt;button id=&quot;ok&quot;&gt;OK&lt;/button&gt;&lt;/div&gt;
+</pre>
+
+<pre class="examplecode examplecode2 examplecodelast js">
+<span class="comment">// global code</span>
+<em class="bad">$(&quot;ok&quot;).onclick = okayClick;</em>   <span class="comment">// error: $("ok") is null</span>
+</pre>
+				</div>
+				
+				<ul>
+					<li>problem: global JS code runs the moment the script is loaded</li>
+					<li>script in <code>head</code> is processed before page's <code>body</code> has loaded
+						<ul>
+							<li>no elements are available yet or can be accessed yet via the DOM</li>
+						</ul>
+					</li>
+					<li>we need a way to attach the handler after the page has loaded...</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					The <code>window.onload</code> event
+					<span class="readingsection">(8.1.1)</span>
+				</h1>
+
+<pre class="syntaxtemplate js">
+<span class="comment">// this will run once the page has finished loading</span>
+function <var>functionName</var>() {
+	<var>element</var>.<var>event</var> = <var>functionName</var>;
+	<var>element</var>.<var>event</var> = <var>functionName</var>;
+	...
+}
+
+<em>window.onload = <var>functionName</var>;</em>   <span class="comment">// global code</span>
+</pre>
+				
+				<ul>
+					<li>we want to attach our event handlers right after the page is done loading</li>
+						<ul>
+							<li>there is a global event called <code>window.onload</code> event that occurs at that moment</li>
+						</ul>
+					<li>in <code>window.onload</code> handler we attach all the other handlers to run when events occur</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>An unobtrusive event handler</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+<span class="comment">&lt;!-- look Ma, no JavaScript! --&gt;</span>
+&lt;button id=&quot;ok&quot;&gt;OK&lt;/button&gt;
+</pre>
+
+					<pre class="examplecode examplecode2 js">
+<span class="comment">// called when page loads; sets up event handlers</span>
+function pageLoad() {
+	$(&quot;ok&quot;).onclick = okayClick;</em>
+}
+
+function okayClick() {
+	alert(&quot;booyah&quot;);
+}
+
+<em>window.onload = pageLoad;</em>  <span class="comment">// global code</span>
+</pre>
+					<div class="exampleoutput">
+						<button onclick="alert('booyah');">OK</button>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Common unobtrusive JS errors</h1>
+				
+				<ul>
+					<li>many students mistakenly write <code>()</code> when attaching the handler
+
+<pre class="examplecode js">
+<del>window.onload = pageLoad();</del>
+window.onload = <em>pageLoad</em>;
+
+<del>okButton.onclick = okayClick();</del>
+okButton.onclick = <em>okayClick</em>;
+</pre>
+
+						<ul>
+							<li>our <span class="term">JSLint</span> checker will catch this mistake</li>
+						</ul>
+					</li>
+
+					<li>event names are all lowercase, not capitalized like most variables
+
+<pre class="examplecode js">
+<del>window.onLoad = pageLoad;</del>
+window.<em>onload</em> = pageLoad;
+</pre>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Anonymous functions
+					<span class="readingsection">(8.1.2)</span>
+				</h1>
+
+				<pre class="syntaxtemplate js">
+function(<var>parameters</var>) {
+	<var>statements</var>;
+}
+</pre>
+
+				<ul>
+					<li>JavaScript allows you to declare <span class="term">anonymous functions</span></li>
+					<li>quickly creates a function without giving it a name</li>
+					<li>can be stored as a variable, attached as an event handler, etc.</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Anonymous function example</h1>
+
+				<div class="example">
+					<pre class="examplecode js">
+window.onload = <em>function() {</em>
+	var okButton = document.getElementById(&quot;ok&quot;);
+	okButton.onclick = okayClick;
+<em>};</em>
+
+function okayClick() {
+	alert(&quot;booyah&quot;);
+}
+</pre>
+					<div class="exampleoutput">
+						<button onclick="alert('booyah');">OK</button>
+					</div>
+				</div>
+				
+				<ul>
+					<li>or the following is also legal (though harder to read and bad style):</li>
+				</ul>
+
+<pre class="examplecode js">
+window.onload = <em>function() {</em>
+	var okButton = document.getElementById(&quot;ok&quot;);
+	okButton.onclick = <em>function() {</em>
+		alert(&quot;booyah&quot;);
+	<em>};</em>
+<em>};</em>
+</pre>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					The keyword <code>this</code>
+					<span class="readingsection">(8.1.3)</span>
+				</h1>
+				
+<pre class="syntaxtemplate js">
+this.<var>fieldName</var>                  <span class="comment">// access field</span>
+this.<var>fieldName</var> = <var>value</var>;          <span class="comment">// modify field</span>
+
+this.<var>methodName</var>(<var>parameters</var>);    <span class="comment">// call method</span>
+</pre>
+
+				<ul>
+					<li>
+						all JavaScript code actually runs inside of an object
+					</li>
+					<li>
+						by default, code runs inside the global <code>window</code> object
+						
+						<ul>
+							<li>
+								all global variables and functions you declare become part of <code>window</code>
+							</li>
+						</ul>
+					</li>
+					<li>
+						the <code>this</code> keyword refers to the current object
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Event handler binding
+				</h1>
+				
+				<div class="example">
+					<pre class="examplecode js">
+function pageLoad() {
+	<em>$(&quot;ok&quot;).onclick = okayClick;</em>   <span class="comment">// bound to okButton here</span>
+}
+
+function okayClick() {           <span class="comment">// okayClick knows what DOM object</span>
+	<em>this</em>.innerHTML = &quot;booyah&quot;;     <span class="comment">// it was called on</span>
+}
+
+window.onload = pageLoad;
+</pre>
+					
+					<div class="exampleoutput">
+						<button id="ok" onclick="this.innerHTML = 'booyah';">OK</button>
+					</div>
+				</div>
+
+				<ul>
+					<li>event handlers attached unobtrusively are <span class="term">bound</span> to the element</li>
+					<li>inside the handler, that element becomes <code>this</code> (rather than the <code>window</code>)
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Fixing redundant code with <code>this</code></h1>
+				
+<pre class="examplecode html">
+&lt;fieldset&gt;
+	&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;ducks&quot; <em>value=&quot;Huey&quot;</em>  /&gt; Huey&lt;/label&gt;
+	&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;ducks&quot; <em>value=&quot;Dewey&quot;</em> /&gt; Dewey&lt;/label&gt;
+	&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;ducks&quot; <em>value=&quot;Louie&quot;</em> /&gt; Louie&lt;/label&gt;
+&lt;/fieldset&gt;
+</pre>
+
+<pre class="examplecode js">
+function processDucks() {
+<del class="bad">	if ($(&quot;huey&quot;).checked) {
+		alert(&quot;Huey is checked!&quot;);
+	} else if ($(&quot;dewey&quot;).checked) {
+		alert(&quot;Dewey is checked!&quot;);
+	} else {
+		alert(&quot;Louie is checked!&quot;);
+	}</del>
+	<span class="errorfixed">alert(<em>this.value + </em>&quot; is checked!&quot;);</span>
+}
+</pre>
+
+				<ul>
+					<li>if the same function is assigned to multiple elements, each gets its own bound copy</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Unobtrusive styling
+					<span class="readingsection">(8.2.3)</span>
+				</h1>
+
+<pre class="examplecode js">
+function okayClick() {
+	<del>this.style.color = &quot;red&quot;;</del>
+	this.<em>className = &quot;highlighted&quot;</em>;
+}
+</pre>
+
+<pre class="examplecode css">
+.<em>highlighted</em> { color: red; }
+</pre>
+				
+				<ul>
+					<li>well-written JavaScript code should contain as little CSS as possible</li>
+					<li>use JS to set CSS classes/IDs on elements</li>
+					<li>define the styles of those classes/IDs in your CSS file</li>
+				</ul>
+			</div>
+
+
+
+<!--#include virtual="commonbottom.html" -->

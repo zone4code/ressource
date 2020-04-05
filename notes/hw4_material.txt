@@ -1,0 +1,111 @@
+on Wed, modify Hangman game to use createElement stuff?
+
+http://alistapart.com/articles/behavioralseparation
+http://adactio.com/atmedia2005/
+
+
+awful!
+<a href="javascript:window.open('page.html')">my page</a>
+
+bad.
+<a href="#" onclick="window.open('page.html')">my page</a>
+
+little better
+<a href="page.html" onclick="window.open(this.href)">my page</a>
+
+best!
+<a href="page.html" class="popup">my page</a>
+
+
+function doPopups() {
+  if (!document.getElementsByTagName) return false;
+  var links = document.getElementsByTagName("a");
+  for (var i=0; i < links.length; i++) {
+    if (links[i].className.match("popup")) {
+      links[i].onclick = function() {
+        window.open(this.href);
+        return false;
+      }
+    }
+  }
+}
+window.onload = doPopups;
+
+
+
+
+
+
+
+inline (bad)
+
+<ul>
+<li><a href="images/andy.jpg"
+onclick="return showPic(this)">Andy</a></li>
+<li><a href="images/ian.jpg"
+onclick="return showPic(this)">Ian</a></li>
+<li><a href="images/doug.jpg"
+onclick="return showPic(this)">Doug</a></li>
+</ul>
+
+<img src="images/placeholder.jpg" alt="my gallery"
+ id="placeholder" />
+
+
+
+class-itis (bad)
+
+<ul>
+<li><a href="images/andy.jpg"
+class="someclass">Andy</a></li>
+<li><a href="images/ian.jpg"
+class="someclass">Ian</a></li>
+<li><a href="images/doug.jpg"
+class="someclass">Doug</a></li>
+</ul>
+
+<img src="images/placeholder.jpg" alt="my gallery"
+ id="placeholder" />
+
+
+
+unobtrusive (good!!)
+
+<ul id="imagegallery">
+<li><a href="images/andy.jpg">Andy</a></li>
+<li><a href="images/ian.jpg">Ian</a></li>
+<li><a href="images/doug.jpg">Doug</a></li>
+</ul>
+<img src="images/placeholder.jpg" alt="my gallery"
+ id="placeholder" />
+
+
+
+Get all the links in the "imagegallery" element
+CSS
+
+
+#imagegallery a {
+  ...
+}
+
+DOM
+
+
+document.getElementById("imagegallery").getElementsByTagName("a")
+
+
+
+function prepareGallery() {
+  if (!document.getElementsByTagName) return false;
+  if (!document.getElementById) return false;
+  if (!document.getElementById("imagegallery")) return false;
+  var gallery = document.getElementById("imagegallery");
+  var links = gallery.getElementsByTagName("a");
+  for ( var i=0; i < links.length; i++) {
+    links[i].onclick = function() {
+      return showPic(this);
+    }
+  }
+}
+window.onload=prepareGallery;

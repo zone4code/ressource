@@ -1,0 +1,98 @@
+			<div class="slide">
+				<h1>(Some) Things that break in IE</h1>
+
+				<ul>
+					<li>CSS:
+						<ul>
+							<li>the CSS box model, in many ways</li>
+							<li>fixed positioning</li>
+						</ul>
+					</li>
+
+					<li>JavaScript:
+						<ul>
+							<li>getting the <code>.value</code> of many DOM controls (unless set explicitly)
+<pre>
+&lt;option <em>value=&quot;Bike&quot;</em>&gt;Bike&lt;/option&gt;
+</pre>
+							</li>
+							<li><code>String.split</code> (some incompatibilities)</li>
+							<li>timers with <code>setTimeout</code> (some incompatibilities)</li>
+							<li>accessing String characters using <code>str[i]</code> notation</li>
+							<li>lots of DOM stuff</li>
+							<li>lots of event-handling stuff</li>
+							<li>Ajax programming (seen later)</li>
+							<li>...</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+
+
+
+			<!--
+			<div class="slide">
+				<h1>Alternate timer syntax, as a String</h1>
+
+<pre class="examplecode js">
+function delayedMultiply() {
+	var myTimer = setTimeout(<em>&quot;multiply(6 * 7);&quot;</em>, 2000);
+}
+function multiply(a, b) {
+	alert(a * b);
+}
+</pre>
+
+<pre class="examplecode html">
+&lt;button onclick=&quot;delayedMultiply();&quot;&gt;Click me!&lt;/button&gt;
+</pre>
+
+				<div>
+					<button onclick="var text = 'hello'; setTimeout('alert(text)', 1000);">Click me!</button>
+				</div>
+
+				<hr />
+
+				<ul>
+					<li>the function to call can also be enclosed in a String</li>
+					<li>with that syntax, you <em>do</em> put the <code>()</code> and <code>;</code> after the call</li>
+					<li>this syntax is discouraged (<em>bad style</em>), but it's the only way to get a working timer in IE6</li>
+				</ul>
+			</div>
+			-->
+
+
+
+			<div class="slide">
+				<h1>Passing parameters to timers</a></h1>
+
+				<div class="example">
+					<pre class="examplecode js">
+function delayedMultiply() {
+	<span class="comment">// 6 and 7 are passed to multiply when timer goes off</span>
+	setTimeout(multiply, 2000<em>, 6, 7</em>);
+}
+function multiply(<em>a, b</em>) {
+	alert(a * b);
+}
+</pre>
+
+					<div class="exampleoutput insertoutput">
+						<button onclick="delayedMultiply();">Click me</button>
+					</div>
+				</div>
+
+				<ul>
+					<li>any parameters after the delay are passed to the timer function
+						<ul>
+							<li>doesn't work in IE6; must create an intermediate function to pass the parameters</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			

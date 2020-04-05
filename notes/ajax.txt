@@ -1,0 +1,4 @@
+show Gmail, loading... div, star/etc.
+	show non-Javascript version
+
+show Google Maps

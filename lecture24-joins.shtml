@@ -1,0 +1,867 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 24: SQL Joins</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 24</h1>
+				<h2>SQL Joins</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 24 <br /> SQL Joins</h3>
+				<h4>Reading: 11.4 - 11.5; Appendix A</h4>
+
+				<h5>
+					References:
+					<a href="http://www.w3schools.com/sql/sql_quickref.asp">SQL syntax reference</a>,
+					<a href="http://www.w3schools.com/sql/default.asp">w3schools tutorial</a>
+				</h5>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>Appendix A: Database Design</h1>
+				
+				<ul>
+					<li>
+						11.1: Database Basics
+					</li>
+					<li>
+						11.2: SQL
+					</li>
+					<li>
+						11.3: Databases and PHP
+					</li>
+					<li>
+						<strong>Appendix A: Database Design</strong>
+					</li>
+					<li>
+						11.4: Multi-table Queries
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Database design principles
+					<span class="readingsection">(Appendix A)</span>
+				</h1>
+
+				<ul>
+					<li><span class="term">database design</span> : the act of deciding the schema for a database</li>
+					<li><span class="term">database schema</span>: a description of what tables a database should have, what columns each table should contain, which columns' values must be unique, etc.</li>
+					<li>some database design principles:
+						<ul>
+							<li>keep it simple, stupid (KISS)</li>
+							<li>provide an identifier by which any row can be uniquely fetched</li>
+							<li>eliminate redundancy, especially of lengthy data (strings)
+								<ul>
+									<li>integers are smaller than strings and better to repeat</li>
+								</ul>
+							</li>
+							<li>favor integer data for comparisons and repeated values
+								<ul>
+									<li>integers are smaller than strings and better to repeat</li>
+									<li>integers can be compared/searched more quickly than strings, real numbers</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>First database design</h1>
+
+				<table class="sqltable">
+					<caption>student_grades</caption>
+
+					<tr><th>name</th><th>email</th><th>course</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>bart@fox.com</td><td>Computer Science 142</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>bart@fox.com</td><td>Computer Science 143</td><td>C</td></tr>
+					<tr><td>Milhouse</td><td>milhouse@fox.com</td><td>Computer Science 142</td><td>B+</td></tr>
+					<tr><td>Lisa</td><td>lisa@fox.com</td><td>Computer Science 143</td><td>A+</td></tr>
+					<tr><td>Lisa</td><td>lisa@fox.com</td><td>Computer Science 190M</td><td>A+</td></tr>
+					<tr><td>Ralph</td><td>ralph@fox.com</td><td>Informatics 100</td><td>D+</td></tr>
+				</table>
+
+				<ul>
+					<li>what's good and bad about this design?
+						<ul>
+							<li class="incremental">good: simple (one table), can see all data in one place</li>
+							<li class="incremental">bad: redundancy (name, email, course repeated frequently)</li>
+							<li class="incremental">bad: most searches (e.g. find a student's courses) will have to rely on string comparisons</li>
+							<li class="incremental">bad: there is no single column whose value will be unique in each row</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Second database design</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				
+				<ul>
+					<li>splitting data into multiple tables avoids redundancy</li>
+					<li><a href="http://en.wikipedia.org/wiki/Database_normalization"><span class="term">normalizing</span></a>: splitting tables to improve structure and remove redundancy / anomalies</li>
+					<li>normalized tables are often linked by unique integer IDs</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Related tables and keys</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td class="highlight">888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td></tr>
+								<tr><td class="highlight">10002</td><td>Computer Science 143</td></tr>
+								<tr><td class="highlight">10003</td><td>Computer Science 190M</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td class="highlight">888</td><td class="highlight">10002</td><td>A+</td></tr>
+								<tr><td class="highlight">888</td><td class="highlight">10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li><strong>primary key</strong>: a table column guaranteed to be unique for each record
+						<ul>
+							<li>record in <code>students</code> table with <code>id</code> of 888 is Lisa Simpson's student info</li>
+						</ul>
+					</li>
+					<li>records of one table may be associated with record(s) in another table</li>
+					<li><strong>foreign key</strong>: a column in table A that stores a value of a primary key from another table B</li>
+						<ul>
+							<li>records in <code>grades</code> table with <code>student_id</code> of 888 are Lisa Simpson's course grades</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Design question</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<hr />
+
+				<ul>
+					<li>suppose we want to keep track of the teachers who teach each course
+						<ul>
+							<li>e.g. Ms. Krabappel always teaches CSE 142 and INFO 100</li>
+							<li>e.g. Ms. Hoover always teaches CSE 143</li>
+							<li>e.g. Mr. Stepp always teaches CSE 190M</li>
+						</ul>
+					</li>
+					<li>what tables and/or columns should we add to the database?</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Design answer</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>teachers</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>1234</td><td>Krabappel</td></tr>
+								<tr><td>5678</td><td>Hoover</td></tr>
+								<tr><td>9012</td><td>Stepp</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th><th class="highlight">teacher_id</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td><td class="highlight">1234</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td><td class="highlight">5678</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td><td class="highlight">9012</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td><td class="highlight">1234</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<ul>
+					<li>add a <code>teachers</code> table containing information about instructors</li>
+					<li>link this to courses by teacher IDs</li>
+					<li>why not just skip the <code>teachers</code> table and put the teacher's name as a column in <code>courses</code>?
+						<ul>
+							<li class="incremental">repeated teacher names are redundant and large in size</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide titleslide">
+				<h1>11.4: Multi-table Queries</h1>
+				
+				<ul>
+					<li>
+						11.1: Database Basics
+					</li>
+					<li>
+						11.2: SQL
+					</li>
+					<li>
+						11.3: Databases and PHP
+					</li>
+					<li>
+						<strong>11.4: Multi-table Queries</strong>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Example <code>simpsons</code> database</h1>
+
+				<table style="font-size: smaller">
+					<tr>
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>students</caption>
+								<tr><th>id</th><th>name</th><th>email</th></tr>
+								<tr><td>123</td><td>Bart</td><td>bart@fox.com</td></tr>
+								<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td></tr>
+								<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td></tr>
+								<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>teachers</caption>
+								<tr><th>id</th><th>name</th></tr>
+								<tr><td>1234</td><td>Krabappel</td></tr>
+								<tr><td>5678</td><td>Hoover</td></tr>
+								<tr><td>9012</td><td>Stepp</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>courses</caption>
+								<tr><th>id</th><th>name</th><th>teacher_id</th></tr>
+								<tr><td>10001</td><td>Computer Science 142</td><td>1234</td></tr>
+								<tr><td>10002</td><td>Computer Science 143</td><td>5678</td></tr>
+								<tr><td>10003</td><td>Computer Science 190M</td><td>9012</td></tr>
+								<tr><td>10004</td><td>Informatics 100</td><td>1234</td></tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: top">
+							<table class="sqltable">
+								<caption>grades</caption>
+
+								<tr><th>student_id</th><th>course_id</th><th>grade</th></tr>
+								<tr><td>123</td><td>10001</td><td>B-</td></tr>
+								<tr><td>123</td><td>10002</td><td>C</td></tr>
+								<tr><td>456</td><td>10001</td><td>B+</td></tr>
+								<tr><td>888</td><td>10002</td><td>A+</td></tr>
+								<tr><td>888</td><td>10003</td><td>A+</td></tr>
+								<tr><td>404</td><td>10004</td><td>D+</td></tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Querying multi-table databases</h1>
+				
+				<p>
+					When we have larger datasets spread across multiple tables, we need queries that can answer high-level questions such as:
+				</p>
+				
+				<ul>
+					<li>What courses has Bart taken and gotten a B- or better?</li>
+					<li>What courses have been taken by both Bart and Lisa?</li>
+					<li>Who are all the teachers Bart has had?</li>
+					<li>How many total students has Ms. Krabappel taught, and what are their names?</li>
+				</ul>
+				
+				<p style="margin-top: 1em;">
+					To do this, we'll have to <strong>join</strong> data from several tables in our SQL queries.
+				</p>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Cross product with <code>JOIN</code>
+					<span class="readingsection">(11.4.1)</span>
+				</h1>
+
+				<pre class="syntaxtemplate sql">
+SELECT <var>column(s)</var> FROM <var>table1</var> JOIN <var>table2</var>;
+</pre>
+
+				<pre class="examplecode sql">
+SELECT * FROM students JOIN grades;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>id</th><th>name</th><th>email</th><th>student_id</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td colspan="6" style="text-align: center">... (24 rows returned)</td></tr>
+				</table>
+
+				<ul>
+					<li><span class="term">cross product</span> or <span class="term">Cartesian product</span>: combines each row of first table with each row of second
+						<ul>
+							<li>produces <em>M * N</em> rows, where table 1 has <em>M</em> rows and table 2 has <em>N</em></li>
+							<li>problem: produces too much irrelevant/meaningless data</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Joining with <code>ON</code> clauses
+					<span class="readingsection">(11.4.2)</span>
+				</h1>
+
+				<pre class="example sql">
+SELECT <var>column(s)</var>
+FROM <var>table1</var>
+     JOIN <var>table2</var> ON <var>condition(s)</var>
+     ...
+     JOIN <var>tableN</var> ON <var>condition(s)</var>;
+</pre>
+
+<!--
+<pre class="example sql">
+SELECT <var>column(s)</var> FROM <var>table1</var>, <var>table2</var>, ..., <var>tableN</var> WHERE <var>condition(s)</var>;
+</pre>
+-->
+
+				<pre class="examplecode sql">
+SELECT *
+FROM students
+     <em>JOIN grades ON id = student_id</em>;
+</pre>
+
+				<ul>
+					<li><span class="term">join</span>: a relational database operation that combines records from two or more tables if they satisfy certain conditions</li>
+					<li>the <code>ON</code> clause specifies which records from each table are matched</li>
+					<li>often the rows are linked by their <span class="term">key</span> columns</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Join example</h1>
+
+				<pre class="examplecode sql">
+SELECT *
+FROM students
+     <em>JOIN grades ON id = student_id</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>id</th><th>name</th><th>email</th><th>student_id</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>123</td><td>Bart</td><td>bart@fox.com</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td>404</td><td>Ralph</td><td>ralph@fox.com</td><td>404</td><td>10004</td><td>D+</td></tr>
+					<tr><td>456</td><td>Milhouse</td><td>milhouse@fox.com</td><td>456</td><td>10001</td><td>B+</td></tr>
+					<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>888</td><td>10002</td><td>A+</td></tr>
+					<tr><td>888</td><td>Lisa</td><td>lisa@fox.com</td><td>888</td><td>10003</td><td>A+</td></tr>
+				</table>
+
+				<ul>
+					<li><code><var>table</var>.<var>column</var></code> can be used to disambiguate column names:
+
+						<pre class="examplecode sql">
+SELECT *
+FROM students
+     JOIN grades ON <em>students.</em>id = <em>grades.</em>student_id;
+</pre>					
+
+					</li>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Filtering columns in a join</h1>
+
+				<pre class="examplecode sql">
+SELECT <em>name, course_id, grade</em>
+FROM students
+     JOIN grades ON <em>students.id</em> = student_id;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>10001</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>10002</td><td>C</td></tr>
+					<tr><td>Ralph</td><td>10004</td><td>D+</td></tr>
+					<tr><td>Milhouse</td><td>10001</td><td>B+</td></tr>
+					<tr><td>Lisa</td><td>10002</td><td>A+</td></tr>
+					<tr><td>Lisa</td><td>10003</td><td>A+</td></tr>
+				</table>
+
+				<ul>
+					<li>if a column exists in multiple tables, it may be written as <code><var>table</var>.<var>column</var></code> </li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Giving names to tables</h1>
+
+				<pre class="examplecode sql">
+SELECT name, <em>g.*</em>
+FROM students <em>s</em>
+     JOIN grades <em>g</em> ON <em>s</em>.id = <em>g</em>.student_id;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>student_id</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>123</td><td>10001</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>123</td><td>10002</td><td>C</td></tr>
+					<tr><td>Ralph</td><td>404</td><td>10004</td><td>D+</td></tr>
+					<tr><td>Milhouse</td><td>456</td><td>10001</td><td>B+</td></tr>
+					<tr><td>Lisa</td><td>888</td><td>10002</td><td>A+</td></tr>
+					<tr><td>Lisa</td><td>888</td><td>10003</td><td>A+</td></tr>
+				</table>
+
+				<ul>
+					<li>can give names to tables, like a variable name in Java</li>
+					<li>to specify all columns from a table, write <code><var>table</var>.*</code></li>
+<!--
+					<li>optional <code>AS</code> keyword: <code>SELECT * FROM Student <em>AS s</em></code> ...</li>
+-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Filtered join (<code>JOIN</code> with <code>WHERE</code>)
+					<span class="readingsection">(11.4.3)</span>
+				</h1>
+
+				<pre class="examplecode sql">
+SELECT name, course_id, grade
+FROM students s
+     JOIN grades g ON s.id = g.student_id
+<em>WHERE s.id = 123</em>;
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th><th>course_id</th><th>grade</th></tr>
+					<tr><td>Bart</td><td>10001</td><td>B-</td></tr>
+					<tr><td>Bart</td><td>10002</td><td>C</td></tr>
+				</table>
+
+				<ul>
+<!--
+					<li>the above query lists all courses Bart has taken and their grades</li>
+-->
+					<li><code>FROM</code> / <code>JOIN</code> glue the proper tables together, and <code>WHERE</code> filters the results</li>
+					<li>what goes in the <code>ON</code> clause, and what goes in <code>WHERE</code>?
+						<ul>
+							<li><code>ON</code> directly links columns of the joined tables</li>
+							<li><code>WHERE</code> sets additional constraints such as particular values (<code>123</code>, <code>'Bart'</code>)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Multi-way join</h1>
+
+				<pre class="examplecode sql">
+SELECT c.name
+FROM courses c
+     JOIN grades g ON g.course_id = c.id
+     <em>JOIN students bart ON g.student_id = bart.id</em>
+WHERE bart.name = 'Bart' AND g.grade &lt;= 'B-';
+</pre>
+
+				<table class="sqltable">
+					<tr><th>name</th></tr>
+					<tr><td>Computer Science 142</td></tr>
+				</table>
+
+				<ul>
+					<li><code>grade</code> column sorts alphabetically, so grades better than B- are ones <code>&lt;=</code> it</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>A suboptimal query</h1>
+				
+				<ul>
+					<li>What courses have been taken by both Bart and Lisa?
+
+					<pre class="examplecode sql">
+SELECT bart.course_id
+FROM grades bart
+     JOIN grades lisa ON lisa.course_id = bart.course_id
+WHERE bart.student_id = 123
+      AND lisa.student_id = 888;
+</pre>
+
+					</li>
+					
+					<li>problem: requires us to know Bart/Lisa's Student IDs, and only spits back course IDs, not names.</li>
+					
+					<li>Write a version of this query that gets us the course <em>names</em>, and only requires us to know Bart/Lisa's names, not their IDs.</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Improved query</h1>
+				
+				<ul>
+					<li>What courses have been taken by both Bart and Lisa?
+
+						<pre class="examplecode sql">
+SELECT DISTINCT <em>c.name
+FROM courses c
+     JOIN grades g1 ON g1.course_id = c.id</em>
+     JOIN students bart ON g1.student_id = bart.id
+     JOIN grades g2 ON g2.course_id = c.id
+     JOIN students lisa ON g2.student_id = lisa.id
+WHERE <em>bart.name = 'Bart'
+      AND lisa.name = 'Lisa'</em>;
+</pre>
+
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Practice queries</h1>
+				
+				<ul>
+					<li>What are the names of all teachers Bart has had?
+
+<pre class="sql incremental">
+SELECT DISTINCT t.name
+FROM teachers t
+     JOIN courses c ON c.teacher_id = t.id
+     JOIN grades g ON g.course_id = c.id 
+     JOIN students s ON s.id = g.student_id
+WHERE s.name = 'Bart';
+</pre>
+
+					</li>
+					<li>How many total students has Ms. Krabappel taught, and what are their names?
+					
+<pre class="sql incremental">
+SELECT DISTINCT s.name
+FROM students s
+     JOIN grades g ON s.id = g.student_id
+     JOIN courses c ON g.course_id = c.id
+     <em>JOIN teachers t ON t.id = c.teacher_id
+WHERE t.name = 'Krabappel'</em>;
+</pre>
+					</li>
+				</ul>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					Example <code>imdb</code> database
+					<span class="readingsection">(11.1.2)</span>
+				</h1>
+
+				<div style="font-size: smaller; overflow: hidden;">
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>actors</caption>
+						<tr><th>id</th><th>first_name</th><th>last_name</th><th>gender</th></tr>
+						<tr><td>433259</td><td>William</td><td>Shatner</td><td>M</td></tr>
+						<tr><td>797926</td><td>Britney</td><td>Spears</td><td>F</td></tr>
+						<tr><td>831289</td><td>Sigourney</td><td>Weaver</td><td>F</td></tr>
+						<tr><td colspan="4" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>movies</caption>
+						<tr><th>id</th><th>name</th><th>year</th><th>rank</th></tr>
+						<tr><td>112290</td><td>Fight Club</td><td>1999</td><td>8.5</td></tr>
+						<tr><td>209658</td><td>Meet the Parents</td><td>2000</td><td>7</td></tr>
+						<tr><td>210511</td><td>Memento</td><td>2000</td><td>8.7</td></tr>
+						<tr><td colspan="4" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>roles</caption>
+						<tr><th>actor_id</th><th>movie_id</th><th>role</th></tr>
+						<tr><td>433259</td><td>313398</td><td>Capt. James T. Kirk</td></tr>
+						<tr><td>433259</td><td>407323</td><td>Sgt. T.J. Hooker</td></tr>
+						<tr><td>797926</td><td>342189</td><td>Herself</td></tr>
+						<tr><td colspan="3" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>movies_genres</caption>
+						<tr><th>movie_id</th><th>genre</th></tr>
+						<tr><td>209658</td><td>Comedy</td></tr>
+						<tr><td>313398</td><td>Action</td></tr>
+						<tr><td>313398</td><td>Sci-Fi</td></tr>
+						<tr><td colspan="2" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>directors</caption>
+						<tr><th>id</th><th>first_name</th><th>last_name</th></tr>
+						<tr><td>24758</td><td>David</td><td>Fincher</td></tr>
+						<tr><td>66965</td><td>Jay</td><td>Roach</td></tr>
+						<tr><td>72723</td><td>William</td><td>Shatner</td></tr>
+						<tr><td colspan="3" style="text-align: center">...</td></tr>
+					</table>
+
+					<table class="sqltable" style="float: left; margin-left: 10px">
+						<caption>movies_directors</caption>
+						<tr><th>director_id</th><th>movie_id</th></tr>
+						<tr><td>24758</td><td>112290</td></tr>
+						<tr><td>66965</td><td>209658</td></tr>
+						<tr><td>72723</td><td>313398</td></tr>
+						<tr><td colspan="2" style="text-align: center">...</td></tr>
+					</table>
+				</div>
+
+				<ul style="clear: both; margin-top: 30px;">
+					<li>also available, <code>imdb_small</code> with fewer records (for testing queries)</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>IMDb query example</h1>
+				
+				<pre class="examplecode ssh">
+[stepp@webster ~]$ <em>mysql -u <var>myusername</var> -p</em>
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+
+mysql> <em>use imdb_small;</em>
+Database changed
+
+mysql> <em>select * from actors where first_name like '%mick%';</em>
++--------+------------+-----------+--------+
+| id     | first_name | last_name | gender |
++--------+------------+-----------+--------+
+|  71699 | Mickey     | Cantwell  | M      | 
+| 115652 | Mickey     | Dee       | M      | 
+| 470693 | Mick       | Theo      | M      | 
+| 716748 | Mickie     | McGowan   | F      | 
++--------+------------+-----------+--------+
+4 rows in set (0.01 sec)
+</pre>
+
+			</div>
+
+
+
+			<div class="slide">
+				<h1>
+					IMDb table relationships / ids
+					<span class="readingsection">(11.4.3)</span>
+				</h1>
+				
+				<div class="figure">
+					<img src="images/figure_4_table_tree.png" alt="IMDb tables tree" />
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>
+					Designing a query
+					<span class="readingsection">(11.4.4)</span>
+				</h1>
+				
+				<ul>
+					<li>Figure out the proper SQL queries in the following way:
+						<ul>
+							<li>Which table(s) contain the critical data? (<code>FROM</code>)</li>
+							<li>Which columns do I need in the result set? (<code>SELECT</code>)</li>
+							<li>How are tables connected (<code>JOIN</code>) and values filtered (<code>WHERE</code>)?</li>
+						</ul>
+					</li>
+					<li>Test on a small data set (<code>imdb_small</code>).</li>
+					<li>Confirm on the real data set (<code>imdb</code>).</li>
+					<li>Try out the queries first in the MySQL console.</li>
+					<li>Write the PHP code to run those same queries.
+						<ul>
+							<li>Make sure to check for SQL errors at every step!!</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->

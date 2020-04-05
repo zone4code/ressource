@@ -1,0 +1,556 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 11: Form Validation</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 11</h1>
+				<h2>Form Validation</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 11 <br /> Form Validation</h3>
+				<!-- no reading for this; not in book -->
+				
+				<h4>
+					References:
+					<a href="http://www.php.net/pcre">PHP.net</a>,
+					<a href="http://www.webcheatsheet.com/php/regular_expressions.php">webcheatsheet.com</a>,
+					<a href="http://www.roscripts.com/PHP_regular_expressions_examples-136.html">roscripts</a>,
+					<a href="http://www.phpro.org/tutorials/Introduction-to-PHP-Regex.html">PHPro</a>
+				</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>What is form validation?</h1>
+
+				<ul>
+					<li><span class="term">validation</span>: ensuring that form's values are correct</li>
+					<li>some types of validation:
+						<ul>
+							<li>preventing blank values (email address)</li>
+							<li>ensuring the type of values
+								<ul>
+									<li>integer, real number, currency, phone number, Social Security number, postal address, email address, date, credit card number, ...</li>
+								</ul>
+							</li>
+							<li>ensuring the format and range of values (ZIP code must be a 5-digit integer)</li>
+							<li>ensuring that values fit together (user types email twice, and the two must match)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>A real form that uses validation</h1>
+
+				<div style="text-align: center">
+					<a href="https://online.wamu.com/IdentityManagement/SignUp.aspx"><img src="images/wamu.png" alt="wamu" style="border: 0" /></a>
+				</div>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Client vs. server-side validation</h1>
+				
+				<p>
+					Validation can be performed:
+				</p>
+				
+				<ul>
+					<li><span class="term">client-side</span> (before the form is submitted)
+						<ul>
+							<li>can lead to a better user experience, but not secure (why not?)</li>
+						</ul>
+					</li>
+					<li><span class="term">server-side</span> (in PHP code, after the form is submitted)
+						<ul>
+							<li>needed for truly secure validation, but slower</li>
+						</ul>
+					</li>
+					<li>both
+						<ul>
+							<li>best mix of convenience and security, but requires most effort to program</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>An example form to be validated</h1>
+
+				<div class="example">
+					<pre class="examplecode html">
+&lt;form action=&quot;http://foo.com/foo.php&quot; method=&quot;get&quot;&gt;
+	&lt;div&gt;
+		City:  &lt;input <em>name=&quot;city&quot;</em> /&gt; &lt;br /&gt;
+		State: &lt;input <em>name=&quot;state&quot;</em> size=&quot;2&quot; maxlength=&quot;2&quot; /&gt; &lt;br /&gt;
+		ZIP:   &lt;input <em>name=&quot;zip&quot;</em> size=&quot;5&quot; maxlength=&quot;5&quot; /&gt; &lt;br /&gt;
+		&lt;input type=&quot;submit&quot; /&gt;
+	&lt;/div&gt;
+&lt;/form&gt;
+</pre>
+
+					<div class="exampleoutput insertoutput"></div>
+				</div>
+
+				<ul>
+					<li>Let's validate this form's data on the server...</li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>Basic server-side validation code</h1>
+
+				<pre class="examplecode php">
+$city  = $_REQUEST[&quot;city&quot;];
+$state = $_REQUEST[&quot;state&quot;];
+$zip   = $_REQUEST[&quot;zip&quot;];
+<em>if (!$city || strlen($state) != 2 || strlen($zip) != 5) {</em>
+	?&gt;
+	&lt;h2&gt;Error, invalid city/state submitted.&lt;/h2&gt;
+	&lt;?php
+<em>}</em>
+</pre>
+
+				<ul>
+					<li><em>basic idea:</em> examine parameter values, and if they are bad, show an error message and abort</li>
+					<li>validation code can take a lot of time / lines to write
+						<ul>
+							<li>How do you test for integers vs. real numbers vs. strings?</li>
+							<li>How do you test for a valid credit card number?</li>
+							<li>How do you test that a person's name has a middle initial?</li>
+							<li class="incremental">(How do you test whether a given string matches a particular complex format?)</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>What is a regular expression?</h1>
+
+<pre class="examplecode">
+&quot;/^[a-zA-Z_\-]+@(([a-zA-Z_\-])+\.)+[a-zA-Z]{2,4}$/&quot;
+</pre>
+
+				<ul>
+					<li><span class="term">regular expression</span> (&quot;regex&quot;): a description of a pattern of text
+						<ul>
+							<li>can test whether a string matches the expression's pattern</li>
+							<li>can use a regex to search/replace characters in a string</li>
+						</ul>
+					</li>
+					<li>regular expressions are extremely powerful but tough to read<br />
+					(the above regular expression matches email addresses)</li>
+					<li>regular expressions occur in many places:
+						<ul>
+							<li>Java: <code>Scanner</code>, <code>String</code>'s <code>split</code> method (CSE 143 sentence generator)</li>
+							<li>supported by PHP, JavaScript, and other languages</li>
+							<li>many text editors (TextPad) allow regexes in search/replace</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Basic regular expressions</h1>
+
+<pre class="examplecode">
+&quot;/abc/&quot;
+</pre>
+
+				<ul>
+					<li>in PHP, regexes are strings that begin and end with <code>/</code></li>
+					<li>the simplest regexes simply match a particular substring</li>
+					<li>the above regular expression matches any string containing <code>&quot;abc&quot;</code>:
+						<ul>
+							<li>
+								YES:
+								<code>&quot;abc&quot;</code>, 
+								<code>&quot;abcdef&quot;</code>,
+								<code>&quot;defabc&quot;</code>,
+								<code>&quot;.=.abc.=.&quot;</code>, 
+								...
+							</li>
+
+							<li>
+								NO:
+								<code>&quot;fedcba&quot;</code>,
+								<code>&quot;ab c&quot;</code>,
+								<code>&quot;PHP&quot;</code>,
+								...
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Wildcards: <code>.</code></h1>
+
+				<ul>
+					<li>A dot <code>.</code>  matches any character except a <code>\n</code> line break
+						<ul>
+							<li><code>"/.oo.y/"</code> matches
+								<code>&quot;Doocy&quot;</code>,
+								<code>&quot;goofy&quot;</code>,
+								<code>&quot;LooNy&quot;</code>,
+								...
+								</li>
+						</ul>
+					</li>
+					
+					<li>A trailing <code>i</code> at the end of a regex (after the closing <code>/</code>) signifies a case-insensitive match
+						<ul>
+							<li>
+								<code>"/mart/i"</code> matches
+								<code>&quot;Marty Stepp&quot;</code>,
+								<code>&quot;smart fellow&quot;</code>,
+								<code>&quot;WALMART&quot;</code>,
+								...
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Special characters: <code>|</code>, <code>()</code>, <code>^</code>, <code>\</code></h1>
+
+				<ul>
+					<li><code>|</code> means <em>OR</em>
+						<ul>
+							<li><code>"/abc|def|g/"</code> matches <code>&quot;abc&quot;</code>, <code>&quot;def&quot;</code>, or <code>&quot;g&quot;</code></li>
+							<li>There's no <em>AND</em> symbol.  Why not?</li>
+						</ul>
+					</li>
+
+					<li><code>()</code> are for grouping
+						<ul>
+							<li><code>"/(Homer|Marge) Simpson/"</code> matches <code>&quot;Homer Simpson&quot;</code>
+							or <code>&quot;Marge Simpson&quot;</code></li>
+<!--
+							<li>What does <code>/Homer|Marge|Bart|Lisa|Maggie S/</code> match?</li>
+-->
+						</ul>
+					</li>
+
+					<li><code>^</code> matches the beginning of a line; <code>$</code> the end
+						<ul>
+							<li><code>"/^&lt;!--$/"</code> matches a line that consists entirely of <code>&quot;&lt;!--&quot;</code></li>
+						</ul>
+					</li>
+					
+					<li><code>\</code> starts an <span class="term">escape sequence</span>
+						<ul>
+							<li>many characters must be escaped to match them literally: <code>/ \ $ . [ ] ( ) ^ * + ?</code></li>
+							<li><code>"/&lt;br \/&gt;/"</code> matches lines containing <code>&lt;br /&gt;</code> tags</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Quantifiers: <code>*</code>, <code>+</code>, <code>?</code></h1>
+
+				<ul>
+					<li><code>*</code> means 0 or more occurrences
+						<ul>
+							<li><code>"/abc*/"</code> matches <code>&quot;ab&quot;</code>, <code>&quot;abc&quot;</code>, <code>&quot;abcc&quot;</code>, <code>&quot;abccc&quot;</code>, ...</li>
+							<li><code>"/a(bc)*/"</code> matches <code>&quot;a&quot;</code>, <code>&quot;abc&quot;</code>, <code>&quot;abcbc&quot;</code>, <code>&quot;abcbcbc&quot;</code>, ...</li>
+							<li><code>"/a.*a/"</code> matches <code>&quot;aa&quot;</code>, <code>&quot;aba&quot;</code>, <code>&quot;a8qa&quot;</code>, <code>&quot;a!?_a&quot;</code>, ...</li>
+						</ul>
+					</li>
+
+					<li><code>+</code> means 1 or more occurrences
+						<ul>
+							<li><code>"/a(bc)+/"</code> matches <code>&quot;abc&quot;</code>, <code>&quot;abcbc&quot;</code>, <code>&quot;abcbcbc&quot;</code>, ...</li>
+							<li><code>"/Goo+gle/"</code> matches <code>&quot;Google&quot;</code>, <code>&quot;Gooogle&quot;</code>, <code>&quot;Goooogle&quot;</code>, ...</li>
+						</ul>
+					</li>
+
+					<li><code>?</code> means 0 or 1 occurrences
+						<ul>
+							<li><code>"/a(bc)?/"</code> matches <code>&quot;a&quot;</code> or <code>&quot;abc&quot;</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+			<h1>More quantifiers: <code>{min,max}</code></h1>
+
+				<ul>
+					<li><code>{<var>min</var>,<var>max</var>}</code> means between <var>min</var> and <var>max</var> occurrences (inclusive)
+						<ul>
+							<li><code>"/a(bc){2,4}/"</code> matches <code>&quot;abcbc&quot;</code>, <code>&quot;abcbcbc&quot;</code>, or <code>&quot;abcbcbcbc&quot;</code></li>
+						</ul>
+					</li>
+					<li><var>min</var> or <var>max</var> may be omitted to specify any number
+						<ul>
+							<li><code>{2,}</code> means 2 or more</li>
+							<li><code>{,6}</code> means up to 6</li>
+							<li><code>{3}</code> means exactly 3</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Character sets: <code>[]</code></h1>
+
+				<ul>
+					<li>
+						<code>[]</code> group characters into a <span class="term">character set</span>; 						will match any single character from the set
+						<ul>
+							<li><code>"/[bcd]art/"</code> matches strings containing <code>&quot;bart&quot;</code>, <code>&quot;cart&quot;</code>, and <code>&quot;dart&quot;</code></li>
+							<li>equivalent to <code>"/(b|c|d)art/"</code> but shorter</li>
+						</ul>
+					</li>
+					<li>inside <code>[]</code>, many of the modifier keys act as normal characters
+						<ul>
+							<li><code>"/what[!*?]*/"</code> matches <code>&quot;what&quot;</code>, <code>&quot;what!&quot;</code>, <code>&quot;what?**!&quot;</code>, <code>&quot;what??!&quot;</code>, ...</li>
+						</ul>
+					</li>
+
+					<li>What regular expression matches DNA (strings of A, C, G, or T)?
+						<ul>
+							<li class="incremental"><code>"/[ACGT]+/"</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Character ranges: <code>[start-end]</code></h1>
+
+				<ul>
+					<li>inside a character set, specify a range of characters with <code>-</code>
+						<ul>
+							<li><code>"/[a-z]/"</code> matches any lowercase letter</li>
+							<li><code>"/[a-zA-Z0-9]/"</code> matches any lower- or uppercase letter or digit</li>
+						</ul>
+					</li>
+					<li>an initial <code>^</code> inside a character set negates it
+						<ul>
+							<li><code>"/[^abcd]/"</code> matches any character other than a, b, c, or d</li>
+						</ul>
+					</li>
+
+					<li>inside a character set, <code>-</code> must be escaped to be matched
+						<ul>
+						<li><code>"/[+\-]?[0-9]+/"</code> matches an optional <code>+</code> or <code>-</code>, followed by at least one digit</li>
+						</ul>
+					</li>
+
+					<li>What regular expression matches letter grades such as A, B+, or D- ?
+						<ul>
+							<li class="incremental"><code>"/[ABCDF][+\-]?/"</code></li>
+						</ul>
+					</li>
+
+<!--
+
+					<li class="incremental">What regular expression would match UW Student IDs?</li>
+					<li class="incremental">What regular expression would match consonants, assuming that the string consists only of lowercase letters?</li>
+-->
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Escape sequences</h1>
+
+				<ul>
+					<li>special escape sequence character sets:
+						<ul>
+							<li>
+								<code>\d</code> matches any digit (same as <code>[0-9]</code>);
+								<code>\D</code> any non-digit (<code>[^0-9]</code>)
+							</li>
+							<li>
+								<code>\w</code> matches any <q>word character</q> (same as <code>[a-zA-Z_0-9]</code>);
+								<code>\W</code> any non-word char
+							</li>
+							<li>
+								<code>\s</code> matches any whitespace character ( , <code>\t</code>, <code>\n</code>, etc.);
+								<code>\S</code> any non-whitespace
+							</li>
+<!--
+							<li><code>\b</code> matches a word boundary (0 chars wide)</li>
+							<li><code>\B</code> matches a non-word boundary</li>
+-->
+						</ul>
+					</li>
+
+					<li>What regular expression matches dollar amounts of at least $100.00 ?
+						<ul>
+							<li class="incremental"><code>"/\$\d{3,}\.\d{2}/"</code></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1><a href="http://www.php.net/pcre">Regular expressions</a> in PHP (<a href="http://www.phpguru.org/downloads/PCRE%20Cheat%20Sheet/PHP%20PCRE%20Cheat%20Sheet.pdf">PDF</a>)</h1>
+
+				<ul>
+					<li><a href="http://www.php.net/manual/en/reference.pcre.pattern.syntax.php">regex syntax</a>: strings that begin and end with <code>/</code>, such as <code>&quot;/[AEIOU]+/&quot;</code></li>
+				</ul>
+				
+				<table class="standard">
+					<tr>
+						<th>function</th>
+						<th>description</th>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.php.net/preg-match">preg_match</a>(<var>regex</var>, <var>string</var>)</code>
+						</td>
+						<td>
+							returns <code>TRUE</code> if <var>string</var> matches <var>regex</var>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<code><a href="http://www.php.net/preg-replace">preg_replace</a>(<var>regex</var>, <var>replacement</var>, <var>string</var>)</code>
+						</td>
+						<td>
+							returns a new string with all substrings that match <var>regex</var> replaced by <var>replacement</var>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<code><a href="http://www.php.net/preg-split">preg_split</a>(<var>regex</var>, <var>string</var>)</code>
+						</td>
+						<td>
+							returns an array of strings from given <var>string</var> broken apart using the given <var>regex</var> as the delimiter (similar to <code>explode</code> but more powerful)
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Regular expression example</h1>
+
+				<pre class="examplecode php">
+<span class="comment"># replace vowels with stars</span>
+$str = &quot;the quick    brown        fox&quot;;
+
+$str = <em>preg_replace</em>(&quot;/[aeiou]/&quot;, &quot;*&quot;, $str);
+                         <span class="comment"># &quot;th* q**ck    br*wn        f*x&quot;</span>
+
+<span class="comment"># break apart into words</span>
+$words = <em>preg_split</em>(&quot;/[ ]+/&quot;, $str);
+                         <span class="comment"># (&quot;th*&quot;, &quot;q**ck&quot;, &quot;br*wn&quot;, &quot;f*x&quot;)</span>
+
+<span class="comment"># capitalize words that had 2+ consecutive vowels</span>
+for ($i = 0; $i &lt; count($words); $i++) {
+	if (<em>preg_match</em>(&quot;/\\*{2,}/&quot;, $words[$i])) {
+		$words[$i] = strtoupper($words[$i]);
+	}
+}                        <span class="comment"># (&quot;th*&quot;, &quot;Q**CK&quot;, &quot;br*wn&quot;, &quot;f*x&quot;)</span>
+</pre>
+
+				<ul>
+					<li>notice how <code>\</code> must be escaped to <code>\\</code></li>
+				</ul>
+			</div>
+			
+			
+			
+			<div class="slide">
+				<h1>PHP form validation w/ regexes</h1>
+
+<pre class="examplecode php">
+$state = $_REQUEST[&quot;state&quot;];
+if (!<em>preg_match(&quot;/[A-Z]{2}/&quot;, $state)</em>) {
+?&gt;
+
+	&lt;h2&gt;Error, invalid state submitted.&lt;/h2&gt;
+
+&lt;?php
+}
+</pre>
+				
+				<ul>
+					<li>using <code>preg_match</code> and well-chosen regexes allows you to quickly validate parameters</li>
+					<li>interestingly, we often <em>don't</em> want to give a very descriptive error message here (why?)</li>
+				</ul>
+			</div>
+
+
+
+<!--
+			<div class="slide">
+				<h1>Regular expression example 2</h1>
+
+<pre class="examplecode php">
+$str = &quot;&lt;10&gt;&lt;20&gt;&lt;30&gt;&lt;40&gt;&quot;;
+if (<em>preg_match</em>(&quot;/(&lt;\d\d&gt;){4}/&quot;, $str)) {
+	$str = <em>preg_replace</em>(&quot;/[&lt;&gt;]+/&quot;, &quot;,&quot;, $str);
+	$tokens = <em>preg_split</em>(&quot;/0/&quot;, $str);
+	foreach ($tokens as $num) {
+		print(&quot;Number: $num\n&quot;);
+	}
+}
+</pre>
+
+				<ul>
+					<li>What is the value of <code>$str</code> after the <code>preg_replace</code> call?</li>
+					<li>What elements are stored in <code>$tokens</code> ?</li>
+				</ul>
+			</div>
+-->
+
+
+<!--#include virtual="commonbottom.html" -->

